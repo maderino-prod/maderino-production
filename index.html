@@ -3,7 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maderino Production</title>
+  <title>Maderino Production — Agence Vidéo | Tournage & Montage Pro</title>
+  <meta name="description" content="Maderino Production, agence vidéo professionnelle. Tournage, montage et rendu final pour créateurs YouTube et entreprises. Du brief à la livraison.">
+  <meta name="keywords" content="agence vidéo, montage vidéo professionnel, tournage vidéo, production vidéo, montage reels, vidéo entreprise, Maderino Production">
+  <meta name="author" content="Maderino Production">
+  <meta property="og:title" content="Maderino Production — Agence Vidéo">
+  <meta property="og:description" content="Tournage, montage, rendu final. On prend tout en charge, du début à la livraison.">
+  <meta property="og:image" content="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468910/DJI_20260429133911_0031_D.00_00_03_01.Still001_tsld3b.png">
+  <meta property="og:url" content="https://maderinoprod.com">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Maderino Production — Agence Vidéo">
+  <meta name="twitter:description" content="Tournage, montage, rendu final. On prend tout en charge, du début à la livraison.">
+  <meta name="twitter:image" content="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468910/DJI_20260429133911_0031_D.00_00_03_01.Still001_tsld3b.png">
+  <link rel="canonical" href="https://maderinoprod.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,7 +52,7 @@
     .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; border: 0.5px solid rgba(255,107,0,0.5); padding: 4px 14px; border-radius: 20px; background: rgba(255,107,0,0.08); backdrop-filter: blur(8px); }
     .hero h1 { font-family: var(--font-display); font-size: clamp(56px, 10vw, 120px); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 24px; }
     .hero h1 em { font-style: normal; color: var(--orange); }
-    .hero-sub { font-size: 15px; color: var(--muted); max-width: 420px; line-height: 1.7; margin-bottom: 36px; }
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 420px; line-height: 1.7; margin-bottom: 36px; }
     .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 100px; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
     .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
     .btn-outline { display: inline-flex; align-items: center; gap: 10px; background: rgba(245,240,235,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--light); font-family: var(--font-body); font-size: 13px; font-weight: 400; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 100px; border: 0.5px solid rgba(245,240,235,0.2); text-decoration: none; transition: border-color 0.2s, background 0.2s; }
@@ -48,11 +61,22 @@
 
     /* STATS */
     .stats { background: var(--mid); border-top: 0.5px solid var(--glass-border); border-bottom: 0.5px solid var(--glass-border); padding: 48px 40px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
-    .stat { text-align: center; background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 0.5px solid var(--glass-border); border-radius: 16px; padding: 28px 48px; transition: background 0.3s, border-color 0.3s; }
+    .stat {
+      text-align: center;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 0.5px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 28px 48px;
+      transition: background 0.3s, border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.25), transparent); }
     .stat:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.14); }
     .stat-num { font-family: var(--font-display); font-size: 48px; color: var(--light); line-height: 1; }
     .stat-num span { color: var(--orange); }
-    .stat-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+    .stat-label { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
 
     /* SECTION HEADER — centré, pleine largeur, gros */
     .section-header { text-align: center; margin-bottom: 60px; }
@@ -67,12 +91,22 @@
     .services { position: relative; padding: 100px 40px; overflow: hidden; }
     .services-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-    .service-item { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 0.5px solid var(--glass-border); border-radius: 20px; padding: 40px 32px; transition: background 0.3s, border-color 0.3s, transform 0.3s; }
+    .service-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 0.5px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 40px 32px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-item::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent); }
     .service-item:hover { background: var(--glass-hover); border-color: rgba(255,255,255,0.14); transform: translateY(-3px); }
     .service-icon { width: 40px; height: 40px; border: 0.5px solid rgba(255,107,0,0.4); border-radius: 50%; background: rgba(255,107,0,0.08); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
     .service-icon svg { width: 16px; height: 16px; stroke: var(--orange); fill: none; stroke-width: 1.5; }
     .service-name { font-family: var(--font-display); font-size: 28px; letter-spacing: 0.03em; margin-bottom: 12px; }
-    .service-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .service-desc { font-size: 15px; color: var(--muted); line-height: 1.8; }
 
     /* PORTFOLIO */
     .portfolio { padding: 100px 0 100px; background: var(--mid); overflow: hidden; }
@@ -165,7 +199,7 @@
     /* BOOKING */
     .booking { position: relative; padding: 100px 40px; overflow: hidden; }
     .booking-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
-    .booking-sub { color: var(--muted); font-size: 14px; max-width: 480px; line-height: 1.7; margin-top: 12px; text-align: center; margin-left: auto; margin-right: auto; }
+    .booking-sub { color: var(--muted); font-size: 16px; max-width: 480px; line-height: 1.7; margin-top: 12px; text-align: center; margin-left: auto; margin-right: auto; }
     .calendly-wrap { margin-top: 48px; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); min-height: 700px; display: flex; align-items: center; justify-content: center; }
     .calendly-wrap iframe { display: none; width: 100%; height: 700px; border: none; }
     .calendly-placeholder { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
@@ -175,6 +209,8 @@
     /* FOOTER */
     footer { background: rgba(20,20,20,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 0.5px solid var(--glass-border); padding: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
     .footer-logo img { height: 28px; width: auto; }
+    .footer-socials { display: flex; align-items: center; gap: 20px; }
+    .footer-location { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
     .footer-copy { font-size: 12px; color: var(--muted); }
 
     /* MOBILE */
@@ -219,8 +255,8 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-tag">Agence vidéo</div>
-      <h1>On filme<br>ton <em>histoire.</em></h1>
-      <p class="hero-sub">Vidéo professionnelle pour créateurs YouTube et entreprises. Du concept à la livraison.</p>
+      <h1>Ta vision, on la filme<br>et on la <em>monte.</em></h1>
+      <p class="hero-sub">Tournage, montage, rendu final.<br>On prend tout en charge, du début à la livraison.</p>
       <div class="hero-btns">
         <a href="#booking" class="btn-primary">Travailler avec nous →</a>
         <a href="#portfolio" class="btn-outline">Voir nos réalisations</a>
@@ -232,6 +268,12 @@
     <div class="stat"><div class="stat-num"><span>+</span>200</div><div class="stat-label">Vidéos produites</div></div>
     <div class="stat"><div class="stat-num"><span>+</span>15</div><div class="stat-label">Clients satisfaits</div></div>
     <div class="stat"><div class="stat-num">5</div><div class="stat-label">Ans d'expérience</div></div>
+    <div class="stat" style="display:flex; align-items:center; justify-content:center;">
+      <div class="stat-num" style="font-size:22px; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Thonon-les-Bains
+      </div>
+    </div>
   </div>
 
   <!-- SERVICES -->
@@ -299,12 +341,12 @@
         <div class="service-item">
           <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.274A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div>
           <div class="service-name">Montage vidéo</div>
-          <p class="service-desc">Rythme, émotion, impact. On transforme tes rushes en contenu qui retient l'attention.</p>
+          <p class="service-desc">Vous avez des rushes à monter ? On prend en charge vos fichiers. On analyse ensemble vos besoins, on définit ce qui est réalisable et on assure un rendu final professionnel, dans les délais convenus.</p>
         </div>
         <div class="service-item">
           <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
           <div class="service-name">Tournage</div>
-          <p class="service-desc">Caméra pro sur le terrain. On capte ce qui compte avec le matériel qu'il faut.</p>
+          <p class="service-desc">Du brief au terrain. On analyse ton projet, on trouve les meilleures solutions visuelles, on se déplace et on capte exactement ce dont tu as besoin.</p>
         </div>
       </div>
     </div>
@@ -439,7 +481,7 @@
         <span class="section-num">03</span>
         <span class="section-title">On travaille ensemble ?</span>
       </div>
-      <p class="booking-sub">Réserve un appel vidéo de 15 minutes. On discute de ton projet, gratuit et sans engagement.</p>
+      <p class="booking-sub">Réserve un appel vidéo de 15 minutes.<br>On discute de ton projet, gratuit et sans engagement.</p>
       <div class="calendly-wrap" id="calendly-wrap">
         <div class="calendly-placeholder" id="calendly-placeholder">
           <div class="loader"></div>
@@ -449,6 +491,20 @@
       </div>
     </div>
   </section>
+
+  <div style="background: var(--mid); border-top: 0.5px solid rgba(255,255,255,0.08); padding: 32px 40px; display: flex; justify-content: center;">
+    <div class="stat" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding: 28px 48px;">
+      <div style="display:flex; gap:20px; align-items:center;">
+        <a href="https://www.instagram.com/maderino_prod/" target="_blank" style="color:var(--muted); transition:color 0.2s;" onmouseover="this.style.color='#FF6B00'" onmouseout="this.style.color='rgba(245,240,235,0.45)'">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@maderinoprod" target="_blank" style="color:var(--muted); transition:color 0.2s;" onmouseover="this.style.color='#FF6B00'" onmouseout="this.style.color='rgba(245,240,235,0.45)'">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.95a8.16 8.16 0 004.77 1.52V7.01a4.85 4.85 0 01-1-.32z"/></svg>
+        </a>
+      </div>
+      <a href="mailto:mickaz9pro@gmail.com" style="color:var(--muted); font-size:14px; text-decoration:none; transition:color 0.2s;" onmouseover="this.style.color='#FF6B00'" onmouseout="this.style.color='rgba(245,240,235,0.45)'">mickaz9pro@gmail.com</a>
+    </div>
+  </div>
 
   <footer>
     <div class="footer-logo">
