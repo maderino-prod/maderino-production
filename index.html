@@ -84,7 +84,7 @@
     /* SECTION HEADER — centré, pleine largeur, gros */
     .section-header { text-align: center; margin-bottom: 60px; }
     .section-num { font-family: var(--font-display); font-size: 13px; color: var(--orange); letter-spacing: 0.2em; display: block; margin-bottom: 8px; }
-    .section-title { font-family: var(--font-display); font-size: clamp(56px, 8vw, 110px); letter-spacing: 0.03em; line-height: 0.95; display: block; width: 100%; }
+    .section-title { font-family: var(--font-display); font-size: clamp(56px, 8vw, 110px); letter-spacing: 0.03em; line-height: 0.95; display: block; width: 100%; color: var(--light); text-shadow: 0 0 40px rgba(245,240,235,0.25), 0 0 80px rgba(245,240,235,0.1); }
 
     /* TIMELINE BG */
     .timeline-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; opacity: 0.18; }
@@ -114,7 +114,7 @@
     /* PORTFOLIO */
     .portfolio { padding: 100px 0 100px; background: var(--mid); overflow: hidden; }
     .portfolio-header { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
-    .portfolio-tabs { display: flex; gap: 8px; margin-top: 48px; margin-bottom: 40px; padding: 0 40px; max-width: 1100px; margin-left: auto; margin-right: auto; justify-content: center; }
+    .portfolio-tabs { display: flex; gap: 8px; margin-top: 48px; margin-bottom: 40px; padding: 0; max-width: 1100px; margin-left: auto; margin-right: auto; justify-content: center; }
     .tab-btn { font-family: var(--font-body); font-size: 12px; font-weight: 400; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 0.5px solid var(--glass-border); padding: 8px 20px; border-radius: 100px; cursor: pointer; transition: all 0.2s; }
     .tab-btn.active { color: var(--light); background: rgba(255,107,0,0.15); border-color: rgba(255,107,0,0.4); }
     .tab-btn:hover:not(.active) { background: var(--glass-hover); color: var(--light); }
@@ -517,7 +517,29 @@
   </footer>
 
   <script>
-    // Nav glass on scroll
+    // Counter animation for stats
+    function animateCounter(el, target, duration) {
+      let start = 0;
+      const step = target / (duration / 16);
+      const timer = setInterval(() => {
+        start += step;
+        if (start >= target) { start = target; clearInterval(timer); }
+        el.textContent = Math.floor(start);
+      }, 16);
+    }
+
+    const statsObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        document.querySelector('.stat:nth-child(1) .stat-num').innerHTML = '<span>+</span><span class="count-200">0</span>';
+        document.querySelector('.stat:nth-child(2) .stat-num').innerHTML = '<span>+</span><span class="count-15">0</span>';
+        document.querySelector('.stat:nth-child(3) .stat-num').innerHTML = '<span class="count-5">0</span>';
+        animateCounter(document.querySelector('.count-200'), 200, 1800);
+        animateCounter(document.querySelector('.count-15'), 15, 1200);
+        animateCounter(document.querySelector('.count-5'), 5, 800);
+        statsObserver.disconnect();
+      }
+    }, { threshold: 0.3 });
+    statsObserver.observe(document.querySelector('.stats'));
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
     });
