@@ -267,10 +267,11 @@
   <div class="stats">
     <div class="stat"><div class="stat-num"><span>+</span>200</div><div class="stat-label">Vidéos produites</div></div>
     <div class="stat"><div class="stat-num"><span>+</span>15</div><div class="stat-label">Clients satisfaits</div></div>
-    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Ans d'expérience</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Ans d'expérience</div></div>
     <div class="stat" style="display:flex; align-items:center; justify-content:center;">
-      <div class="stat-num" style="font-size:18px; display:flex; align-items:center; justify-content:center; gap:8px;">
-        🇫🇷 Thonon-les-Bains, Haute-Savoie
+      <div class="stat-num" style="font-size:18px; display:flex; align-items:center; justify-content:center; gap:10px;">
+        <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777568599/logo-contour-france-blanc_diujdc.png" alt="France" style="height:28px; width:auto; flex-shrink:0;">
+        Haute-Savoie
       </div>
     </div>
   </div>
@@ -552,7 +553,7 @@
         document.querySelector('.stat:nth-child(3) .stat-num').innerHTML = '<span class="count-5">0</span>';
         animateCounter(document.querySelector('.count-200'), 200, 1800);
         animateCounter(document.querySelector('.count-15'), 15, 1200);
-        animateCounter(document.querySelector('.count-5'), 5, 800);
+        animateCounter(document.querySelector('.count-5'), 4, 800);
         statsObserver.disconnect();
       }
     }, { threshold: 0.3 });
