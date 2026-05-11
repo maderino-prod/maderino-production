@@ -195,6 +195,7 @@
     .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); align-items: center; justify-content: center; }
     .lightbox.active { display: flex; }
     .lightbox-inner { position: relative; width: 90vw; max-width: 960px; aspect-ratio: 16/9; }
+    .lightbox-inner.photo-mode { aspect-ratio: unset; max-height: 90vh; display: flex; align-items: center; justify-content: center; }
     .lightbox-inner iframe, .lightbox-inner video { width: 100%; height: 100%; border: none; border-radius: 12px; }
     .lightbox-close { position: absolute; top: -44px; right: 0; background: none; border: none; color: var(--light); font-size: 28px; cursor: pointer; opacity: 0.7; line-height: 1; }
     .lightbox-close:hover { opacity: 1; }
@@ -363,6 +364,7 @@
     <div class="portfolio-tabs">
       <button class="tab-btn active" onclick="switchTab('tournage', this)">Tournage & Montage</button>
       <button class="tab-btn" onclick="switchTab('montage', this)">Montage</button>
+      <button class="tab-btn" onclick="switchTab('photos', this)">Photos</button>
     </div>
 
     <!-- Timeline ruler -->
@@ -443,6 +445,70 @@
           <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg" alt="Nicowithdog" loading="lazy">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="portfolio-overlay"><div class="portfolio-title">Reel — Nicowithdog</div><div class="portfolio-type">Montage</div></div>
+        </div>
+      </div>
+
+      <!-- PHOTOS track -->
+      <div class="portfolio-track" id="tab-photos" style="display:none;" onscroll="syncPlayhead(this)">
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482786/PC250877_sito2b.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482786/PC250877_sito2b.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC270955_gzukwh.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC270955_gzukwh.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC230658_qmdgke.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC230658_qmdgke.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PB070485_nwg5ue.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PB070485_nwg5ue.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8303159_d6pmc2.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8303159_d6pmc2.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P6201489_au3rb0.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P6201489_au3rb0.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P1114442_ioerjz.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P1114442_ioerjz.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075220_ifklaw.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075220_ifklaw.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1013945_dkgxfd.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1013945_dkgxfd.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/IMG_2714_w41aei.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/IMG_2714_w41aei.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg')">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg" alt="Photo tournage" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
         </div>
       </div>
     </div>
@@ -577,9 +643,9 @@
 
     // Get active track
     function getActiveTrack() {
-      return document.getElementById('tab-tournage').style.display !== 'none'
-        ? document.getElementById('tab-tournage')
-        : document.getElementById('tab-montage');
+      if (document.getElementById('tab-tournage').style.display !== 'none') return document.getElementById('tab-tournage');
+      if (document.getElementById('tab-montage').style.display !== 'none') return document.getElementById('tab-montage');
+      return document.getElementById('tab-photos');
     }
 
     // Sync playhead from track scroll position
@@ -658,6 +724,26 @@
     document.addEventListener('touchend', () => { dragging = false; });
 
     // Lightbox
+    function openPhoto(url) {
+      const lb = document.getElementById('lightbox');
+      const lbInner = lb.querySelector('.lightbox-inner');
+      const iframe = document.getElementById('lightbox-iframe');
+      const video = document.getElementById('lightbox-video');
+      let photoEl = document.getElementById('lightbox-photo');
+      if (!photoEl) {
+        photoEl = document.createElement('img');
+        photoEl.id = 'lightbox-photo';
+        photoEl.style.cssText = 'max-width:100%;max-height:85vh;object-fit:contain;border-radius:12px;display:none;';
+        lbInner.appendChild(photoEl);
+      }
+      iframe.style.display = 'none'; iframe.src = '';
+      video.style.display = 'none'; video.src = '';
+      photoEl.style.display = 'block';
+      photoEl.src = url;
+      lbInner.classList.add('photo-mode');
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
     function openYT(id) {
       const lb = document.getElementById('lightbox');
       const iframe = document.getElementById('lightbox-iframe');
@@ -684,6 +770,9 @@
         document.getElementById('lightbox-iframe').src = '';
         const v = document.getElementById('lightbox-video');
         v.pause(); v.src = '';
+        const p = document.getElementById('lightbox-photo');
+        if (p) { p.style.display = 'none'; p.src = ''; }
+        document.getElementById('lightbox').querySelector('.lightbox-inner').classList.remove('photo-mode');
         document.getElementById('lightbox').classList.remove('active');
         document.body.style.overflow = '';
       }
