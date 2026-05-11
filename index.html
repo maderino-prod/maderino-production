@@ -204,7 +204,10 @@
     .booking { position: relative; padding: 100px 40px; overflow: hidden; }
     .booking-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .booking-sub { color: var(--muted); font-size: 16px; max-width: 480px; line-height: 1.7; margin-top: 12px; text-align: center; margin-left: auto; margin-right: auto; }
-    .calendly-wrap { margin-top: 48px; border-radius: 16px; overflow: hidden; border: 0.5px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); min-height: 700px; }
+    .booking-cta-wrap { margin-top: 48px; display: flex; justify-content: center; }
+    .btn-booking { display: inline-flex; align-items: center; gap: 12px; background: var(--orange); color: #fff; font-family: var(--font-body); font-size: 15px; font-weight: 500; letter-spacing: 0.06em; padding: 18px 40px; border-radius: 100px; text-decoration: none; transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 32px rgba(255,107,0,0.25); }
+    .btn-booking:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 8px 40px rgba(255,107,0,0.35); }
+    .btn-booking svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; flex-shrink: 0; }
 
     /* FOOTER */
     footer { background: rgba(20,20,20,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 0.5px solid var(--glass-border); padding: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
@@ -600,9 +603,12 @@
         <span class="section-title">On travaille ensemble ?</span>
       </div>
       <p class="booking-sub">Réserve un appel de 15 minutes. On discute de ton projet, gratuitement et sans engagement.</p>
-      <div class="calendly-wrap" id="calendly-wrap">
-      <iframe src="https://calendly.com/mickaz9pro/rendeez-vous-montage?embed_domain=maderinoprod.com&embed_type=Inline&hide_landing_page_details=1&hide_gdpr_banner=1" width="100%" height="700" frameborder="0"></iframe>
-    </div>
+      <div class="booking-cta-wrap">
+        <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-booking">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Prendre rendez-vous
+        </a>
+      </div>
     </div>
   </section>
 
@@ -709,18 +715,6 @@
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
     });
 
-    // Lazy load Calendly
-    let calendlyLoaded = false;
-    const calendlyObserver = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && !calendlyLoaded) {
-        calendlyLoaded = true;
-        const iframe = document.getElementById('calendly-iframe');
-        const placeholder = document.getElementById('calendly-placeholder');
-        iframe.src = 'https://calendly.com/mickaz9pro/rendeez-vous-montage?embed_domain=maderino.fr&embed_type=Inline&hide_landing_page_details=1&hide_gdpr_banner=1';
-        iframe.onload = () => { placeholder.style.display = 'none'; iframe.style.display = 'block'; };
-      }
-    }, { threshold: 0.1 });
-    calendlyObserver.observe(document.getElementById('calendly-wrap'));
 
     // Get active track
     function getActiveTrack() {
