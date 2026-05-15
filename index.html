@@ -47,20 +47,23 @@
     .nav-links a:hover { color: var(--light); }
 
     /* HERO */
-    .hero { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: flex-end; overflow: hidden; }
-    .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+    .hero { position: relative; height: 100vh; min-height: 600px; display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+
+    .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; }
     .hero-mobile-bg { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.2) 60%, transparent 100%); }
-    .hero-content { position: relative; z-index: 2; padding: 0 40px 64px; max-width: 900px; }
-    .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; border: 0.5px solid rgba(255,107,0,0.5); padding: 4px 14px; border-radius: 20px; background: rgba(255,107,0,0.08); backdrop-filter: blur(8px); }
-    .hero h1 { font-family: var(--font-display); font-size: clamp(56px, 10vw, 120px); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 24px; }
+    .hero-content { position: relative; z-index: 2; padding: 0 40px 18vh; max-width: 100%; margin: 0 auto; text-align: center; width: 100%; }
+    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }    .hero-tag { display: inline-block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--orange); margin-bottom: 16px; border: 0.5px solid rgba(255,107,0,0.5); padding: 4px 14px; border-radius: 20px; background: rgba(255,107,0,0.08); backdrop-filter: blur(8px); }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(40px, 7.5vw, 105px); line-height: 0.92; letter-spacing: 0.02em; margin-bottom: 0; width: 100%; max-width: 100%; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding: 0 8vw; }
+    .hero h1 .h1-left { text-align: center; }
+    .hero h1 .h1-right { text-align: center; }
     .hero h1 em { font-style: normal; color: var(--orange); }
-    .hero-sub { font-size: 18px; color: var(--muted); max-width: 420px; line-height: 1.7; margin-bottom: 36px; }
+    .hero-sub { font-size: 18px; color: var(--muted); max-width: 420px; line-height: 1.7; margin-bottom: 36px; margin-left: auto; margin-right: auto; margin-top: 60px; }
     .btn-primary { display: inline-flex; align-items: center; gap: 10px; background: var(--orange); color: #fff; font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 100px; text-decoration: none; transition: opacity 0.2s, transform 0.2s; }
     .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
     .btn-outline { display: inline-flex; align-items: center; gap: 10px; background: rgba(245,240,235,0.06); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); color: var(--light); font-family: var(--font-body); font-size: 13px; font-weight: 400; letter-spacing: 0.05em; padding: 14px 28px; border-radius: 100px; border: 0.5px solid rgba(245,240,235,0.2); text-decoration: none; transition: border-color 0.2s, background 0.2s; }
     .btn-outline:hover { border-color: rgba(245,240,235,0.5); background: rgba(245,240,235,0.1); }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    
 
     /* STATS */
     .stats { background: var(--mid); border-top: 0.5px solid var(--glass-border); border-bottom: 0.5px solid var(--glass-border); padding: 48px 40px; display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
@@ -130,6 +133,7 @@
       margin-bottom: 16px;
       gap: 0;
       overflow: hidden;
+      width: 100%;
     }
     .timeline-ruler-inner {
       display: flex; align-items: flex-end;
@@ -153,16 +157,16 @@
 
     .portfolio-track {
       display: flex;
-      gap: 16px;
-      padding: 0 40px 16px;
+      gap: 20px;
+      padding: 0 40px 20px;
       overflow-x: auto;
-      scroll-behavior: smooth;
       cursor: grab;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: thin;
       scrollbar-color: rgba(255,107,0,0.3) transparent;
-      max-width: calc(380px * 3 + 16px * 2 + 80px);
-      margin: 0 auto;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
     }
     .portfolio-track:active { cursor: grabbing; }
     .portfolio-track::-webkit-scrollbar { height: 3px; }
@@ -171,27 +175,64 @@
 
     .portfolio-item {
       position: relative;
-      flex: 0 0 380px;
-      height: 214px;
+      flex: 0 0 520px;
+      height: 292px;
       overflow: hidden;
       cursor: pointer;
-      border-radius: 10px;
+      border-radius: 12px;
       background: #1a1a1a;
       border: 0.5px solid var(--glass-border);
       transition: border-color 0.3s;
     }
     .portfolio-item:hover { border-color: rgba(255,107,0,0.4); }
-    .portfolio-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease, opacity 0.3s; }
-    .portfolio-item:hover .portfolio-thumb { transform: scale(1.04); opacity: 0.6; }
-    .portfolio-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; }
-    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-thumb { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease; }
+    .portfolio-preview {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0; transition: opacity 0.4s ease;
+      pointer-events: none; border-radius: 12px;
+    }
+    .portfolio-item.previewing .portfolio-preview { opacity: 1; }
+    .portfolio-item.previewing .portfolio-thumb { opacity: 0; }
+    .portfolio-item:not(.previewing):hover .portfolio-thumb { opacity: 0.6; }
+    .portfolio-item:not([data-video]):hover .portfolio-thumb {
+      animation: kenburns 4s ease-out forwards;
+      opacity: 0.6;
+    }
+    @keyframes kenburns {
+      0%   { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.08) translate(-1.5%, -1.5%); }
+    }
+    .portfolio-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; background: linear-gradient(to top, rgba(10,10,10,0.92) 0%, transparent 60%); opacity: 1; transition: opacity 0.3s; }
     .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px; border-radius: 50%; background: rgba(255,107,0,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s, transform 0.3s; border: 0.5px solid rgba(255,255,255,0.2); }
     .portfolio-item:hover .play-btn { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
     .play-btn svg { width: 16px; height: 16px; fill: #fff; margin-left: 3px; }
     .portfolio-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.03em; line-height: 1.2; }
     .portfolio-type { font-size: 10px; color: var(--orange); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
 
-    /* LIGHTBOX */
+    /* FLOATING CTA */
+    .floating-cta {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 99;
+      display: flex;
+      gap: 10px;
+      background: rgba(10,10,10,0.7);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 0.5px solid var(--glass-border);
+      border-radius: 100px;
+      padding: 8px 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .floating-cta.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
     .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); align-items: center; justify-content: center; }
     .lightbox.active { display: flex; }
     .lightbox-inner { position: relative; width: 90vw; max-width: 960px; aspect-ratio: 16/9; }
@@ -210,7 +251,7 @@
     .btn-booking svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; flex-shrink: 0; }
 
     /* FOOTER */
-    footer { background: rgba(20,20,20,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 0.5px solid var(--glass-border); padding: 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    footer { background: rgba(20,20,20,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 0.5px solid var(--glass-border); padding: 40px; display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 16px; }
     .footer-logo img { height: 28px; width: auto; }
     .footer-socials { display: flex; align-items: center; gap: 20px; }
     .footer-location { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
@@ -232,7 +273,7 @@
       .timeline-ruler { padding: 0 20px; }
       .booking { padding: 60px 20px; }
       footer { padding: 24px 20px; flex-direction: column; text-align: center; }
-      .portfolio-item { flex: 0 0 260px; height: 146px; }
+      .portfolio-item { flex: 0 0 300px; height: 169px; }
       .hero h1 { font-size: clamp(36px, 12vw, 56px); }
       .section-title { font-size: clamp(42px, 10vw, 80px); }
     }
@@ -285,27 +326,15 @@
     <img class="hero-mobile-bg" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468910/DJI_20260429133911_0031_D.00_00_03_01.Still001_tsld3b.png" alt="Maderino Production">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <div class="hero-tag">Agence vidéo</div>
-      <h1>Ta vision mérite<br>d'<em>exister.</em><br>Ensemble, on<br>la <em>crée.</em></h1>
+      <h1><span class="h1-left">Ta vision mérite<br>d'<em>exister.</em></span><span class="h1-right">Ensemble, on<br>la <em>crée.</em></span></h1>
       <p class="hero-sub">Un projet vidéo ? On est là. Que ce soit le tournage ou le montage, on s'occupe de tout pour un résultat qui fait la différence.</p>
-      <div class="hero-btns">
-        <a href="#booking" class="btn-primary">Travailler avec nous →</a>
+      <div class="hero-btns" id="hero-btns">
+        <a href="#booking" class="btn-primary">Travailler avec nous</a>
         <a href="#portfolio" class="btn-outline">Voir nos réalisations</a>
+        <a href="#services" class="btn-outline">Ce qu'on fait</a>
       </div>
     </div>
   </section>
-
-  <div class="stats">
-    <div class="stat"><div class="stat-num"><span>+</span>200</div><div class="stat-label">Vidéos produites</div></div>
-    <div class="stat"><div class="stat-num"><span>+</span>15</div><div class="stat-label">Clients satisfaits</div></div>
-    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Ans d'expérience</div></div>
-    <div class="stat" style="display:flex; align-items:center; justify-content:center;">
-      <div class="stat-num" style="font-size:18px; display:flex; align-items:center; justify-content:center; gap:10px;">
-        <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777568599/logo-contour-france-blanc_diujdc.png" alt="France" style="height:28px; width:auto; flex-shrink:0;">
-        Haute-Savoie
-      </div>
-    </div>
-  </div>
 
   <!-- SERVICES -->
   <section class="services" id="services">
@@ -383,6 +412,18 @@
     </div>
   </section>
 
+  <div class="stats">
+    <div class="stat"><div class="stat-num"><span>+</span>200</div><div class="stat-label">Vidéos produites</div></div>
+    <div class="stat"><div class="stat-num"><span>+</span>15</div><div class="stat-label">Clients satisfaits</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Ans d'expérience</div></div>
+    <div class="stat" style="display:flex; align-items:center; justify-content:center;">
+      <div class="stat-num" style="font-size:18px; display:flex; align-items:center; justify-content:center; gap:10px;">
+        <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777568599/logo-contour-france-blanc_diujdc.png" alt="France" style="height:28px; width:auto; flex-shrink:0;">
+        Haute-Savoie
+      </div>
+    </div>
+  </div>
+
   <!-- PORTFOLIO -->
   <section class="portfolio" id="portfolio">
     <div class="portfolio-header">
@@ -407,40 +448,91 @@
 
       <!-- TOURNAGE track -->
       <div class="portfolio-track" id="tab-tournage" onscroll="syncPlayhead(this)">
-        <div class="portfolio-item" onclick="openYT('KhrfKw5BFUI')">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/KhrfKw5BFUI/maxresdefault.jpg" alt="Tournage marque e-commerce" loading="lazy">
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg" alt="Five Fruits" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage — Présentation marque e-commerce</div><div class="portfolio-type">Tournage & Montage</div></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reel — Five Fruits</div><div class="portfolio-type">Tournage & Montage</div></div>
         </div>
-        <div class="portfolio-item" onclick="openYT('G3OOPRQHD-c')">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/G3OOPRQHD-c/maxresdefault.jpg" alt="Spectacle Pyrotechnique Annecy 2025" loading="lazy">
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg" alt="The Headspa Concept Evian" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Spectacle Pyrotechnique — Annecy 2025</div><div class="portfolio-type">Tournage & Montage</div></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reels — The Headspa Concept, Evian</div><div class="portfolio-type">Tournage & Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg" alt="Kyo Sushi" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reels — Kyo Sushi</div><div class="portfolio-type">Tournage & Montage</div></div>
         </div>
         <div class="portfolio-item" onclick="openYT('YyJslPOvU2M')">
           <img class="portfolio-thumb" src="https://img.youtube.com/vi/YyJslPOvU2M/maxresdefault.jpg" alt="Shorts Lyon" loading="lazy">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="portfolio-overlay"><div class="portfolio-title">Tournage & Montage Shorts — Lyon</div><div class="portfolio-type">Tournage & Montage</div></div>
         </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777467451/r1_1_heshpw.jpg" alt="Kyo Sushi" loading="lazy">
+        <div class="portfolio-item" onclick="openYT('G3OOPRQHD-c')">
+          <img class="portfolio-thumb" src="https://img.youtube.com/vi/G3OOPRQHD-c/maxresdefault.jpg" alt="Spectacle Pyrotechnique Annecy 2025" loading="lazy">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reels — Kyo Sushi</div><div class="portfolio-type">Tournage & Montage</div></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Spectacle Pyrotechnique — Annecy 2025</div><div class="portfolio-type">Tournage & Montage</div></div>
         </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg" alt="The Headspa Concept Evian" loading="lazy">
+        <div class="portfolio-item" onclick="openYT('KhrfKw5BFUI')">
+          <img class="portfolio-thumb" src="https://img.youtube.com/vi/KhrfKw5BFUI/maxresdefault.jpg" alt="Tournage marque e-commerce" loading="lazy">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reels — The Headspa Concept, Evian</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg" alt="Five Fruits" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel — Five Fruits</div><div class="portfolio-type">Tournage & Montage</div></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Tournage — Présentation marque e-commerce</div><div class="portfolio-type">Tournage & Montage</div></div>
         </div>
       </div>
 
       <!-- MONTAGE track -->
       <div class="portfolio-track" id="tab-montage" style="display:none;" onscroll="syncPlayhead(this)">
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467454/Urgence_v3_1_fplqlu.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467454/Urgence_v3_1_fplqlu.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467454/Urgence_v3_1_fplqlu.jpg" alt="Joe Coaching" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reels — Joe Coaching × MB Média Group</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467455/Aftermovie_v4_1_nknjvn.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467455/Aftermovie_v4_1_nknjvn.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467455/Aftermovie_v4_1_nknjvn.jpg" alt="Lunch Entrepreneur" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reel — Lunch Entrepreneur MB Média Group</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.jpg" alt="Reel Gaming 3D" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reel Gaming — 3D & Montage</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg" alt="Nicowithdog" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Reel — Nicowithdog</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778879883/Invitation_virtuelle_v2_Youtube_shorts_50_-_60_ips_dt8xxo.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778879883/Invitation_virtuelle_v2_Youtube_shorts_50_-_60_ips_dt8xxo.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778879883/Invitation_virtuelle_v2_Youtube_shorts_50_-_60_ips_dt8xxo.jpg" alt="Faire part de mariage virtuel" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Faire part de mariage virtuel</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868670/Rushs_studio_SP_15_oig06o.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868670/Rushs_studio_SP_15_oig06o.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868670/Rushs_studio_SP_15_oig06o.jpg" alt="Réel personal branding David Padilla" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Réel Personal Branding — David Padilla × MB Média Group</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868668/itv-james-r10_s4yfr8.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868668/itv-james-r10_s4yfr8.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg" alt="Réel podcast Indépendant.com" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Réel extrait podcast — Indépendant.com</div><div class="portfolio-type">Montage</div></div>
+        </div>
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868666/exp_1_-_12-01v2_vijgac.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868666/exp_1_-_12-01v2_vijgac.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868666/exp_1_-_12-01v2_vijgac.jpg" alt="Réel Rêvolistic MB Média Group" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
+          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+          <div class="portfolio-overlay"><div class="portfolio-title">Réel — Rêvolistic × MB Média Group</div><div class="portfolio-type">Montage</div></div>
+        </div>
         <div class="portfolio-item" onclick="openYT('V-tDs3NrOAk')">
           <img class="portfolio-thumb" src="https://img.youtube.com/vi/V-tDs3NrOAk/maxresdefault.jpg" alt="Podcast MB Média Group" loading="lazy">
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
@@ -451,94 +543,75 @@
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="portfolio-overlay"><div class="portfolio-title">Montage film de Mariage — Get Drone Production</div><div class="portfolio-type">Montage</div></div>
         </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.jpg" alt="Ads MB Media Group" loading="lazy">
+        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4')" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4">
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.jpg" alt="Ads MB Media Group" loading="lazy">
+          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
           <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
           <div class="portfolio-overlay"><div class="portfolio-title">Montage Ads — MB Media Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467454/Urgence_v3_1_fplqlu.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777467454/Urgence_v3_1_fplqlu.jpg" alt="Joe Coaching" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reels — Joe Coaching × MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467455/Aftermovie_v4_1_nknjvn.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777467455/Aftermovie_v4_1_nknjvn.jpg" alt="Lunch Entrepreneur" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel — Lunch Entrepreneur MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.jpg" alt="Reel Gaming 3D" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel Gaming — 3D & Montage</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="openCloudinary('https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_5/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg" alt="Nicowithdog" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel — Nicowithdog</div><div class="portfolio-type">Montage</div></div>
         </div>
       </div>
 
       <!-- PHOTOS track -->
       <div class="portfolio-track" id="tab-photos" style="display:none;" onscroll="syncPlayhead(this)">
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482786/PC250877_sito2b.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482786/PC250877_sito2b.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482786/PC250877_sito2b.jpg" alt="Shooting produit Air Force 1" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit — Air Force 1</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC270955_gzukwh.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC270955_gzukwh.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC270955_gzukwh.jpg" alt="Shooting produit tarte aux pralines" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit — Tarte aux pralines</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC230658_qmdgke.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC230658_qmdgke.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC230658_qmdgke.jpg" alt="Shooting produit Sneakers" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit — Sneakers</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg" alt="Shooting produit Le brunch du Leman" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit — Le Brunch du Léman</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PB070485_nwg5ue.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PB070485_nwg5ue.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PB070485_nwg5ue.jpg" alt="Shooting paysage Aiguille du midi" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting paysage — Aiguille du Midi</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg" alt="Atelier Jesmonite Pozaclub" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Atelier Jesmonite — Pozaclub</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8303159_d6pmc2.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8303159_d6pmc2.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8303159_d6pmc2.jpg" alt="Shooting Car" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting Car</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P6201489_au3rb0.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P6201489_au3rb0.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P6201489_au3rb0.jpg" alt="Photo de la plage Nice" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Photo de plage — Nice</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P1114442_ioerjz.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P1114442_ioerjz.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P1114442_ioerjz.jpg" alt="Shooting téléphérique Aiguille du Midi" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting téléphérique — Aiguille du Midi</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075220_ifklaw.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075220_ifklaw.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075220_ifklaw.jpg" alt="Shooting paysage sud de la France" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting paysage — Sud de la France</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg" alt="Shooting produit Brunch du Léman" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit — Brunch du Léman</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg" alt="Portrait Skiness" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Portrait — Skiness</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1013945_dkgxfd.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1013945_dkgxfd.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1013945_dkgxfd.jpg" alt="Shooting produit" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/IMG_2714_w41aei.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/IMG_2714_w41aei.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/IMG_2714_w41aei.jpg" alt="Shooting Quad" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting Quad</div><div class="portfolio-type">Photo</div></div>
         </div>
         <div class="portfolio-item" onclick="openPhoto('https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg')">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg" alt="Photo tournage" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage</div><div class="portfolio-type">Photo</div></div>
+          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg" alt="Shooting K Patisserie" loading="lazy">
+          <div class="portfolio-overlay"><div class="portfolio-title">Shooting — K Pâtisserie</div><div class="portfolio-type">Photo</div></div>
         </div>
       </div>
     </div>
@@ -722,9 +795,12 @@
 
     // Get active track
     function getActiveTrack() {
-      if (document.getElementById('tab-tournage').style.display !== 'none') return document.getElementById('tab-tournage');
-      if (document.getElementById('tab-montage').style.display !== 'none') return document.getElementById('tab-montage');
-      return document.getElementById('tab-photos');
+      const tournage = document.getElementById('tab-tournage');
+      const montage = document.getElementById('tab-montage');
+      const photos = document.getElementById('tab-photos');
+      if (getComputedStyle(montage).display !== 'none') return montage;
+      if (getComputedStyle(photos).display !== 'none') return photos;
+      return tournage;
     }
 
     // Sync playhead from track scroll position
@@ -802,6 +878,66 @@
 
     document.addEventListener('touchend', () => { dragging = false; });
 
+    // Auto-scroll pour les 3 onglets
+    let userInteracting = false;
+    let interactTimeout;
+
+    function autoScrollTick() {
+      if (userInteracting) return;
+      const track = getActiveTrack();
+      if (!track) return;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (maxScroll <= 0) return;
+      if (track.scrollLeft >= maxScroll - 1) {
+        track.scrollLeft = 0;
+      } else {
+        track.scrollLeft += 2;
+      }
+      syncPlayhead(track);
+    }
+
+    function pauseAutoScroll() {
+      userInteracting = true;
+      clearTimeout(interactTimeout);
+      interactTimeout = setTimeout(() => { userInteracting = false; }, 0);
+    }
+
+    // Pause uniquement si l'utilisateur drag ou scroll manuellement
+    document.querySelectorAll('.portfolio-track').forEach(t => {
+      let isDragging = false;
+      t.addEventListener('mousedown', () => { isDragging = true; pauseAutoScroll(); });
+      t.addEventListener('mouseup', () => { isDragging = false; });
+      t.addEventListener('mouseleave', () => { isDragging = false; });
+      t.addEventListener('touchstart', pauseAutoScroll, { passive: true });
+      t.addEventListener('wheel', pauseAutoScroll, { passive: true });
+    });
+    document.getElementById('playhead').addEventListener('mousedown', pauseAutoScroll);
+
+    // setInterval toutes les 30ms ≈ 33fps, 2px/tick
+    setInterval(autoScrollTick, 30);
+
+    // Hover video preview
+    document.querySelectorAll('.portfolio-item[data-video]').forEach(item => {
+      const video = item.querySelector('.portfolio-preview');
+      const src = item.dataset.video;
+      let hoverTimeout;
+
+      item.addEventListener('mouseenter', () => {
+        hoverTimeout = setTimeout(() => {
+          if (!video.src) video.src = src;
+          video.currentTime = 0;
+          video.play().catch(() => {});
+          item.classList.add('previewing');
+        }, 150);
+      });
+
+      item.addEventListener('mouseleave', () => {
+        clearTimeout(hoverTimeout);
+        video.pause();
+        item.classList.remove('previewing');
+      });
+    });
+
     // Lightbox
     function openPhoto(url) {
       const lb = document.getElementById('lightbox');
@@ -857,6 +993,30 @@
       }
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+
+  <!-- FLOATING CTA -->
+  <div class="floating-cta" id="floating-cta">
+    <a href="#booking" class="btn-primary">Travailler avec nous</a>
+    <a href="#portfolio" class="btn-outline">Voir nos réalisations</a>
+    <a href="#services" class="btn-outline">Ce qu'on fait</a>
+  </div>
+
+  <script>
+    // Floating CTA
+    const floatingCta = document.getElementById('floating-cta');
+    function checkFloating() {
+      const heroBtns = document.getElementById('hero-btns');
+      if (!heroBtns || !floatingCta) return;
+      const rect = heroBtns.getBoundingClientRect();
+      if (rect.bottom < 0) {
+        floatingCta.classList.add('visible');
+      } else {
+        floatingCta.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', checkFloating, { passive: true });
+    checkFloating();
   </script>
 
 </body>
