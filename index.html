@@ -39,8 +39,9 @@
     body { background: var(--dark); color: var(--light); font-family: var(--font-body); font-weight: 300; overflow-x: hidden; }
 
     /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: transparent; transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s; border-bottom: 0.5px solid transparent; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 16px 40px; background: transparent; transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s, transform 0.3s ease; border-bottom: 0.5px solid transparent; }
     nav.scrolled { background: rgba(10,10,10,0.55); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--glass-border); }
+    nav.hidden { transform: translateY(-100%); }
     .nav-logo img { height: 90px; width: auto; display: block; }
     .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
@@ -262,7 +263,15 @@
       nav { padding: 12px 20px; }
       .nav-logo img { height: 60px; }
       .nav-links { display: none; }
-      .hero-content { padding: 0 20px 48px; }
+      .hero-content { padding: 0 16px 48px; }
+      .hero h1 { flex-direction: column; gap: 4px; font-size: clamp(36px, 12vw, 56px); padding: 0; align-items: flex-start; }
+      .hero h1 .h1-left { text-align: left; }
+      .hero h1 .h1-right { text-align: left; }
+      .hero-sub { font-size: 15px; margin-top: 24px; }
+      .hero-btns { flex-direction: column; align-items: stretch; gap: 8px; }
+      .hero-btns .btn-primary, .hero-btns .btn-outline { text-align: center; justify-content: center; }
+      .floating-cta { bottom: 12px; padding: 6px 8px; gap: 6px; width: calc(100% - 32px); }
+      .floating-cta .btn-primary, .floating-cta .btn-outline { font-size: 11px; padding: 10px 12px; flex: 1; justify-content: center; text-align: center; }
       .stats { gap: 12px; padding: 32px 20px; }
       .stat { padding: 20px 28px; }
       .services { padding: 60px 20px; }
@@ -274,7 +283,6 @@
       .booking { padding: 60px 20px; }
       footer { padding: 24px 20px; flex-direction: column; text-align: center; }
       .portfolio-item { flex: 0 0 300px; height: 169px; }
-      .hero h1 { font-size: clamp(36px, 12vw, 56px); }
       .section-title { font-size: clamp(42px, 10vw, 80px); }
     }
     /* CONTACT */
@@ -788,8 +796,17 @@
       }
     }, { threshold: 0.3 });
     statsObserver.observe(document.querySelector('.stats'));
+    let lastScrollY = 0;
     window.addEventListener('scroll', () => {
-      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+      const navbar = document.getElementById('navbar');
+      const currentScrollY = window.scrollY;
+      navbar.classList.toggle('scrolled', currentScrollY > 60);
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+      lastScrollY = currentScrollY;
     });
 
 
