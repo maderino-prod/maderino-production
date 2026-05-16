@@ -337,9 +337,9 @@
       <h1><span class="h1-left">Ta vision mérite<br>d'<em>exister.</em></span><span class="h1-right">Ensemble, on<br>la <em>crée.</em></span></h1>
       <p class="hero-sub">Un projet vidéo ? On est là. Que ce soit le tournage ou le montage, on s'occupe de tout pour un résultat qui fait la différence.</p>
       <div class="hero-btns" id="hero-btns">
+        <a href="#services" class="btn-outline">Ce qu'on fait</a>
         <a href="#booking" class="btn-primary">Travailler avec nous</a>
         <a href="#portfolio" class="btn-outline">Voir nos réalisations</a>
-        <a href="#services" class="btn-outline">Ce qu'on fait</a>
       </div>
     </div>
   </section>
@@ -933,12 +933,13 @@
     // setInterval toutes les 30ms ≈ 33fps, 2px/tick
     setInterval(autoScrollTick, 30);
 
-    // Hover video preview
+    // Hover video preview (desktop)
     document.querySelectorAll('.portfolio-item[data-video]').forEach(item => {
       const video = item.querySelector('.portfolio-preview');
       const src = item.dataset.video;
       let hoverTimeout;
 
+      // Desktop hover
       item.addEventListener('mouseenter', () => {
         hoverTimeout = setTimeout(() => {
           if (!video.src) video.src = src;
@@ -947,12 +948,39 @@
           item.classList.add('previewing');
         }, 150);
       });
-
       item.addEventListener('mouseleave', () => {
         clearTimeout(hoverTimeout);
         video.pause();
         item.classList.remove('previewing');
       });
+
+      // Mobile tap - premier tap preview, deuxième tap ouvre lightbox
+      let tapped = false;
+      let tapTimeout;
+      item.addEventListener('touchend', (e) => {
+        if (!tapped) {
+          e.preventDefault();
+          tapped = true;
+          if (!video.src) video.src = src;
+          video.currentTime = 0;
+          video.play().catch(() => {});
+          item.classList.add('previewing');
+          tapTimeout = setTimeout(() => {
+            tapped = false;
+            video.pause();
+            item.classList.remove('previewing');
+          }, 3000);
+        } else {
+          e.preventDefault();
+          clearTimeout(tapTimeout);
+          tapped = false;
+          video.pause();
+          item.classList.remove('previewing');
+          // Déclencher le onclick
+          const onclickAttr = item.getAttribute('onclick');
+          if (onclickAttr) eval(onclickAttr);
+        }
+      }, { passive: false });
     });
 
     // Lightbox
