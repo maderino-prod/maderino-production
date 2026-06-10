@@ -1,1 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur de Devis — Maderino Production</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF6B2B;
+    --orange-dim: rgba(255,107,43,0.15);
+    --orange-glow: rgba(255,107,43,0.08);
+    --black: #0D0D0D;
+    --dark: #111111;
+    --card: #161616;
+    --card2: #1C1C1C;
+    --border: #2A2A2A;
+    --text: #DDDDDD;
+    --muted: #888888;
+    --white: #FFFFFF;
+  }
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 20px;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    border: 1.5px solid var(--orange);
+    border-radius: 6px;
+    padding: 28px 24px 22px;
+    margin-bottom: 28px;
+    background: var(--dark);
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 38px;
+    letter-spacing: 5px;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  header p {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  header .tagline {
+    font-size: 10px;
+    color: var(--muted);
+    border-top: 1px solid var(--orange);
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+
+  header .tagline span { color: var(--orange); font-weight: 600; }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 20px;
+  }
+
+  .section-header {
+    background: #1A1A1A;
+    border: 1px solid var(--orange);
+    border-left: 4px solid var(--orange);
+    padding: 9px 14px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 2px;
+    color: var(--orange);
+  }
+
+  .prestation-list {
+    border: 1px solid var(--orange);
+    border-top: none;
+  }
+
+  .prestation-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    user-select: none;
+  }
+
+  .prestation-item:last-child { border-bottom: none; }
+  .prestation-item:nth-child(odd)  { background: var(--card); }
+  .prestation-item:nth-child(even) { background: var(--card2); }
+  .prestation-item:hover { background: var(--orange-glow); }
+  .prestation-item.selected { background: var(--orange-dim) !important; }
+
+  .checkbox {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .prestation-item.selected .checkbox {
+    background: var(--orange);
+    border-color: var(--orange);
+  }
+
+  .checkbox-tick {
+    display: none;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .prestation-item.selected .checkbox-tick { display: block; }
+
+  .prestation-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .prestation-name {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .prestation-item.selected .prestation-name { color: var(--white); }
+
+  .prestation-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .prestation-duree {
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 70px;
+    text-align: right;
+  }
+
+  .prestation-prix {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--orange);
+    min-width: 55px;
+    text-align: right;
+  }
+
+  /* QTY */
+  .qty-control {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  .prestation-item.selected .qty-control { display: flex; }
+
+  .qty-btn {
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--orange);
+    background: transparent;
+    color: var(--orange);
+    font-size: 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s;
+    line-height: 1;
+  }
+
+  .qty-btn:hover { background: var(--orange); color: white; }
+
+  .qty-val {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    min-width: 14px;
+    text-align: center;
+  }
+
+  /* TOTAL */
+  .total-box {
+    position: sticky;
+    bottom: 20px;
+    margin-top: 24px;
+    background: var(--dark);
+    border: 2px solid var(--orange);
+    border-radius: 6px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: 0 0 30px rgba(255,107,43,0.15);
+  }
+
+  .total-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+
+  .total-lines {
+    flex: 1;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .total-lines span { color: var(--text); }
+
+  .total-amount {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    color: var(--orange);
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .total-ht {
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+    margin-top: 2px;
+  }
+
+  .total-right { text-align: right; }
+
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+  }
+
+  .reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  .empty-state {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 560px) {
+    body { padding: 16px 12px 100px; }
+
+    header { padding: 20px 16px 16px; }
+    header h1 { font-size: 28px; letter-spacing: 3px; }
+    header p { font-size: 10px; }
+    header .tagline { font-size: 9px; }
+
+    .section-header { font-size: 13px; }
+
+    .prestation-item {
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 12px 12px;
+    }
+
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .prestation-info {
+      flex: 1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .prestation-name {
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .prestation-meta {
+      width: 100%;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prestation-duree {
+      font-size: 10px;
+      min-width: auto;
+      text-align: left;
+    }
+
+    .prestation-prix {
+      font-size: 13px;
+      min-width: auto;
+      text-align: right;
+    }
+
+    .qty-control { gap: 10px; }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+    }
+
+    .qty-val { font-size: 14px; min-width: 18px; }
+
+    /* Total sticky en bas — version mobile compacte */
+    .total-box {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+      padding: 12px 16px;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0;
+    }
+
+    .total-label { font-size: 16px; }
+
+    .total-lines {
+      display: none; /* caché sur mobile pour gagner de la place */
+    }
+
+    .total-amount { font-size: 32px; }
+    .total-ht { font-size: 9px; }
+
+    .reset-btn {
+      padding: 6px 12px;
+      font-size: 10px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>MADERINO PRODUCTION</h1>
+    <p>Calculateur de Devis — Production &amp; Montage Vidéo</p>
+    <div class="tagline">
+      Tarifs HT — TVA non applicable (art. 293B du CGI)
+    </div>
+  </header>
+
+  <div id="sections-container"></div>
+
+  <div class="total-box">
+    <div>
+      <div class="total-label">Total devis</div>
+      <div class="total-lines" id="total-lines"><span class="empty-state">Sélectionne des prestations</span></div>
+    </div>
+    <div class="total-right">
+      <div class="total-amount" id="total-amount">0 €</div>
+      <div class="total-ht">HT — TVA non applicable</div>
+      <button class="reset-btn" onclick="resetAll()">Tout effacer</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const catalogue = [
+  {
+    section: "Tournage",
+    items: [
+      { id: "t1", name: "Tournage — demi-journée", duree: "4h", prix: 105 },
+    ]
+  },
+  {
+    section: "Mariage",
+    items: [
+      { id: "m1", name: "Montage mariage — formule courte", duree: "12h (3 demi-journées)", prix: 315 },
+      { id: "m2", name: "Montage mariage — formule complète", duree: "16h (2 journées)", prix: 420 },
+    ]
+  },
+  {
+    section: "Montage YouTube",
+    items: [
+      { id: "y1", name: "Montage YouTube — demi-journée", duree: "4h", prix: 105 },
+      { id: "y2", name: "Montage YouTube — journée", duree: "8h", prix: 210 },
+      { id: "y3", name: "Montage YouTube — journée et demie", duree: "12h", prix: 315 },
+    ]
+  },
+  {
+    section: "Reels & Shorts",
+    items: [
+      { id: "r1", name: "Réel ultra simple", duree: "30 min", prix: 15 },
+      { id: "r2", name: "Réel simple", duree: "1h", prix: 30 },
+      { id: "r3", name: "Réel poussé — motion design", duree: "2h", prix: 55 },
+    ]
+  },
+  {
+    section: "Podcast",
+    items: [
+      { id: "p1", name: "Podcast classic — cut POV", duree: "4h", prix: 105 },
+      { id: "p2", name: "Podcast — habillage sonore + inserts libres de droit", duree: "8h", prix: 210 },
+      { id: "p3", name: "Intro / Outro motion simple", duree: "4h", prix: 105 },
+      { id: "p4", name: "+ Extrait Réel simple (supplément)", duree: "+1h", prix: 30 },
+      { id: "p5", name: "+ Extrait Réel poussé motion (supplément)", duree: "+2h", prix: 55 },
+    ]
+  }
+];
+
+const state = {}; // id -> qty (0 = non sélectionné)
+
+// Build UI
+const container = document.getElementById('sections-container');
+catalogue.forEach(sec => {
+  const secDiv = document.createElement('div');
+  secDiv.className = 'section';
+
+  const hdr = document.createElement('div');
+  hdr.className = 'section-header';
+  hdr.textContent = '▸ ' + sec.section;
+  secDiv.appendChild(hdr);
+
+  const list = document.createElement('div');
+  list.className = 'prestation-list';
+
+  sec.items.forEach(item => {
+    state[item.id] = 0;
+
+    const row = document.createElement('div');
+    row.className = 'prestation-item';
+    row.id = 'row-' + item.id;
+
+    row.innerHTML = `
+      <div class="checkbox"><span class="checkbox-tick">✓</span></div>
+      <div class="prestation-info">
+        <div class="prestation-name">${item.name}</div>
+        <div class="prestation-meta">
+          <div class="qty-control">
+            <button class="qty-btn" onclick="changeQty(event,'${item.id}',-1)">−</button>
+            <div class="qty-val" id="qty-${item.id}">1</div>
+            <button class="qty-btn" onclick="changeQty(event,'${item.id}',+1)">+</button>
+          </div>
+          <div class="prestation-duree">${item.duree}</div>
+          <div class="prestation-prix" id="prix-${item.id}">${item.prix} €</div>
+        </div>
+      </div>
+    `;
+
+    row.addEventListener('click', (e) => {
+      if (e.target.classList.contains('qty-btn')) return;
+      toggleItem(item.id, item.prix);
+    });
+
+    list.appendChild(row);
+  });
+
+  secDiv.appendChild(list);
+  container.appendChild(secDiv);
+});
+
+function toggleItem(id, prix) {
+  if (state[id] === 0) {
+    state[id] = 1;
+    document.getElementById('row-' + id).classList.add('selected');
+  } else {
+    state[id] = 0;
+    document.getElementById('row-' + id).classList.remove('selected');
+    document.getElementById('qty-' + id).textContent = '1';
+  }
+  updatePrix(id, prix);
+  updateTotal();
+}
+
+function changeQty(e, id, delta) {
+  e.stopPropagation();
+  const newQty = Math.max(1, (state[id] || 1) + delta);
+  state[id] = newQty;
+  document.getElementById('qty-' + id).textContent = newQty;
+  const item = findItem(id);
+  updatePrix(id, item.prix);
+  updateTotal();
+}
+
+function updatePrix(id, basePrix) {
+  const qty = state[id];
+  const el = document.getElementById('prix-' + id);
+  el.textContent = (qty > 0 ? qty * basePrix : basePrix) + ' €';
+}
+
+function findItem(id) {
+  for (const sec of catalogue) {
+    for (const item of sec.items) {
+      if (item.id === id) return item;
+    }
+  }
+}
+
+function updateTotal() {
+  let total = 0;
+  const lines = [];
+
+  catalogue.forEach(sec => {
+    sec.items.forEach(item => {
+      const qty = state[item.id];
+      if (qty > 0) {
+        const subtotal = qty * item.prix;
+        total += subtotal;
+        const label = qty > 1 ? `${item.name} ×${qty}` : item.name;
+        lines.push(`<span>${label}</span> — ${subtotal} €`);
+      }
+    });
+  });
+
+  const totalEl = document.getElementById('total-amount');
+  const linesEl = document.getElementById('total-lines');
+
+  totalEl.textContent = total + ' €';
+
+  if (lines.length === 0) {
+    linesEl.innerHTML = '<span class="empty-state">Sélectionne des prestations</span>';
+  } else {
+    linesEl.innerHTML = lines.join('<br>');
+  }
+}
+
+function resetAll() {
+  Object.keys(state).forEach(id => {
+    state[id] = 0;
+    document.getElementById('row-' + id).classList.remove('selected');
+    document.getElementById('qty-' + id).textContent = '1';
+    const item = findItem(id);
+    document.getElementById('prix-' + id).textContent = item.prix + ' €';
+  });
+  updateTotal();
+}
+</script>
+</body>
+</html>
