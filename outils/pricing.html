@@ -469,58 +469,118 @@
 
   /* ── MOBILE ── */
   @media (max-width: 560px) {
-    body { padding: 20px 14px 130px; }
+    body {
+      padding: 16px 12px 140px;
+      /* stronger glows on mobile for glass to read better */
+      background-image:
+        radial-gradient(ellipse 80% 35% at 50% 5%, rgba(255,107,43,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 50% at 80% 90%, rgba(80,60,180,0.08) 0%, transparent 70%);
+    }
 
-    .header-top { flex-direction: column; gap: 12px; }
-    .logo-block h1 { font-size: 34px; letter-spacing: 4px; }
-    .header-badge { text-align: left; }
+    /* Header */
+    header {
+      padding: 20px 18px 18px;
+      border-radius: 18px;
+      /* stronger top arc on mobile */
+    }
+
+    .header-top { flex-direction: column; gap: 10px; }
+    .logo-block h1 { font-size: 36px; letter-spacing: 4px; }
+
+    .header-badge {
+      text-align: left;
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      padding: 8px 12px;
+    }
+
+    .header-badge > div { margin-top: 0 !important; }
+
+    /* Section labels */
+    .section-num { margin-top: 24px; font-size: 9px; }
+    .section-title { font-size: 19px; letter-spacing: 3px; }
+
+    /* Glass cards — keep blur, adjust spacing */
+    .prestation-list {
+      border-radius: 16px;
+      /* slightly more opaque on mobile since bg is simpler */
+      background: rgba(22, 22, 30, 0.72);
+    }
 
     .prestation-item {
       flex-wrap: wrap;
       align-items: flex-start;
-      gap: 8px;
-      padding: 12px 14px;
+      gap: 10px;
+      padding: 14px 16px;
+      min-height: 56px; /* better touch target */
     }
 
-    .checkbox { width: 22px; height: 22px; border-radius: 6px; margin-top: 1px; flex-shrink: 0; }
+    .checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
 
     .prestation-info {
       flex: 1;
       flex-direction: column;
       align-items: flex-start;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .prestation-name { font-size: 12.5px; line-height: 1.4; }
+    .prestation-name { font-size: 13px; line-height: 1.4; }
 
     .prestation-meta {
       width: 100%;
       justify-content: space-between;
       align-items: center;
+      gap: 8px;
     }
 
     .prestation-duree { font-size: 10px; min-width: auto; text-align: left; }
-    .prestation-prix { font-size: 15px; min-width: auto; }
+    .prestation-prix { font-size: 16px; min-width: auto; }
 
-    .qty-btn { width: 28px; height: 28px; font-size: 15px; border-radius: 7px; }
-    .qty-val { font-size: 13px; }
+    /* qty — bigger tap targets */
+    .qty-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+    .qty-val { font-size: 14px; min-width: 18px; }
 
+    /* Total — full glass sheet sliding up from bottom */
     .total-box {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      border-radius: 0;
+      border-radius: 20px 20px 0 0;
       border-left: none; border-right: none; border-bottom: none;
-      border-radius: 16px 16px 0 0;
-      padding: 14px 18px;
+      border-top: 1px solid rgba(255,255,255,0.18);
+      padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 14px);
       flex-direction: row;
       align-items: center;
       margin-top: 0;
+      /* stronger glass on mobile total */
+      background: rgba(14, 14, 20, 0.85);
+      backdrop-filter: blur(48px) saturate(220%);
+      -webkit-backdrop-filter: blur(48px) saturate(220%);
+      box-shadow:
+        0 -1px 0 rgba(255,255,255,0.10),
+        0 -24px 48px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.12);
     }
 
+    /* hide lines on mobile — not enough space */
     .total-lines { display: none; }
-    .total-amount { font-size: 38px; }
+
+    .total-eyebrow { font-size: 8px; margin-bottom: 2px; }
+    .total-amount { font-size: 40px; }
     .total-ht { font-size: 8px; }
-    .total-eyebrow { margin-bottom: 2px; }
+    .reset-btn { padding: 6px 12px; font-size: 10px; margin-top: 6px; }
   }
 </style>
 </head>
