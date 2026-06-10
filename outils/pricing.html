@@ -8,16 +8,23 @@
 <style>
   :root {
     --orange: #FF6B2B;
-    --orange-dim: rgba(255,107,43,0.15);
+    --orange-dim: rgba(255,107,43,0.18);
     --orange-glow: rgba(255,107,43,0.08);
-    --black: #0D0D0D;
-    --dark: #111111;
-    --card: #161616;
-    --card2: #1C1C1C;
-    --border: #2A2A2A;
-    --text: #DDDDDD;
-    --muted: #888888;
+    --black: #060608;
+    --text: #D8D8DC;
+    --muted: #6E6E76;
     --white: #FFFFFF;
+
+    /* Liquid Glass tokens */
+    --glass-bg: rgba(28, 28, 36, 0.55);
+    --glass-bg-hover: rgba(38, 38, 48, 0.65);
+    --glass-bg-selected: rgba(255, 107, 43, 0.14);
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-border-top: rgba(255, 255, 255, 0.18);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
+    --glass-blur: blur(24px) saturate(180%);
+    --glass-radius: 14px;
+    --glass-radius-sm: 10px;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -27,112 +34,225 @@
     font-family: 'Inter', sans-serif;
     color: var(--text);
     min-height: 100vh;
-    padding: 32px 20px;
+    padding: 40px 20px 140px;
+    /* subtle radial glow behind everything */
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(255,107,43,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 80% 80%, rgba(80,60,180,0.06) 0%, transparent 70%);
   }
 
   .container {
-    max-width: 780px;
+    max-width: 760px;
     margin: 0 auto;
   }
 
-  /* HEADER */
+  /* ── HEADER ── */
   header {
-    text-align: center;
-    border: 1.5px solid var(--orange);
-    border-radius: 6px;
-    padding: 28px 24px 22px;
-    margin-bottom: 28px;
-    background: var(--dark);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--glass-radius);
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-border-top);
+    box-shadow: var(--glass-shadow);
+    padding: 28px 28px 24px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
   }
 
-  header h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 38px;
-    letter-spacing: 5px;
-    color: var(--white);
+  /* inner highlight arc — liquid glass signature */
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    border-radius: 100%;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+    border-radius: var(--glass-radius) var(--glass-radius) 0 0;
+    pointer-events: none;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-block .eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    font-weight: 600;
     margin-bottom: 6px;
   }
 
-  header p {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-  }
-
-  header .tagline {
-    font-size: 10px;
-    color: var(--muted);
-    border-top: 1px solid var(--orange);
-    margin-top: 12px;
-    padding-top: 10px;
-  }
-
-  header .tagline span { color: var(--orange); font-weight: 600; }
-
-  /* SECTIONS */
-  .section {
-    margin-bottom: 20px;
-  }
-
-  .section-header {
-    background: #1A1A1A;
-    border: 1px solid var(--orange);
-    border-left: 4px solid var(--orange);
-    padding: 9px 14px;
+  .logo-block h1 {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 15px;
-    letter-spacing: 2px;
-    color: var(--orange);
+    font-size: 44px;
+    letter-spacing: 6px;
+    color: var(--white);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(255,107,43,0.25);
   }
 
+  .logo-block h1 span { color: var(--orange); }
+
+  .header-badge {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--glass-border);
+    border-top-color: rgba(255,255,255,0.12);
+    border-radius: var(--glass-radius-sm);
+    padding: 10px 14px;
+    text-align: right;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .badge-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-sub span { color: var(--text); }
+
+  /* ── SECTION ── */
+  .section-num {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+
+  /* ── PRESTATION LIST ── */
   .prestation-list {
-    border: 1px solid var(--orange);
-    border-top: none;
+    margin-top: 12px;
+    border-radius: var(--glass-radius);
+    overflow: hidden;
+    /* glass container */
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-border-top);
+    box-shadow: var(--glass-shadow);
   }
 
   .prestation-item {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 11px 14px;
-    border-bottom: 1px solid var(--border);
+    padding: 13px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.15s, backdrop-filter 0.15s;
     user-select: none;
+    position: relative;
   }
 
   .prestation-item:last-child { border-bottom: none; }
-  .prestation-item:nth-child(odd)  { background: var(--card); }
-  .prestation-item:nth-child(even) { background: var(--card2); }
-  .prestation-item:hover { background: var(--orange-glow); }
-  .prestation-item.selected { background: var(--orange-dim) !important; }
 
+  .prestation-item:hover {
+    background: rgba(255,255,255,0.04);
+  }
+
+  .prestation-item.selected {
+    background: var(--glass-bg-selected) !important;
+  }
+
+  /* selected left glow bar */
+  .prestation-item.selected::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--orange), rgba(255,107,43,0.3));
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* checkbox */
   .checkbox {
     width: 18px;
     height: 18px;
-    border: 1.5px solid var(--border);
-    border-radius: 3px;
+    border-radius: 5px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.04);
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.15s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
   }
 
   .prestation-item.selected .checkbox {
     background: var(--orange);
     border-color: var(--orange);
+    box-shadow: 0 0 10px rgba(255,107,43,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
   }
 
   .checkbox-tick {
     display: none;
     color: white;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
   }
 
   .prestation-item.selected .checkbox-tick { display: block; }
 
+  /* info */
   .prestation-info {
     flex: 1;
     display: flex;
@@ -147,31 +267,36 @@
     font-weight: 400;
   }
 
-  .prestation-item.selected .prestation-name { color: var(--white); }
+  .prestation-item.selected .prestation-name {
+    color: var(--white);
+    font-weight: 500;
+  }
 
   .prestation-meta {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 18px;
     flex-shrink: 0;
   }
 
   .prestation-duree {
     font-size: 11px;
     color: var(--muted);
-    min-width: 70px;
+    min-width: 80px;
     text-align: right;
   }
 
   .prestation-prix {
-    font-size: 14px;
-    font-weight: 700;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1px;
     color: var(--orange);
-    min-width: 55px;
+    min-width: 56px;
     text-align: right;
+    text-shadow: 0 0 16px rgba(255,107,43,0.35);
   }
 
-  /* QTY */
+  /* qty */
   .qty-control {
     display: none;
     align-items: center;
@@ -184,123 +309,180 @@
   .qty-btn {
     width: 22px;
     height: 22px;
-    border: 1px solid var(--orange);
-    background: transparent;
-    color: var(--orange);
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
     font-size: 14px;
-    border-radius: 3px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.1s;
-    line-height: 1;
+    transition: all 0.12s;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
   }
 
-  .qty-btn:hover { background: var(--orange); color: white; }
+  .qty-btn:hover {
+    border-color: rgba(255,107,43,0.5);
+    color: var(--orange);
+    background: rgba(255,107,43,0.08);
+    box-shadow: 0 0 8px rgba(255,107,43,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
 
   .qty-val {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     color: var(--white);
     min-width: 14px;
     text-align: center;
   }
 
-  /* TOTAL */
+  /* ── TOTAL ── */
   .total-box {
     position: sticky;
-    bottom: 20px;
-    margin-top: 24px;
-    background: var(--dark);
-    border: 2px solid var(--orange);
-    border-radius: 6px;
-    padding: 18px 22px;
+    bottom: 24px;
+    margin-top: 40px;
+    /* full liquid glass */
+    background: rgba(18, 18, 24, 0.70);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-top-color: rgba(255,255,255,0.20);
+    border-radius: var(--glass-radius);
+    padding: 20px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    box-shadow: 0 0 30px rgba(255,107,43,0.15);
+    box-shadow:
+      0 16px 48px rgba(0,0,0,0.6),
+      0 1px 0 rgba(255,255,255,0.08) inset,
+      0 0 0 1px rgba(255,107,43,0.08);
+    position: sticky;
+    overflow: hidden;
   }
 
-  .total-label {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 2px;
-    color: var(--muted);
+  /* top arc */
+  .total-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 8%; right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  }
+
+  /* orange ambient bottom glow */
+  .total-box::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 40px;
+    background: radial-gradient(ellipse, rgba(255,107,43,0.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .total-left { position: relative; z-index: 1; }
+
+  .total-eyebrow {
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 600;
+    margin-bottom: 8px;
   }
 
   .total-lines {
-    flex: 1;
     font-size: 11px;
     color: var(--muted);
-    line-height: 1.7;
+    line-height: 1.8;
   }
 
   .total-lines span { color: var(--text); }
 
+  .total-right {
+    text-align: right;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
   .total-amount {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 42px;
-    color: var(--orange);
+    font-size: 50px;
+    color: var(--white);
     letter-spacing: 2px;
     line-height: 1;
+    text-shadow: 0 0 30px rgba(255,255,255,0.1);
   }
+
+  .total-amount .currency { color: var(--orange); }
 
   .total-ht {
-    font-size: 10px;
+    font-size: 9px;
     color: var(--muted);
     text-align: right;
-    margin-top: 2px;
-  }
-
-  .total-right { text-align: right; }
-
-  .reset-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.15s;
+    margin-top: 3px;
     letter-spacing: 0.5px;
   }
 
-  .reset-btn:hover { border-color: var(--orange); color: var(--orange); }
+  .reset-btn {
+    display: inline-block;
+    margin-top: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    backdrop-filter: blur(4px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .reset-btn:hover {
+    border-color: rgba(255,107,43,0.3);
+    color: var(--orange);
+    background: rgba(255,107,43,0.06);
+  }
 
   .empty-state {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     font-style: italic;
   }
 
+  .footer-note {
+    margin-top: 20px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+    padding-bottom: 4px;
+  }
+
   /* ── MOBILE ── */
   @media (max-width: 560px) {
-    body { padding: 16px 12px 100px; }
+    body { padding: 20px 14px 130px; }
 
-    header { padding: 20px 16px 16px; }
-    header h1 { font-size: 28px; letter-spacing: 3px; }
-    header p { font-size: 10px; }
-    header .tagline { font-size: 9px; }
-
-    .section-header { font-size: 13px; }
+    .header-top { flex-direction: column; gap: 12px; }
+    .logo-block h1 { font-size: 34px; letter-spacing: 4px; }
+    .header-badge { text-align: left; }
 
     .prestation-item {
       flex-wrap: wrap;
       align-items: flex-start;
       gap: 8px;
-      padding: 12px 12px;
+      padding: 12px 14px;
     }
 
-    .checkbox {
-      width: 22px;
-      height: 22px;
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
+    .checkbox { width: 22px; height: 22px; border-radius: 6px; margin-top: 1px; flex-shrink: 0; }
 
     .prestation-info {
       flex: 1;
@@ -309,71 +491,36 @@
       gap: 6px;
     }
 
-    .prestation-name {
-      font-size: 12px;
-      line-height: 1.4;
-    }
+    .prestation-name { font-size: 12.5px; line-height: 1.4; }
 
     .prestation-meta {
       width: 100%;
-      flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      gap: 8px;
     }
 
-    .prestation-duree {
-      font-size: 10px;
-      min-width: auto;
-      text-align: left;
-    }
+    .prestation-duree { font-size: 10px; min-width: auto; text-align: left; }
+    .prestation-prix { font-size: 15px; min-width: auto; }
 
-    .prestation-prix {
-      font-size: 13px;
-      min-width: auto;
-      text-align: right;
-    }
+    .qty-btn { width: 28px; height: 28px; font-size: 15px; border-radius: 7px; }
+    .qty-val { font-size: 13px; }
 
-    .qty-control { gap: 10px; }
-
-    .qty-btn {
-      width: 30px;
-      height: 30px;
-      font-size: 16px;
-    }
-
-    .qty-val { font-size: 14px; min-width: 18px; }
-
-    /* Total sticky en bas — version mobile compacte */
     .total-box {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       border-radius: 0;
-      border-left: none;
-      border-right: none;
-      border-bottom: none;
-      padding: 12px 16px;
+      border-left: none; border-right: none; border-bottom: none;
+      border-radius: 16px 16px 0 0;
+      padding: 14px 18px;
       flex-direction: row;
       align-items: center;
-      gap: 10px;
       margin-top: 0;
     }
 
-    .total-label { font-size: 16px; }
-
-    .total-lines {
-      display: none; /* caché sur mobile pour gagner de la place */
-    }
-
-    .total-amount { font-size: 32px; }
-    .total-ht { font-size: 9px; }
-
-    .reset-btn {
-      padding: 6px 12px;
-      font-size: 10px;
-    }
+    .total-lines { display: none; }
+    .total-amount { font-size: 38px; }
+    .total-ht { font-size: 8px; }
+    .total-eyebrow { margin-bottom: 2px; }
   }
 </style>
 </head>
@@ -381,24 +528,39 @@
 <div class="container">
 
   <header>
-    <h1>MADERINO PRODUCTION</h1>
-    <p>Calculateur de Devis — Production &amp; Montage Vidéo</p>
-    <div class="tagline">
-      Tarifs HT — TVA non applicable (art. 293B du CGI)
+    <div class="header-top">
+      <div class="logo-block">
+        <div class="eyebrow">Calculateur de devis</div>
+        <h1>MADERINO <span>PROD</span></h1>
+      </div>
+      <div class="header-badge">
+        <div class="badge-label">Régime</div>
+        <div class="badge-val">Auto-Entrepreneur</div>
+        <div class="badge-label" style="margin-top:8px;">Statut TVA</div>
+        <div class="badge-val">Art. 293B CGI</div>
+      </div>
+    </div>
+    <div class="header-sub">
+      Sélectionne les prestations pour composer ton devis — tous les tarifs sont <span>HT</span>, TVA non applicable.
     </div>
   </header>
 
   <div id="sections-container"></div>
 
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);margin-top:40px;"></div>
+  <div class="footer-note">Maderino Production · Haute-Savoie · contact@maderinoprod.com</div>
+
   <div class="total-box">
-    <div>
-      <div class="total-label">Total devis</div>
-      <div class="total-lines" id="total-lines"><span class="empty-state">Sélectionne des prestations</span></div>
+    <div class="total-left">
+      <div class="total-eyebrow">Total devis</div>
+      <div class="total-lines" id="total-lines">
+        <span class="empty-state">Sélectionne des prestations</span>
+      </div>
     </div>
     <div class="total-right">
-      <div class="total-amount" id="total-amount">0 €</div>
+      <div class="total-amount" id="total-amount">0 <span class="currency">€</span></div>
       <div class="total-ht">HT — TVA non applicable</div>
-      <button class="reset-btn" onclick="resetAll()">Tout effacer</button>
+      <button class="reset-btn" onclick="resetAll()">Effacer</button>
     </div>
   </div>
 
@@ -408,12 +570,14 @@
 const catalogue = [
   {
     section: "Tournage",
+    num: "01",
     items: [
       { id: "t1", name: "Tournage — demi-journée", duree: "4h", prix: 105 },
     ]
   },
   {
     section: "Mariage",
+    num: "02",
     items: [
       { id: "m1", name: "Montage mariage — formule courte", duree: "12h (3 demi-journées)", prix: 315 },
       { id: "m2", name: "Montage mariage — formule complète", duree: "16h (2 journées)", prix: 420 },
@@ -421,6 +585,7 @@ const catalogue = [
   },
   {
     section: "Montage YouTube",
+    num: "03",
     items: [
       { id: "y1", name: "Montage YouTube — demi-journée", duree: "4h", prix: 105 },
       { id: "y2", name: "Montage YouTube — journée", duree: "8h", prix: 210 },
@@ -429,6 +594,7 @@ const catalogue = [
   },
   {
     section: "Reels & Shorts",
+    num: "04",
     items: [
       { id: "r1", name: "Réel ultra simple", duree: "30 min", prix: 15 },
       { id: "r2", name: "Réel simple", duree: "1h", prix: 30 },
@@ -437,6 +603,7 @@ const catalogue = [
   },
   {
     section: "Podcast",
+    num: "05",
     items: [
       { id: "p1", name: "Podcast classic — cut POV", duree: "4h", prix: 105 },
       { id: "p2", name: "Podcast — habillage sonore + inserts libres de droit", duree: "8h", prix: 210 },
@@ -447,18 +614,21 @@ const catalogue = [
   }
 ];
 
-const state = {}; // id -> qty (0 = non sélectionné)
+const state = {};
 
-// Build UI
 const container = document.getElementById('sections-container');
 catalogue.forEach(sec => {
   const secDiv = document.createElement('div');
-  secDiv.className = 'section';
 
-  const hdr = document.createElement('div');
-  hdr.className = 'section-header';
-  hdr.textContent = '▸ ' + sec.section;
-  secDiv.appendChild(hdr);
+  const numEl = document.createElement('div');
+  numEl.className = 'section-num';
+  numEl.textContent = sec.num + ' — ' + sec.section.toUpperCase();
+  secDiv.appendChild(numEl);
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'section-title';
+  titleEl.textContent = sec.section;
+  secDiv.appendChild(titleEl);
 
   const list = document.createElement('div');
   list.className = 'prestation-list';
@@ -554,7 +724,7 @@ function updateTotal() {
   const totalEl = document.getElementById('total-amount');
   const linesEl = document.getElementById('total-lines');
 
-  totalEl.textContent = total + ' €';
+  totalEl.innerHTML = total + ' <span class="currency">€</span>';
 
   if (lines.length === 0) {
     linesEl.innerHTML = '<span class="empty-state">Sélectionne des prestations</span>';
