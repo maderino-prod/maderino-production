@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Montage Vidéo Professionnel — Thonon-les-Bains | Maderino Production</title>
+  <meta name="description" content="Service de montage vidéo professionnel à distance. Reels, podcasts, aftermovies, mariages, YouTube. Envoyez vos rushes, on s'occupe du reste. Maderino Production, Thonon-les-Bains.">
+  <meta name="keywords" content="montage vidéo Thonon, monteur vidéo Haute-Savoie, montage reels, montage podcast, montage aftermovie, montage vidéo professionnel">
+  <link rel="canonical" href="https://maderinoprod.com/montage-video-thonon/">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="Montage Vidéo Professionnel — Maderino Production">
+  <meta property="og:description" content="Tu as des rushes ? On les transforme en vidéo pro. Service de montage à distance, tous formats acceptés.">
+  <meta property="og:image" content="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777495200/Logo-_-Texte-fond-blanc_s9ewuq.jpg">
+  <meta property="og:url" content="https://maderinoprod.com/montage-video-thonon/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Montage vidéo professionnel",
+    "provider": {
+      "@type": "ProfessionalService",
+      "name": "Maderino Production",
+      "url": "https://maderinoprod.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Thonon-les-Bains",
+        "addressRegion": "Haute-Savoie",
+        "postalCode": "74200",
+        "addressCountry": "FR"
+      }
+    },
+    "areaServed": "Haute-Savoie",
+    "description": "Service de montage vidéo professionnel à distance. Reels, podcasts, aftermovies, mariages, vidéos YouTube. Tous formats de rushes acceptés via lien de transfert ou Drive.",
+    "serviceType": "Montage vidéo"
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #FF6B00;
+      --dark: #060608;
+      --mid: #0d0d12;
+      --light: #f5f0eb;
+      --muted: rgba(245,240,235,0.5);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Outfit', sans-serif;
+      --glass-bg: rgba(255,255,255,0.055);
+      --glass-bg-strong: rgba(255,255,255,0.09);
+      --glass-border: rgba(255,255,255,0.13);
+      --glass-border-strong: rgba(255,255,255,0.22);
+      --glass-blur: blur(28px) saturate(180%);
+      --glass-blur-light: blur(16px) saturate(160%);
+      --glass-shine: linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.04) 50%, rgba(255,255,255,0.0) 100%);
+      --glass-rim: rgba(255,255,255,0.28);
+      --radius-pill: 100px;
+      --radius-card: 28px;
+      --radius-icon: 16px;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--dark); color: var(--light); font-family: var(--font-body); font-weight: 300; overflow-x: hidden; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shimmerSweep {
+      0%   { transform: translateX(-100%) skewX(-15deg); }
+      100% { transform: translateX(250%) skewX(-15deg); }
+    }
+    @keyframes stepFill {
+      from { height: 0; }
+      to   { height: 100%; }
+    }
+    @keyframes pulseBorder {
+      0%, 100% { box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 var(--glass-rim), 0 0 0 0 rgba(255,107,0,0); }
+      50%       { box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 var(--glass-rim), 0 0 0 4px rgba(255,107,0,0.12); }
+    }
+
+    /* Fade up — état initial */
+    .fade-up {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* Délais en cascade */
+    .fade-up:nth-child(1) { transition-delay: 0s; }
+    .fade-up:nth-child(2) { transition-delay: 0.08s; }
+    .fade-up:nth-child(3) { transition-delay: 0.16s; }
+    .fade-up:nth-child(4) { transition-delay: 0.24s; }
+    .fade-up:nth-child(5) { transition-delay: 0.32s; }
+    .fade-up:nth-child(6) { transition-delay: 0.40s; }
+
+    /* Shimmer sweep sur les cards */
+    .shimmer-card { position: relative; overflow: hidden; }
+    .shimmer-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+      transform: translateX(-100%) skewX(-15deg);
+      pointer-events: none;
+    }
+    .shimmer-card:hover::after { animation: shimmerSweep 0.6s ease forwards; }
+
+    /* Stepper line animate */
+    .step-line-inner {
+      width: 100%; background: linear-gradient(to bottom, var(--orange), rgba(255,107,0,0.05));
+      height: 0; transition: height 1s cubic-bezier(0.22,1,0.36,1);
+    }
+    .step-line-inner.filled { height: 100%; }
+    .step-line { width: 1px; flex: 1; min-height: 40px; background: rgba(255,107,0,0.1); margin-top: 8px; overflow: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 100; display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 20px 10px 16px;
+      width: calc(100% - 48px); max-width: 1400px;
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 var(--glass-rim);
+    }
+    nav::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--glass-shine); pointer-events: none; }
+    .nav-logo img { height: 56px; width: auto; display: block; position: relative; z-index: 1; }
+    .nav-links { display: flex; gap: 4px; list-style: none; position: relative; z-index: 1; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 16px; border-radius: var(--radius-pill); transition: background 0.2s, color 0.2s; }
+    .nav-links a:hover { background: rgba(255,255,255,0.1); color: var(--light); }
+    .nav-back {
+      font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 16px; border-radius: var(--radius-pill);
+      transition: background 0.2s, color 0.2s; position: relative; z-index: 1;
+    }
+    .nav-back:hover { background: rgba(255,255,255,0.1); color: var(--light); }
+    .nav-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 200px 40px 140px; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,107,0,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-tag {
+      display: inline-flex; align-items: center;
+      font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,107,0,0.9); margin-bottom: 24px;
+      border: 0.5px solid rgba(255,107,0,0.35); padding: 6px 18px;
+      border-radius: var(--radius-pill); background: rgba(255,107,0,0.08);
+      backdrop-filter: var(--glass-blur-light); -webkit-backdrop-filter: var(--glass-blur-light);
+      box-shadow: inset 0 1px 0 rgba(255,107,0,0.2);
+    }
+    .page-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 110px);
+      letter-spacing: 0.02em; line-height: 0.92;
+      color: var(--light); margin-bottom: 24px;
+    }
+    .page-title em { font-style: normal; color: var(--orange); }
+    .page-sub {
+      font-size: 18px; color: var(--muted);
+      max-width: 520px; margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--orange); color: #fff;
+      font-family: var(--font-body); font-size: 14px; font-weight: 500; letter-spacing: 0.05em;
+      padding: 16px 32px; border-radius: var(--radius-pill);
+      text-decoration: none; position: relative; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(255,107,0,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-primary::before { content: ''; position: absolute; inset: 0; background: var(--glass-shine); pointer-events: none; }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+
+    /* SECTIONS */
+    section { padding: 140px 40px; position: relative; }
+    section.alt { background: var(--mid); border-top: 0.5px solid var(--glass-border); border-bottom: 0.5px solid var(--glass-border); }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label { font-family: var(--font-display); font-size: 12px; color: var(--orange); letter-spacing: 0.25em; display: block; margin-bottom: 16px; }
+    .section-title { font-family: var(--font-display); font-size: clamp(42px, 5vw, 80px); letter-spacing: 0.03em; line-height: 0.95; color: var(--light); margin-bottom: 72px; }
+
+    /* TYPES SCROLL */
+    .types-scroll-wrap { overflow: hidden; }
+    .types-track {
+      display: flex; gap: 24px;
+      padding: 0 40px 28px;
+      overflow-x: auto; cursor: grab;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,107,0,0.3) transparent;
+    }
+    .types-track:active { cursor: grabbing; }
+    .types-track::-webkit-scrollbar { height: 3px; }
+    .types-track::-webkit-scrollbar-track { background: transparent; }
+    .types-track::-webkit-scrollbar-thumb { background: rgba(255,107,0,0.3); border-radius: 2px; }
+    .type-card {
+      flex: 0 0 300px;
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      border-radius: var(--radius-card); padding: 32px 28px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 var(--glass-rim);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      animation: pulseBorder 3s ease-in-out infinite;
+    }
+    .type-card::before { content: ''; position: absolute; inset: 0; background: var(--glass-shine); pointer-events: none; border-radius: inherit; }
+    .type-card:hover { transform: translateY(-6px); box-shadow: 0 16px 48px rgba(0,0,0,0.5), inset 0 1px 0 var(--glass-rim); border-color: rgba(255,107,0,0.4); animation: none; }
+    .type-icon {
+      width: 48px; height: 48px; border-radius: var(--radius-icon);
+      background: rgba(255,107,0,0.1); border: 0.5px solid rgba(255,107,0,0.35);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; position: relative;
+      box-shadow: inset 0 1px 0 rgba(255,107,0,0.25);
+    }
+    .type-icon svg { width: 20px; height: 20px; stroke: var(--orange); fill: none; stroke-width: 1.5; }
+    .type-name { font-family: var(--font-display); font-size: 24px; letter-spacing: 0.03em; margin-bottom: 8px; position: relative; }
+    .type-desc { font-size: 14px; color: var(--muted); line-height: 1.7; position: relative; }
+
+    /* STEPPER */
+    .stepper { display: flex; flex-direction: column; gap: 0; max-width: 780px; margin: 0 auto; }
+    .step {
+      display: flex; gap: 32px; align-items: flex-start;
+      padding: 0 0 56px;
+      position: relative;
+    }
+    .step:last-child { padding-bottom: 0; }
+    .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .step-num {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 22px; color: var(--orange);
+      position: relative; z-index: 1;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 var(--glass-rim);
+    }
+    .step-line {
+      width: 1px; flex: 1; min-height: 40px;
+      background: linear-gradient(to bottom, rgba(255,107,0,0.4), rgba(255,107,0,0.05));
+      margin-top: 8px;
+    }
+    .step:last-child .step-line { display: none; }
+    .step-content {
+      flex: 1; padding-top: 10px;
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      border-radius: var(--radius-card); padding: 28px 32px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 var(--glass-rim);
+      margin-bottom: 16px;
+    }
+    .step-content::before { content: ''; position: absolute; inset: 0; background: var(--glass-shine); pointer-events: none; border-radius: inherit; }
+    .step-title { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.03em; margin-bottom: 8px; position: relative; }
+    .step-desc { font-size: 15px; color: var(--muted); line-height: 1.8; position: relative; }
+
+    /* AVANTAGES */
+    .avantages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+    .avantage-item {
+      display: flex; gap: 20px; align-items: flex-start;
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      border-radius: 20px; padding: 36px 28px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 var(--glass-rim);
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .avantage-item:hover { transform: translateY(-3px); border-color: rgba(255,107,0,0.3); box-shadow: 0 10px 32px rgba(0,0,0,0.4), inset 0 1px 0 var(--glass-rim); }
+    .avantage-item::before { content: ''; position: absolute; inset: 0; background: var(--glass-shine); pointer-events: none; border-radius: inherit; }
+    .avantage-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 7px; box-shadow: 0 0 8px rgba(255,107,0,0.5); }
+    .avantage-text { font-size: 15px; color: var(--muted); line-height: 1.7; position: relative; }
+    .avantage-text strong { color: var(--light); font-weight: 500; display: block; margin-bottom: 4px; font-size: 16px; }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 16px; max-width: 780px; margin: 0 auto; }
+    .faq-item {
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      border-radius: 24px; overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25), inset 0 1px 0 var(--glass-rim);
+      position: relative;
+    }
+    .faq-item::before { content: ''; position: absolute; inset: 0; background: var(--glass-shine); pointer-events: none; }
+    .faq-q {
+      padding: 28px 32px; font-size: 16px; font-weight: 500;
+      color: var(--light); cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 16px; position: relative;
+    }
+    .faq-q::after { content: '+'; color: var(--orange); font-size: 22px; font-weight: 300; flex-shrink: 0; transition: transform 0.2s; }
+    .faq-item.open .faq-q::after { transform: rotate(45deg); }
+    .faq-a { padding: 0 32px 28px; font-size: 15px; color: var(--muted); line-height: 1.8; display: none; position: relative; }
+    .faq-item.open .faq-a { display: block; }
+
+    /* STATS */
+    .stats-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 80px; }
+    .stat-pill {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border: 0.5px solid var(--glass-border-strong);
+      border-radius: var(--radius-pill); padding: 14px 28px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 var(--glass-rim);
+      position: relative; overflow: hidden;
+    }
+    .stat-pill::before { content: ''; position: absolute; inset: 0; background: var(--glass-shine); pointer-events: none; border-radius: inherit; }
+    .stat-pill-num { font-family: var(--font-display); font-size: 32px; color: var(--orange); line-height: 1; position: relative; }
+    .stat-pill-label { font-size: 13px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; position: relative; }
+
+    /* CTA SECTION */
+    .cta-section { text-align: center; }
+    .cta-section .section-title { margin-bottom: 16px; }
+    .cta-sub { font-size: 16px; color: var(--muted); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
+
+    /* FOOTER */
+    footer {
+      background: var(--glass-bg-strong);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      border-top: 0.5px solid var(--glass-border-strong);
+      padding: 40px; position: relative;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    footer > div:nth-child(2) { position: absolute; left: 50%; transform: translateX(-50%); }
+    .footer-logo img { height: 28px; width: auto; }
+    .footer-copy { font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--light); }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      nav { top: 10px; width: calc(100% - 24px); padding: 8px 12px; border-radius: 20px; overflow-x: auto; flex-wrap: nowrap; gap: 8px; scrollbar-width: none; }
+      nav::-webkit-scrollbar { display: none; }
+      .nav-logo img { height: 44px; flex-shrink: 0; }
+      .nav-links { display: flex; flex-shrink: 0; gap: 2px; flex-wrap: nowrap; }
+      .nav-links a { font-size: 10px; padding: 5px 10px; white-space: nowrap; }
+      .nav-links { flex-shrink: 0; flex-wrap: nowrap; }
+      .nav-links a { font-size: 10px; padding: 5px 10px; white-space: nowrap; }
+      .page-header { padding: 120px 24px 80px; }
+      .page-title { font-size: clamp(44px, 12vw, 80px); }
+      .page-sub { font-size: 16px; }
+      section { padding: 72px 24px; }
+      .section-title { font-size: clamp(38px, 9vw, 64px); }
+      .step { gap: 16px; }
+      .step-content { padding: 22px 20px; }
+      footer { padding: 28px 24px; flex-direction: column; text-align: center; justify-content: center; gap: 16px; }
+      footer > div:nth-child(2) { position: static; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production">
+    </a>
+    <ul class="nav-links"><li><a href="/">Accueil</a></li><li><a href="/montage-video-thonon/">Montage</a></li><li><a href="/tournage-video-thonon/">Tournage</a></li><li><a href="/portfolio/">Portfolio</a></li><li><a href="/#booking">Contact</a></li></ul>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="page-tag">Montage vidéo — Thonon-les-Bains · Haute-Savoie</div>
+    <h1 class="page-title">Tu as des rushes ?<br>On les transforme en vidéo <em>pro.</em></h1>
+    <p class="page-sub">Tu envoies tes fichiers, on s'occupe du reste. Montage professionnel à distance, tous formats acceptés, livraison soignée.</p>
+    <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary">
+      Prendre rendez-vous — appel gratuit 15 min
+    </a>
+  </div>
+
+  <!-- CE QU'ON MONTE -->
+  <section class="alt" style="padding-left:0;padding-right:0;">
+    <div class="section-inner" style="padding: 0 40px; max-width:1100px; margin: 0 auto 48px;">
+      <span class="section-label">01 — Services</span>
+      <div class="section-title">Ce qu'on monte</div>
+    </div>
+    <div class="types-scroll-wrap">
+      <div class="types-track" id="types-track">
+        <div class="type-card shimmer-card fade-up">
+          <div class="type-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+          </div>
+          <div class="type-name">Reels & contenus réseaux</div>
+          <p class="type-desc">Instagram, TikTok, YouTube Shorts. Montage dynamique, rythme et transitions calibrés pour maximiser l'engagement.</p>
+        </div>
+        <div class="type-card shimmer-card fade-up">
+          <div class="type-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          </div>
+          <div class="type-name">Podcasts & interviews</div>
+          <p class="type-desc">Montage multi-caméras, nettoyage audio, habillage graphique. Un rendu pro qui donne envie d'écouter jusqu'au bout.</p>
+        </div>
+        <div class="type-card shimmer-card fade-up">
+          <div class="type-icon">
+            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          </div>
+          <div class="type-name">Aftermovies & événements</div>
+          <p class="type-desc">Captations d'événements, soirées, conférences. On raconte l'ambiance et les moments forts en images.</p>
+        </div>
+        <div class="type-card shimmer-card fade-up">
+          <div class="type-icon">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </div>
+          <div class="type-name">Mariages & cérémonies</div>
+          <p class="type-desc">Montage émotionnel et soigné de tes plus beaux moments. Un film que vous regarderez encore dans 20 ans.</p>
+        </div>
+        <div class="type-card shimmer-card fade-up">
+          <div class="type-icon">
+            <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white" stroke="none"/></svg>
+          </div>
+          <div class="type-name">Vidéos YouTube</div>
+          <p class="type-desc">Montage long format, intros, transitions, motion graphics simples. Tout pour garder ton audience accrochée.</p>
+        </div>
+        <div class="type-card shimmer-card fade-up">
+          <div class="type-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="type-name">Publicités & ads</div>
+          <p class="type-desc">Spots publicitaires, ads Meta ou Google. Montage percutant pour convertir dès les premières secondes.</p>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section>
+    <div class="section-inner">
+      <span class="section-label">02 — Process</span>
+      <div class="section-title">Comment ça marche</div>
+      <div class="stepper">
+
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">01</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">On prend rendez-vous</div>
+            <p class="step-desc">Un appel de 15 minutes, gratuit et sans engagement. On discute de ton projet, de tes attentes, de ton style et on définit ensemble le tarif adapté à tes besoins.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">02</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Tu envoies tes rushes</div>
+            <p class="step-desc">Via un lien de transfert (WeTransfer, Smash…) ou un Drive partagé. On accepte tous les formats — caméra pro, iPhone, drone, GoPro. Pas d'envoi via les réseaux sociaux pour préserver la qualité des fichiers.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">03</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">On monte</div>
+            <p class="step-desc">On travaille tes rushes en respectant ton univers, ton style et tes références. Chaque détail compte — rythme, transitions, colorimétrie, son.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">04</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Tu valides ou tu ajustes</div>
+            <p class="step-desc">On te soumet une première version. Tu as <strong>2 révisions incluses</strong> pour affiner le résultat. On retravaille jusqu'à ce que tu sois satisfait.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-left">
+            <div class="step-num">05</div>
+            <div class="step-line"></div>
+          </div>
+          <div class="step-content">
+            <div class="step-title">Livraison finale</div>
+            <p class="step-desc">On t'envoie le fichier final dans le format de ton choix, prêt à être publié. Qualité maximale, sans compromis.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI NOUS -->
+  <section class="alt">
+    <div class="section-inner">
+      <span class="section-label">03 — Pourquoi nous</span>
+      <div class="section-title">Ce qui nous différencie</div>
+      <div class="avantages-grid">
+        <div class="avantage-item">
+          <div class="avantage-dot"></div>
+          <div class="avantage-text">
+            <strong>100% à distance</strong>
+            On travaille avec des clients partout en France et au-delà. Ton projet avance sans que tu te déplaces.
+          </div>
+        </div>
+        <div class="avantage-item">
+          <div class="avantage-dot"></div>
+          <div class="avantage-text">
+            <strong>Tous formats acceptés</strong>
+            Caméra pro, iPhone, drone, GoPro, fichiers RAW ou compressés — on s'adapte à ce que tu as.
+          </div>
+        </div>
+        <div class="avantage-item">
+          <div class="avantage-dot"></div>
+          <div class="avantage-text">
+            <strong>2 révisions incluses</strong>
+            Tu n'es jamais bloqué sur un résultat qui ne te convient pas. On ajuste jusqu'à ce que ce soit parfait.
+          </div>
+        </div>
+        <div class="avantage-item">
+          <div class="avantage-dot"></div>
+          <div class="avantage-text">
+            <strong>Tarif sur mesure</strong>
+            Pas de grille tarifaire rigide. Le prix est défini ensemble, en fonction de ton projet et de ton budget.
+          </div>
+        </div>
+        <div class="avantage-item">
+          <div class="avantage-dot"></div>
+          <div class="avantage-text">
+            <strong>+200 vidéos produites</strong>
+            4 ans d'expérience, des dizaines de clients satisfaits. On sait ce qui fonctionne.
+          </div>
+        </div>
+        <div class="avantage-item">
+          <div class="avantage-dot"></div>
+          <div class="avantage-text">
+            <strong>Délais adaptés</strong>
+            Chaque projet a son propre rythme. On définit les délais ensemble lors de l'appel découverte.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="section-inner">
+      <span class="section-label">04 — FAQ</span>
+      <div class="section-title" style="text-align:center;">Questions fréquentes</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Quels formats de rushes acceptez-vous ?</div>
+          <div class="faq-a">On accepte tous les formats — caméra professionnelle, iPhone, drone, GoPro, fichiers RAW ou compressés. La seule condition : les fichiers doivent être envoyés via un lien de transfert (WeTransfer, Smash…) ou un Drive partagé. On ne récupère pas de fichiers directement depuis les réseaux sociaux pour préserver la qualité originale.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Combien de révisions sont incluses ?</div>
+          <div class="faq-a">2 révisions sont incluses dans chaque prestation. Si tu as besoin d'ajustements supplémentaires au-delà des 2 révisions, on définit ensemble un tarif additionnel.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Quels sont vos tarifs ?</div>
+          <div class="faq-a">Chaque projet est unique — durée, complexité, type de contenu, délais. On ne pratique pas de tarif fixe affiché. Le prix est défini ensemble lors d'un appel de 15 minutes gratuit, en fonction de tes besoins et de ton budget.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Quels sont les délais de livraison ?</div>
+          <div class="faq-a">Les délais varient selon la nature et la complexité du projet, ainsi que notre planning au moment de la demande. On discute des délais lors de l'appel découverte et on s'engage sur une date de livraison réaliste.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Travaillez-vous uniquement avec des clients locaux ?</div>
+          <div class="faq-a">Non, on travaille à distance avec des clients partout en France et à l'international. Le montage se fait entièrement en distanciel — tu envoies tes fichiers, on livre la vidéo finale.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Dans quel format livrez-vous les vidéos ?</div>
+          <div class="faq-a">On livre dans le format de ton choix selon ta destination finale — MP4 H.264 pour les réseaux sociaux, H.265 pour une qualité maximale, ou tout autre format spécifique à ta plateforme.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="alt cta-section">
+    <div class="section-inner">
+      <div class="stats-row">
+        <div class="stat-pill">
+          <span class="stat-pill-num">+200</span>
+          <span class="stat-pill-label">Vidéos produites</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-num">+15</span>
+          <span class="stat-pill-label">Clients satisfaits</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-num">4</span>
+          <span class="stat-pill-label">Ans d'expérience</span>
+        </div>
+      </div>
+      <div class="section-title">Prêt à donner vie<br>à tes <em style="font-style:normal;color:var(--orange);">rushes ?</em></div>
+      <p class="cta-sub">Un appel de 15 minutes suffit pour tout cadrer. C'est gratuit, sans engagement, et ça change tout.</p>
+      <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary">
+        Prendre rendez-vous — appel gratuit 15 min
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production">
+    </div>
+    <div class="footer-links">
+      <a href="/mentions-legales/">Mentions légales</a>
+      <a href="/politique-confidentialite/">Confidentialité</a>
+    </div>
+    <div class="footer-copy">© 2026 Maderino Production — Tous droits réservés</div>
+  </footer>
+
+  <script>
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      item.classList.toggle('open');
+    }
+
+    /* Drag to scroll — types track */
+    const track = document.getElementById('types-track');
+    let isDown = false, startX, scrollLeft;
+    track.addEventListener('mousedown', e => { isDown = true; startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft; track.style.cursor = 'grabbing'; });
+    track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+    track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
+    track.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      track.scrollLeft = scrollLeft - (x - startX) * 1.5;
+    });
+
+    /* Fade up au scroll */
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const fadeObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => fadeObs.observe(el));
+
+    /* Stepper lines fill au scroll */
+    const stepLines = document.querySelectorAll('.step-line');
+    stepLines.forEach(line => {
+      const inner = document.createElement('div');
+      inner.className = 'step-line-inner';
+      line.appendChild(inner);
+    });
+    const lineObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.querySelector('.step-line-inner')?.classList.add('filled'); lineObs.unobserve(e.target); } });
+    }, { threshold: 0.5 });
+    stepLines.forEach(l => lineObs.observe(l));
+
+    /* Compteurs stats animés */
+    function animateCount(el, target, duration) {
+      let start = 0;
+      const step = target / (duration / 16);
+      const timer = setInterval(() => {
+        start += step;
+        if (start >= target) { start = target; clearInterval(timer); }
+        el.textContent = (el.dataset.prefix || '') + Math.floor(start);
+      }, 16);
+    }
+    const statObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const nums = e.target.querySelectorAll('.stat-pill-num');
+          nums.forEach(n => {
+            const val = parseInt(n.textContent.replace(/\D/g, ''));
+            const prefix = n.textContent.match(/[^\d]+/)?.[0] || '';
+            n.dataset.prefix = prefix;
+            animateCount(n, val, 1200);
+          });
+          statObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    const statsRow = document.querySelector('.stats-row');
+    if (statsRow) statObs.observe(statsRow);
+
+    /* Fade up header */
+    document.querySelectorAll('.page-tag, .page-title, .page-sub, .btn-primary').forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(24px)';
+      el.style.transition = `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.1}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i * 0.1}s`;
+      setTimeout(() => { el.style.opacity = ''; el.style.transform = ''; }, 100);
+    });
+
+    /* Fade up steps, avantages, faq */
+    document.querySelectorAll('.step, .avantage-item, .faq-item, .section-label, .section-title').forEach(el => {
+      el.classList.add('fade-up');
+      fadeObs.observe(el);
+    });
+  </script>
+
+</body>
+</html>
