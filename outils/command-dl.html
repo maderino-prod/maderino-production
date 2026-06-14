@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>yt-dlp Generator — Maderino Production</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #FF6B2B;
+      --dark: #0D0D0D;
+      --card: #1A1A1A;
+      --border: rgba(255,107,43,0.18);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --mono: 'Courier New', monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #080808;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: var(--sans);
+    }
+
+    .wrap {
+      background: var(--dark);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 480px;
+      border: 0.5px solid rgba(255,255,255,0.06);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .header img {
+      height: 34px;
+      width: auto;
+    }
+
+    .header-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.04em;
+    }
+
+    .section {
+      background: var(--card);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.125rem;
+      margin-bottom: 0.875rem;
+    }
+
+    .label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .url-input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 0.5px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13px;
+      padding: 9px 12px;
+      outline: none;
+      font-family: var(--sans);
+      transition: border-color 0.15s;
+    }
+
+    .url-input::placeholder { color: rgba(255,255,255,0.28); }
+    .url-input:focus { border-color: var(--orange); }
+
+    .mode-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .mode {
+      background: rgba(255,255,255,0.05);
+      border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .mode i { font-size: 22px; display: block; margin-bottom: 4px; color: rgba(255,255,255,0.3); }
+    .mode span { font-size: 13px; color: rgba(255,255,255,0.4); display: block; }
+    .mode small { font-size: 10px; color: rgba(255,255,255,0.22); display: block; margin-top: 2px; }
+
+    .mode.active { background: rgba(255,107,43,0.14); border-color: rgba(255,107,43,0.5); }
+    .mode.active i { color: var(--orange); }
+    .mode.active span { color: #fff; }
+    .mode.active small { color: rgba(255,107,43,0.7); }
+
+    .toggle-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .toggle {
+      background: rgba(255,255,255,0.05);
+      border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 10px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .toggle i { font-size: 15px; flex-shrink: 0; }
+
+    .toggle.active {
+      background: rgba(255,107,43,0.14);
+      border-color: rgba(255,107,43,0.5);
+      color: #fff;
+    }
+
+    .toggle.active i { color: var(--orange); }
+
+    .cmd-box {
+      background: rgba(0,0,0,0.45);
+      border: 0.5px solid rgba(255,107,43,0.22);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.125rem;
+      margin-bottom: 0.875rem;
+    }
+
+    .cmd-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .cmd-header-label {
+      font-size: 10px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .btn-copy {
+      background: var(--orange);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--sans);
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn-copy:hover { opacity: 0.85; }
+    .btn-copy:active { opacity: 0.7; transform: scale(0.97); }
+    .btn-copy i { font-size: 13px; }
+
+    .cmd-text {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,0.82);
+      word-break: break-all;
+      white-space: pre-wrap;
+      line-height: 1.65;
+    }
+
+    .notice {
+      font-size: 12px;
+      color: var(--orange);
+      text-align: center;
+      height: 18px;
+      transition: opacity 0.2s;
+    }
+
+    .footer {
+      font-size: 10px;
+      color: rgba(255,255,255,0.15);
+      text-align: center;
+      margin-top: 0.625rem;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="header">
+    <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production" />
+    <span class="header-sub">Générateur yt-dlp</span>
+  </div>
+
+  <div class="section">
+    <span class="label">URL</span>
+    <input class="url-input" type="text" id="url" placeholder="https://soundcloud.com/... ou youtube.com/..." oninput="gen()" />
+  </div>
+
+  <div class="section">
+    <span class="label">Mode</span>
+    <div class="mode-row">
+      <div class="mode active" id="mode-audio" onclick="setMode('audio')">
+        <i class="ti ti-music"></i>
+        <span>Audio</span>
+        <small>MP3 · qualité max</small>
+      </div>
+      <div class="mode" id="mode-video" onclick="setMode('video')">
+        <i class="ti ti-video"></i>
+        <span>Audio + Vidéo</span>
+        <small>MP4 · 4K si dispo</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <span class="label">Options</span>
+    <div class="toggle-row">
+      <div class="toggle" id="tog-thumb" onclick="tog('thumb')">
+        <i class="ti ti-photo"></i> Thumbnail
+      </div>
+      <div class="toggle" id="tog-meta" onclick="tog('meta')">
+        <i class="ti ti-tag"></i> Métadonnées
+      </div>
+      <div class="toggle" id="tog-playlist" onclick="tog('playlist')">
+        <i class="ti ti-list"></i> Playlist
+      </div>
+    </div>
+  </div>
+
+  <div class="cmd-box">
+    <div class="cmd-header">
+      <span class="cmd-header-label">Commande</span>
+      <button class="btn-copy" onclick="copyCmd()">
+        <i class="ti ti-copy"></i> Copier
+      </button>
+    </div>
+    <div class="cmd-text" id="cmd"></div>
+  </div>
+
+  <div class="notice" id="notice" style="opacity:0;"></div>
+  <div class="footer">maderinoprod.com &nbsp;·&nbsp; powered by yt-dlp</div>
+</div>
+
+<script>
+  let mode = 'audio';
+  let opts = { thumb: false, meta: false, playlist: false };
+
+  function setMode(m) {
+    mode = m;
+    document.getElementById('mode-audio').classList.toggle('active', m === 'audio');
+    document.getElementById('mode-video').classList.toggle('active', m === 'video');
+    gen();
+  }
+
+  function tog(key) {
+    opts[key] = !opts[key];
+    document.getElementById('tog-' + key).classList.toggle('active', opts[key]);
+    gen();
+  }
+
+  function gen() {
+    const url = document.getElementById('url').value.trim() || 'URL';
+    let parts = ['yt-dlp'];
+    if (mode === 'audio') {
+      parts.push('-x', '--audio-format mp3', '--audio-quality 0');
+    } else {
+      parts.push('-f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"', '--merge-output-format mp4');
+    }
+    if (opts.thumb) parts.push('--embed-thumbnail');
+    if (opts.meta) parts.push('--add-metadata');
+    if (opts.playlist) parts.push('--yes-playlist');
+    else parts.push('--no-playlist');
+    parts.push('"' + url + '"');
+    document.getElementById('cmd').textContent = parts.join(' ');
+  }
+
+  function copyCmd() {
+    const text = document.getElementById('cmd').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const n = document.getElementById('notice');
+      n.textContent = 'Commande copiée';
+      n.style.opacity = '1';
+      setTimeout(() => { n.style.opacity = '0'; }, 2000);
+    });
+  }
+
+  gen();
+</script>
+
+</body>
+</html>
