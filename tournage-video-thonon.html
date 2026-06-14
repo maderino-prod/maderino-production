@@ -100,6 +100,9 @@
     }
     nav::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--glass-shine); pointer-events: none; }
     .nav-logo img { height: 56px; width: auto; display: block; position: relative; z-index: 1; }
+    .nav-links { display: flex; gap: 4px; list-style: none; position: relative; z-index: 1; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 16px; border-radius: var(--radius-pill); transition: background 0.2s, color 0.2s; }
+    .nav-links a:hover { background: rgba(255,255,255,0.1); color: var(--light); }
     .nav-back { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: var(--radius-pill); transition: background 0.2s, color 0.2s; position: relative; z-index: 1; }
     .nav-back:hover { background: rgba(255,255,255,0.1); color: var(--light); }
     .nav-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; }
@@ -218,6 +221,8 @@
       nav { top: 10px; width: calc(100% - 24px); padding: 8px 12px; border-radius: 20px; overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
       nav::-webkit-scrollbar { display: none; }
       .nav-logo img { height: 44px; flex-shrink: 0; }
+      .nav-links { display: flex; flex-shrink: 0; gap: 2px; flex-wrap: nowrap; }
+      .nav-links a { font-size: 10px; padding: 5px 10px; white-space: nowrap; }
       .page-header { padding: 140px 24px 100px; }
       .page-title { font-size: clamp(44px, 12vw, 80px); }
       section { padding: 80px 24px; }
@@ -227,6 +232,8 @@
       .step { gap: 16px; }
       .step-content { padding: 22px 20px; }
       .zone-grid { grid-template-columns: 1fr 1fr; }
+      .type-card { flex: 0 0 280px; }
+      div[style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
       footer { padding: 28px 24px; flex-direction: column; text-align: center; justify-content: center; gap: 16px; }
       footer > div:nth-child(2) { position: static; transform: none; }
     }

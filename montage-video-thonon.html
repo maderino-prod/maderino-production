@@ -130,6 +130,9 @@
     }
     nav::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--glass-shine); pointer-events: none; }
     .nav-logo img { height: 56px; width: auto; display: block; position: relative; z-index: 1; }
+    .nav-links { display: flex; gap: 4px; list-style: none; position: relative; z-index: 1; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 16px; border-radius: var(--radius-pill); transition: background 0.2s, color 0.2s; }
+    .nav-links a:hover { background: rgba(255,255,255,0.1); color: var(--light); }
     .nav-back {
       font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
       color: var(--muted); text-decoration: none;
@@ -347,6 +350,10 @@
       nav { top: 10px; width: calc(100% - 24px); padding: 8px 12px; border-radius: 20px; overflow-x: auto; flex-wrap: nowrap; gap: 8px; scrollbar-width: none; }
       nav::-webkit-scrollbar { display: none; }
       .nav-logo img { height: 44px; flex-shrink: 0; }
+      .nav-links { display: flex; flex-shrink: 0; gap: 2px; flex-wrap: nowrap; }
+      .nav-links a { font-size: 10px; padding: 5px 10px; white-space: nowrap; }
+      .nav-links { flex-shrink: 0; flex-wrap: nowrap; }
+      .nav-links a { font-size: 10px; padding: 5px 10px; white-space: nowrap; }
       .page-header { padding: 120px 24px 80px; }
       .page-title { font-size: clamp(44px, 12vw, 80px); }
       .page-sub { font-size: 16px; }
