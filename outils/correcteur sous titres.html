@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Maderino | SRT Fixer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maderino-black: #000000;
+            --maderino-orange: #FF4500; /* Le orange Maderino */
+            --maderino-orange-hover: #ff5e26;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--maderino-black);
+            color: #ffffff;
+            margin: 0;
+            padding: 50px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 { font-weight: 600; letter-spacing: -1px; margin-bottom: 40px; color: #fff; }
+
+        #srtInput {
+            background: var(--glass-bg);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 700px;
+            color: #888;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 700px;
+            height: 350px;
+            background: rgba(20, 20, 20, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 25px;
+            color: #fff;
+            font-size: 15px;
+            backdrop-filter: blur(20px);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        textarea:focus { outline: none; border-color: var(--maderino-orange); }
+
+        .controls { display: flex; gap: 15px; width: 100%; max-width: 700px; }
+
+        button {
+            flex: 1;
+            padding: 18px;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .correct-btn { background: #1a1a1a; color: #fff; border: 1px solid #333; }
+        .correct-btn:hover { border-color: var(--maderino-orange); }
+
+        .export-btn { 
+            background: var(--maderino-orange); 
+            color: #000; 
+            font-weight: 700;
+        }
+        .export-btn:hover { 
+            background: var(--maderino-orange-hover);
+            box-shadow: 0 0 25px rgba(255, 69, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>SRT FIXER</h1>
+    
+    <input type="file" id="srtInput" accept=".srt">
+    <textarea id="editor" placeholder="Importez votre fichier pour commencer..."></textarea>
+    
+    <div class="controls">
+        <button class="correct-btn" onclick="autoCorrect()">Corriger</button>
+        <button class="export-btn" onclick="downloadSRT()">Exporter .srt</button>
+    </div>
+
+    <script>
+        document.getElementById('srtInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => document.getElementById('editor').value = e.target.result;
+            reader.readAsText(file);
+        });
+
+        function autoCorrect() {
+            let text = document.getElementById('editor').value;
+            // Liste de corrections
+            const dictionary = [
+                { regex: /deuxx/gi, replace: "deux" },
+                { regex: /téle/gi, replace: "télé" }
+            ];
+            dictionary.forEach(item => { text = text.replace(item.regex, item.replace); });
+            document.getElementById('editor').value = text;
+        }
+
+        function downloadSRT() {
+            const text = document.getElementById('editor').value;
+            const blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = "maderino_corrigé.srt";
+            a.click();
+        }
+    </script>
+</body>
+</html>
