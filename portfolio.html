@@ -42,9 +42,6 @@
     nav { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 10px 20px 10px 16px; width: calc(100% - 48px); max-width: 1400px; background: var(--glass-bg-strong); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border: 0.5px solid var(--glass-border-strong); border-radius: var(--radius-pill); box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 var(--glass-rim); }
     nav::before { content: ''; position: absolute; inset: 0; border-radius: var(--radius-pill); background: var(--glass-shine); pointer-events: none; }
     .nav-logo img { height: 56px; width: auto; display: block; position: relative; z-index: 1; }
-    .nav-links { display: flex; gap: 4px; list-style: none; position: relative; z-index: 1; }
-    .nav-links a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 7px 16px; border-radius: var(--radius-pill); transition: background 0.2s, color 0.2s; }
-    .nav-links a:hover { background: rgba(255,255,255,0.1); color: var(--light); }
     .nav-back { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 7px 16px; border-radius: var(--radius-pill); transition: background 0.2s, color 0.2s; position: relative; z-index: 1; }
     .nav-back:hover { background: rgba(255,255,255,0.1); color: var(--light); }
     .nav-back svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 1.5; }
