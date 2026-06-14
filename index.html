@@ -164,7 +164,7 @@
       position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
       z-index: 100; display: flex; align-items: center; justify-content: space-between;
       padding: 10px 20px 10px 16px;
-      width: calc(100% - 48px); max-width: 1100px;
+      width: calc(100% - 48px); max-width: 1400px;
       background: var(--glass-bg-strong);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -178,7 +178,7 @@
       background: var(--glass-shine); pointer-events: none;
     }
     nav.hidden { opacity: 0; transform: translateX(-50%) translateY(-120%); }
-    .nav-logo img { height: 76px; width: auto; display: block; position: relative; z-index: 1; }
+    .nav-logo img { height: 56px; width: auto; display: block; position: relative; z-index: 1; }
     .nav-links { display: flex; gap: 4px; list-style: none; position: relative; z-index: 1; }
     .nav-links a {
       font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
@@ -210,9 +210,9 @@
     }
     .hero h1 {
       font-family: var(--font-display);
-      font-size: clamp(52px, 9vw, 120px);
-      line-height: 0.92; letter-spacing: 0.02em;
+      line-height: 0.9; letter-spacing: 0.02em;
       margin-bottom: 0; text-align: center;
+      width: 100%; padding: 0 24px;
     }
     .hero h1 em { font-style: normal; color: var(--orange); }
     .hero-sub {
@@ -618,7 +618,10 @@
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-tag">Agence vidéo — Thonon-les-Bains · Haute-Savoie</div>
-      <h1>Ta vision mérite<br>d'<em>exister.</em><br>Ensemble, on la <em>crée.</em></h1>
+      <h1 style="display:flex;flex-direction:column;align-items:center;width:100%;padding:0 24px;gap:0;">
+        <span style="display:block;font-size:6.15vw;white-space:nowrap;line-height:0.92;">Ta vision mérite d'<em>exister.</em></span>
+        <span style="display:block;font-size:7.38vw;white-space:nowrap;line-height:0.92;">Ensemble, on la <em>crée.</em></span>
+      </h1>
       <p class="hero-sub">Tu as un projet vidéo à Thonon ou en Haute-Savoie ? On s'occupe de tout — tournage, montage, livraison pro.</p>
       <div class="hero-btns" id="hero-btns">
         <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary">Prendre rendez-vous</a>
