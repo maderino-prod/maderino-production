@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Outils — Maderino Production</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --orange: #FF6B2B;
+      --dark: #0D0D0D;
+      --card: #1A1A1A;
+      --border: rgba(255,107,43,0.15);
+      --radius: 20px;
+      --radius-sm: 14px;
+      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #080808;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: var(--sans);
+      color: #fff;
+    }
+
+    .logo {
+      height: 38px;
+      width: auto;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      width: 100%;
+      max-width: 660px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 0.5px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem 1.25rem;
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.15s, background 0.15s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      border-color: rgba(255,107,43,0.45);
+      background: rgba(255,107,43,0.07);
+    }
+
+    .card:hover .card-icon { color: var(--orange); }
+    .card:hover .card-arrow { opacity: 1; }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .card-icon {
+      font-size: 26px;
+      color: rgba(255,255,255,0.3);
+      transition: color 0.15s;
+    }
+
+    .card-arrow {
+      font-size: 16px;
+      color: var(--orange);
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .card-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.5;
+    }
+
+    .footer {
+      font-size: 10px;
+      color: rgba(255,255,255,0.12);
+      margin-top: 2.5rem;
+      letter-spacing: 0.04em;
+    }
+  </style>
+</head>
+<body>
+
+  <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production" class="logo" />
+  <p class="subtitle">Outils internes</p>
+
+  <div class="grid">
+
+    <a class="card" href="encodage.html">
+      <div class="card-top">
+        <i class="ti ti-file-export card-icon"></i>
+        <i class="ti ti-arrow-right card-arrow"></i>
+      </div>
+      <div>
+        <p class="card-name">Encodage</p>
+        <p class="card-desc">Générateur de presets Adobe Media Encoder</p>
+      </div>
+    </a>
+
+    <a class="card" href="pricing.html">
+      <div class="card-top">
+        <i class="ti ti-calculator card-icon"></i>
+        <i class="ti ti-arrow-right card-arrow"></i>
+      </div>
+      <div>
+        <p class="card-name">Pricing</p>
+        <p class="card-desc">Calculateur de devis client</p>
+      </div>
+    </a>
+
+    <a class="card" href="command-dl.html">
+      <div class="card-top">
+        <i class="ti ti-download card-icon"></i>
+        <i class="ti ti-arrow-right card-arrow"></i>
+      </div>
+      <div>
+        <p class="card-name">Téléchargement</p>
+        <p class="card-desc">Générateur de commande yt-dlp</p>
+      </div>
+    </a>
+
+  </div>
+
+  <p class="footer">maderinoprod.com &nbsp;·&nbsp; usage interne uniquement</p>
+
+</body>
+</html>
