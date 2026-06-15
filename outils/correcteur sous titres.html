@@ -481,7 +481,7 @@
       </div>
     </div>
     <div class="header-sub">
-      Importe un fichier <span>.srt</span>, corrige les erreurs orthographiques automatiquement, puis exporte le fichier corrigé.
+      Importe un fichier <span>.srt</span>, corrige automatiquement l'orthographe, les accords sujet/verbe et la grammaire via LanguageTool, puis exporte le fichier corrigé.
     </div>
   </header>
 
@@ -596,7 +596,7 @@
     document.getElementById('stat-chars').textContent = chars;
   }
 
-  // Corrections
+  // Corrections locales rapides
   const dictionary = [
     { regex: /deuxx/gi, replace: "deux" },
     { regex: /téle/gi, replace: "télé" },
@@ -604,18 +604,88 @@
     { regex: /\bou\b(?= (est|sont|va|vient|se))/g, replace: "où" },
   ];
 
-  function autoCorrect() {
+  // Extraire uniquement le texte des sous-titres (sans numéros et timestamps)
+  function extractSRTText(srt) {
+    const lines = srt.split('\n');
+    const textLines = [];
+    const indices = [];
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i].trim();
+      if (!l) continue;
+      if (/^\d+$/.test(l)) continue;
+      if (/^\d{2}:\d{2}:\d{2}[,\.]\d{3}\s*-->/.test(l)) continue;
+      textLines.push({ index: i, text: l });
+      indices.push(i);
+    }
+    return { lines, textLines };
+  }
+
+  async function autoCorrect() {
     let text = editor.value;
     if (!text.trim()) { showToast('Aucun contenu à corriger'); return; }
-    let count = 0;
-    dictionary.forEach(item => {
-      const before = text;
-      text = text.replace(item.regex, item.replace);
-      if (text !== before) count++;
-    });
-    editor.value = text;
-    updateStats();
-    showToast(count > 0 ? count + ' correction(s) appliquée(s)' : 'Aucune correction nécessaire');
+
+    // Corrections locales d'abord
+    dictionary.forEach(item => { text = text.replace(item.regex, item.replace); });
+
+    // Extraire le texte des sous-titres
+    const { lines, textLines } = extractSRTText(text);
+    if (textLines.length === 0) { showToast('Aucun texte trouvé'); return; }
+
+    showToast('Correction en cours…');
+    const btn = document.querySelector('.btn-correct');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳</span> Correction…';
+
+    try {
+      // Envoyer tout le texte en une seule requête LanguageTool
+      const fullText = textLines.map(t => t.text).join('\n');
+      
+      const params = new URLSearchParams({
+        text: fullText,
+        language: 'fr',
+        disabledRules: 'WHITESPACE_RULE,COMMA_PARENTHESIS_WHITESPACE'
+      });
+
+      const res = await fetch('https://api.languagetool.org/v2/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params
+      });
+
+      if (!res.ok) throw new Error('Erreur API');
+      const data = await res.json();
+
+      // Appliquer les corrections sur le texte combiné
+      let correctedText = fullText;
+      // Appliquer les suggestions en partant de la fin pour ne pas décaler les offsets
+      const matches = data.matches
+        .filter(m => m.replacements && m.replacements.length > 0)
+        .sort((a, b) => b.offset - a.offset);
+
+      for (const match of matches) {
+        const replacement = match.replacements[0].value;
+        correctedText = correctedText.slice(0, match.offset) + replacement + correctedText.slice(match.offset + match.length);
+      }
+
+      // Réinjecter les textes corrigés dans le SRT
+      const correctedLines = correctedText.split('\n');
+      for (let i = 0; i < textLines.length && i < correctedLines.length; i++) {
+        lines[textLines[i].index] = correctedLines[i];
+      }
+
+      editor.value = lines.join('\n');
+      updateStats();
+      showToast(`${matches.length} correction(s) appliquée(s) par LanguageTool`);
+
+    } catch (err) {
+      // Fallback — corrections locales seulement
+      editor.value = text;
+      updateStats();
+      showToast('LanguageTool indisponible — corrections locales appliquées');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦</span> Corriger';
   }
 
   function downloadSRT() {
