@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Correcteur SRT — Maderino Production</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #FF6B2B;
+    --orange-dim: rgba(255,107,43,0.18);
+    --orange-glow: rgba(255,107,43,0.08);
+    --black: #060608;
+    --text: #D8D8DC;
+    --muted: #6E6E76;
+    --white: #FFFFFF;
+
+    --glass-bg: rgba(28, 28, 36, 0.55);
+    --glass-bg-hover: rgba(38, 38, 48, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.10);
+    --glass-border-top: rgba(255, 255, 255, 0.18);
+    --glass-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
+    --glass-blur: blur(24px) saturate(180%);
+    --glass-radius: 14px;
+    --glass-radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px 60px;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(255,107,43,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 50% at 80% 80%, rgba(80,60,180,0.06) 0%, transparent 70%);
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--glass-radius);
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-border-top);
+    box-shadow: var(--glass-shadow);
+    padding: 28px 28px 24px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+    border-radius: 100%;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
+    border-radius: var(--glass-radius) var(--glass-radius) 0 0;
+    pointer-events: none;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .logo-block .eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .logo-block h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 44px;
+    letter-spacing: 6px;
+    color: var(--white);
+    line-height: 1;
+    text-shadow: 0 0 40px rgba(255,107,43,0.25);
+  }
+
+  .logo-block h1 span { color: var(--orange); }
+
+  .header-badge {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--glass-border);
+    border-top-color: rgba(255,255,255,0.12);
+    border-radius: var(--glass-radius-sm);
+    padding: 10px 14px;
+    text-align: right;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+
+  .badge-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header-sub span { color: var(--text); }
+
+  /* ── SECTION LABEL ── */
+  .section-num {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--orange);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-num::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  /* ── GLASS CARD ── */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-border-top);
+    border-radius: var(--glass-radius);
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+  }
+
+  /* ── FILE INPUT ── */
+  .file-drop {
+    padding: 28px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .file-drop:hover { background: rgba(255,255,255,0.03); }
+
+  .file-drop.dragover {
+    background: var(--orange-dim);
+    border-color: var(--orange);
+  }
+
+  .file-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255,107,43,0.10);
+    border: 1px solid rgba(255,107,43,0.20);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 18px;
+  }
+
+  .file-info { flex: 1; }
+
+  .file-info .file-label {
+    font-size: 13px;
+    color: var(--white);
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .file-info .file-hint {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .file-btn {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-top-color: rgba(255,255,255,0.16);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .file-btn:hover {
+    border-color: rgba(255,107,43,0.4);
+    color: var(--orange);
+    background: rgba(255,107,43,0.08);
+  }
+
+  input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── TEXTAREA ── */
+  .editor-wrap {
+    margin-top: 0;
+  }
+
+  .editor-wrap textarea {
+    width: 100%;
+    height: 360px;
+    background: transparent;
+    border: none;
+    padding: 20px 24px;
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    resize: vertical;
+    outline: none;
+    display: block;
+  }
+
+  .editor-wrap textarea::placeholder { color: var(--muted); }
+
+  .editor-wrap textarea:focus {
+    box-shadow: inset 0 0 0 1px rgba(255,107,43,0.25);
+  }
+
+  .editor-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+    margin: 0;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 1px;
+    color: var(--text);
+  }
+
+  .stat-val.orange { color: var(--orange); text-shadow: 0 0 12px rgba(255,107,43,0.35); }
+
+  /* ── ACTIONS ── */
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 15px 20px;
+    border-radius: var(--glass-radius-sm);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-border-top);
+    transition: all 0.15s;
+    backdrop-filter: blur(8px);
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  }
+
+  .btn-correct {
+    background: var(--glass-bg);
+    color: var(--text);
+  }
+
+  .btn-correct:hover {
+    background: var(--glass-bg-hover);
+    border-color: rgba(255,107,43,0.3);
+    color: var(--white);
+  }
+
+  .btn-export {
+    background: var(--orange);
+    color: var(--black);
+    border-color: rgba(255,150,80,0.4);
+    font-weight: 700;
+    box-shadow: 0 8px 24px rgba(255,107,43,0.3), 0 1px 0 rgba(255,255,255,0.15) inset;
+  }
+
+  .btn-export:hover {
+    background: #ff7d42;
+    box-shadow: 0 8px 32px rgba(255,107,43,0.5), 0 1px 0 rgba(255,255,255,0.15) inset;
+  }
+
+  .btn-export::before {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  }
+
+  /* toast */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 24px;
+    background: rgba(18,18,24,0.90);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-top-color: rgba(255,255,255,0.18);
+    border-radius: var(--glass-radius-sm);
+    padding: 12px 18px;
+    font-size: 12px;
+    color: var(--text);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .toast .toast-accent { color: var(--orange); font-weight: 600; }
+
+  /* footer */
+  .footer-note {
+    margin-top: 32px;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 560px) {
+    body {
+      padding: 16px 12px 48px;
+      background-image:
+        radial-gradient(ellipse 80% 35% at 50% 5%, rgba(255,107,43,0.10) 0%, transparent 70%),
+        radial-gradient(ellipse 70% 50% at 80% 90%, rgba(80,60,180,0.08) 0%, transparent 70%);
+    }
+
+    header { padding: 20px 18px 18px; border-radius: 18px; }
+    .header-top { flex-direction: column; gap: 10px; }
+    .logo-block h1 { font-size: 36px; letter-spacing: 4px; }
+
+    .header-badge {
+      text-align: left;
+      width: 100%;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      padding: 8px 12px;
+    }
+
+    .section-num { margin-top: 24px; font-size: 9px; }
+    .section-title { font-size: 19px; letter-spacing: 3px; }
+
+    .file-drop { flex-wrap: wrap; padding: 20px 18px; }
+    .file-btn { width: 100%; text-align: center; }
+
+    .editor-wrap textarea { height: 260px; padding: 16px 18px; font-size: 12px; }
+
+    .actions { flex-direction: column; }
+    .btn { padding: 16px; }
+
+    .toast { bottom: 16px; right: 16px; left: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-top">
+      <div class="logo-block">
+        <div class="eyebrow">Correcteur de sous-titres</div>
+        <h1>MADERINO <span>PROD</span></h1>
+      </div>
+      <div class="header-badge">
+        <div class="badge-label">Format</div>
+        <div class="badge-val">SRT</div>
+        <div class="badge-label" style="margin-top:8px;">Correction</div>
+        <div class="badge-val">Auto + Manuel</div>
+      </div>
+    </div>
+    <div class="header-sub">
+      Importe un fichier <span>.srt</span>, corrige automatiquement l'orthographe, les accords sujet/verbe et la grammaire via LanguageTool, puis exporte le fichier corrigé.
+    </div>
+  </header>
+
+  <!-- IMPORT -->
+  <div class="section-num">01 — Import</div>
+  <div class="section-title">Fichier SRT</div>
+
+  <div class="glass-card">
+    <div class="file-drop" id="dropzone">
+      <input type="file" id="srtInput" accept=".srt">
+      <div class="file-icon">📄</div>
+      <div class="file-info">
+        <div class="file-label" id="file-label">Aucun fichier sélectionné</div>
+        <div class="file-hint">Glisse ton .srt ici ou clique pour parcourir</div>
+      </div>
+      <div class="file-btn">Parcourir</div>
+    </div>
+  </div>
+
+  <!-- EDITOR -->
+  <div class="section-num" style="margin-top:28px;">02 — Édition</div>
+  <div class="section-title">Contenu</div>
+
+  <div class="glass-card editor-wrap">
+    <textarea id="editor" placeholder="Le contenu de ton fichier SRT apparaîtra ici…" spellcheck="false" oninput="updateStats()"></textarea>
+    <div class="editor-divider"></div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-label">Lignes</div>
+        <div class="stat-val" id="stat-lines">—</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Sous-titres</div>
+        <div class="stat-val orange" id="stat-blocks">—</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Caractères</div>
+        <div class="stat-val" id="stat-chars">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="section-num" style="margin-top:28px;">03 — Actions</div>
+  <div class="section-title">Corriger & Exporter</div>
+
+  <div class="actions">
+    <button class="btn btn-correct" onclick="autoCorrect()">
+      <span>✦</span> Analyser
+    </button>
+    <button class="btn btn-export" onclick="downloadSRT()">
+      ↓ Exporter .srt
+    </button>
+  </div>
+
+  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);margin-top:40px;"></div>
+  <div class="footer-note">Maderino Production · Haute-Savoie · contact@maderinoprod.com</div>
+
+</div>
+
+<div class="toast" id="toast"><span class="toast-accent" id="toast-text"></span></div>
+
+<script>
+  // File input
+  const srtInput = document.getElementById('srtInput');
+  const editor = document.getElementById('editor');
+  const fileLabel = document.getElementById('file-label');
+  const dropzone = document.getElementById('dropzone');
+
+  srtInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    loadFile(file);
+  });
+
+  // Drag & drop
+  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.name.endsWith('.srt')) loadFile(file);
+    else showToast('Fichier invalide — .srt uniquement');
+  });
+
+  function loadFile(file) {
+    fileLabel.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = e => {
+      editor.value = e.target.result;
+      updateStats();
+      showToast('Fichier chargé — ' + file.name);
+    };
+    reader.readAsText(file, 'UTF-8');
+  }
+
+  // Stats
+  function updateStats() {
+    const text = editor.value;
+    if (!text.trim()) {
+      document.getElementById('stat-lines').textContent = '—';
+      document.getElementById('stat-blocks').textContent = '—';
+      document.getElementById('stat-chars').textContent = '—';
+      return;
+    }
+    const lines = text.split('\n').length;
+    const blocks = (text.match(/^\d+\s*$/gm) || []).length;
+    const chars = text.replace(/\s/g, '').length;
+    document.getElementById('stat-lines').textContent = lines;
+    document.getElementById('stat-blocks').textContent = blocks || '—';
+    document.getElementById('stat-chars').textContent = chars;
+  }
+
+  // Corrections locales
+  const dictionary = [
+    { regex: /deuxx/gi, replace: "deux" },
+    { regex: /téle/gi, replace: "télé" },
+    { regex: /\bca\b/g, replace: "ça" },
+    { regex: /\bou\b(?= (est|sont|va|vient|se))/g, replace: "où" },
+  ];
+
+  function parseSRT(srt) {
+    const blocks = [];
+    const raw = srt.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const parts = raw.split(/\n\n+/);
+    for (const part of parts) {
+      const lines = part.trim().split('\n');
+      if (lines.length < 2) continue;
+      const num = lines[0].trim();
+      const ts = lines[1].trim();
+      const text = lines.slice(2).join('\n');
+      if (/^\d+$/.test(num) && /-->/.test(ts)) {
+        blocks.push({ num, ts, text });
+      }
+    }
+    return blocks;
+  }
+
+  async function autoCorrect() {
+    const text = editor.value;
+    if (!text.trim()) { showToast('Aucun contenu à analyser'); return; }
+
+    const blocks = parseSRT(text);
+    if (blocks.length === 0) { showToast('Format SRT invalide'); return; }
+
+    showToast('Analyse en cours…');
+    const btn = document.querySelector('.btn-correct');
+    btn.disabled = true;
+    btn.innerHTML = '<span>⏳</span> Analyse…';
+
+    const corrections = [];
+
+    for (const block of blocks) {
+      if (!block.text.trim()) continue;
+
+      // Corrections locales
+      let localFixed = block.text;
+      dictionary.forEach(item => { localFixed = localFixed.replace(item.regex, item.replace); });
+
+      // LanguageTool
+      try {
+        const params = new URLSearchParams({
+          text: block.text,
+          language: 'fr',
+          disabledRules: 'WHITESPACE_RULE,COMMA_PARENTHESIS_WHITESPACE'
+        });
+        const res = await fetch('https://api.languagetool.org/v2/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const matches = data.matches
+            .filter(m => m.replacements && m.replacements.length > 0)
+            .sort((a, b) => b.offset - a.offset);
+
+          let corrected = block.text;
+          for (const m of matches) {
+            corrected = corrected.slice(0, m.offset) + m.replacements[0].value + corrected.slice(m.offset + m.length);
+          }
+
+          const finalText = corrected !== block.text ? corrected : localFixed;
+          if (finalText !== block.text) {
+            corrections.push({
+              num: block.num,
+              ts: block.ts,
+              original: block.text,
+              corrected: finalText,
+              issues: matches.map(m => `"${block.text.slice(m.offset, m.offset + m.length)}" → "${m.replacements[0]?.value}" — ${m.message}`)
+            });
+          }
+        }
+      } catch(e) {
+        if (localFixed !== block.text) {
+          corrections.push({ num: block.num, ts: block.ts, original: block.text, corrected: localFixed, issues: ['Correction locale'] });
+        }
+      }
+      await new Promise(r => setTimeout(r, 250));
+    }
+
+    displayReport(corrections);
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦</span> Analyser';
+  }
+
+  function displayReport(corrections) {
+    const old = document.getElementById('report-section');
+    if (old) old.remove();
+
+    const section = document.createElement('div');
+    section.id = 'report-section';
+    section.style.marginTop = '32px';
+
+    if (corrections.length === 0) {
+      section.innerHTML = `
+        <div class="section-num">04 — Rapport</div>
+        <div class="section-title">Résultats</div>
+        <div class="glass-card" style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">
+          ✅ Aucune correction nécessaire — le SRT est propre !
+        </div>`;
+      document.querySelector('.container').appendChild(section);
+      showToast('Analyse terminée — aucune erreur trouvée');
+      return;
+    }
+
+    let html = `
+      <div class="section-num">04 — Rapport</div>
+      <div class="section-title">${corrections.length} correction(s) suggérée(s)</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px;">À appliquer manuellement dans Premiere Pro — aucune modification du fichier SRT</div>`;
+
+    for (const c of corrections) {
+      html += `
+        <div class="glass-card" style="margin-bottom:12px;padding:20px 24px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="background:rgba(255,107,43,0.15);border:1px solid rgba(255,107,43,0.3);border-radius:6px;padding:4px 10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--orange);">#${c.num}</div>
+            <div style="font-size:11px;color:var(--muted);font-family:monospace;">${c.ts}</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Original</div>
+              <div style="font-size:13px;color:#ff8080;background:rgba(255,100,100,0.08);border:1px solid rgba(255,100,100,0.15);border-radius:8px;padding:10px 14px;line-height:1.6;white-space:pre-wrap;">${c.original}</div>
+            </div>
+            <div>
+              <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Corrigé</div>
+              <div style="font-size:13px;color:#6bffaa;background:rgba(100,255,150,0.08);border:1px solid rgba(100,255,150,0.15);border-radius:8px;padding:10px 14px;line-height:1.6;white-space:pre-wrap;">${c.corrected}</div>
+            </div>
+          </div>
+          ${c.issues.length > 0 ? `<div style="margin-top:10px;">${c.issues.map(i => `<div style="font-size:11px;color:var(--muted);margin-top:4px;">· ${i}</div>`).join('')}</div>` : ''}
+        </div>`;
+    }
+
+    html += `<button class="btn btn-export" style="margin-top:8px;" onclick="copyReport()">↗ Copier le rapport</button>`;
+    section.innerHTML = html;
+    document.querySelector('.container').appendChild(section);
+    section.scrollIntoView({ behavior: 'smooth' });
+    showToast(`${corrections.length} correction(s) trouvée(s)`);
+    window._corrections = corrections;
+  }
+
+  function copyReport() {
+    if (!window._corrections || !window._corrections.length) return;
+    const lines = window._corrections.map(c =>
+      `#${c.num} — ${c.ts}\nOriginal : ${c.original}\nCorrigé  : ${c.corrected}\n`
+    ).join('\n');
+    navigator.clipboard.writeText(lines).then(() => showToast('Rapport copié !'));
+  }
+
+  function downloadSRT() {
+    const text = editor.value;
+    if (!text.trim()) { showToast('Aucun contenu à exporter'); return; }
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'maderino_corrigé.srt';
+    a.click();
+    showToast('Export réussi — maderino_corrigé.srt');
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-text').textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+</script>
+</body>
+</html>
