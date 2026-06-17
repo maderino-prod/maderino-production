@@ -1,184 +1,1322 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Outils — Maderino Production</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JED TOGO — Calendrier éditorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#2d7a47;--green-light:rgba(45,122,71,0.12);--green-mid:#a8d4b5;--green-glow:rgba(45,122,71,0.25);
+  --amber:#b5600a;--amber-light:rgba(181,96,10,0.12);
+  --red:#c0392b;--red-light:rgba(192,57,43,0.1);
+  --orange:#FF6B2B;--orange-dim:rgba(255,107,43,0.18);--orange-glow:rgba(255,107,43,0.08);
+  --black:#060608;--ink:#D8D8DC;--ink2:#f0f0f4;--muted:#6E6E76;--muted2:#4a4a52;
+  --glass-bg:rgba(22,22,30,0.6);--glass-bg-hover:rgba(32,32,42,0.7);
+  --glass-border:rgba(255,255,255,0.08);--glass-border-top:rgba(255,255,255,0.16);
+  --glass-shadow:0 8px 32px rgba(0,0,0,0.5),0 1px 0 rgba(255,255,255,0.05) inset;
+  --glass-blur:blur(24px) saturate(180%);
+  --radius:14px;--radius-sm:10px;--radius-xs:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;-webkit-font-smoothing:antialiased;background:#060608;color-scheme:dark}
+body{font-family:'Inter',system-ui,sans-serif;background:#060608;color:var(--ink);min-height:100vh;color-scheme:dark;
+  background-image:radial-gradient(ellipse 60% 40% at 15% 5%,rgba(45,122,71,0.08) 0%,transparent 70%),
+  radial-gradient(ellipse 50% 50% at 85% 85%,rgba(255,107,43,0.05) 0%,transparent 70%);
+}
+input,textarea,select,button{font-family:inherit}
 
-    :root {
-      --orange: #FF6B2B;
-      --dark: #0D0D0D;
-      --card: #1A1A1A;
-      --border: rgba(255,107,43,0.15);
-      --radius: 20px;
-      --radius-sm: 14px;
-      --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
+/* TOPBAR */
+.topbar{background:rgba(10,10,14,0.85);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-bottom:1px solid var(--glass-border);padding:0 20px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.brand-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green-glow)}
+.brand-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--ink2)}
+.brand-sep{color:var(--muted2);margin:0 4px}
+.brand-sub{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.mode-toggle{display:flex;background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:3px;gap:2px}
+.mode-btn{padding:5px 13px;font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;border:none;background:none;cursor:pointer;color:var(--muted);border-radius:7px;transition:all .18s}
+.mode-btn.active{background:rgba(255,255,255,0.08);color:var(--ink2);box-shadow:0 1px 4px rgba(0,0,0,0.4)}
+.toast{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--green);background:var(--green-light);border:1px solid rgba(45,122,71,0.3);padding:5px 12px;border-radius:20px;opacity:0;transition:opacity .3s}
+.toast.show{opacity:1}
 
-    body {
-      background: #080808;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem 1rem;
-      font-family: var(--sans);
-      color: #fff;
-    }
+/* PRES BANNER */
+.pres-banner{background:rgba(45,122,71,0.15);border-bottom:1px solid rgba(45,122,71,0.3);color:var(--ink);padding:8px 20px;font-size:11px;display:flex;align-items:center;gap:8px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.pres-dot{width:6px;height:6px;border-radius:50%;background:#30d158;flex-shrink:0;box-shadow:0 0 6px #30d158}
 
-    .logo {
-      height: 38px;
-      width: auto;
-      margin-bottom: 0.5rem;
-    }
+/* LAYOUT */
+.layout{display:flex;height:calc(100vh - 52px)}
+.sidebar{width:220px;flex-shrink:0;border-right:1px solid var(--glass-border);background:rgba(10,10,14,0.7);backdrop-filter:var(--glass-blur);overflow-y:auto;padding:12px 8px;display:flex;flex-direction:column;gap:1px}
+.main{flex:1;overflow-y:auto;padding:20px}
 
-    .subtitle {
-      font-size: 11px;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 2.5rem;
-    }
+/* NAV */
+.nav-label{font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--muted2);text-transform:uppercase;padding:10px 10px 4px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--radius-xs);cursor:pointer;font-size:12px;color:var(--muted);transition:all .12s;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:var(--ink)}
+.nav-item.active{background:var(--green-light);color:var(--green);font-weight:600}
+.nav-icon{font-size:14px;flex-shrink:0}
+.nav-count{margin-left:auto;font-size:10px;background:rgba(255,255,255,0.06);border-radius:20px;padding:1px 7px;color:var(--muted)}
+.nav-count.pending{background:var(--amber-light);color:var(--amber)}
+.sidebar-add{margin-top:auto;padding-top:12px;padding-bottom:2px}
+.btn-add{width:100%;padding:10px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:none;background:var(--green);color:white;border-radius:var(--radius-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .18s;box-shadow:0 2px 12px var(--green-glow)}
+.btn-add:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px var(--green-glow)}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      width: 100%;
-      max-width: 660px;
-    }
+/* SECTION */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--ink2)}
+.section-desc{font-size:12px;color:var(--muted);margin-top:2px;letter-spacing:.02em}
+.btn{padding:7px 14px;font-size:12px;font-weight:600;letter-spacing:.04em;border:1px solid var(--glass-border);border-radius:var(--radius-xs);background:var(--glass-bg);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .12s;backdrop-filter:blur(8px)}
+.btn:hover{border-color:rgba(255,255,255,0.16);background:var(--glass-bg-hover)}
+.btn-green{background:var(--green);color:white;border-color:var(--green);box-shadow:0 2px 10px var(--green-glow)}
+.btn-green:hover{opacity:.9;background:var(--green)}
 
-    .card {
-      background: var(--card);
-      border: 0.5px solid rgba(255,255,255,0.08);
-      border-radius: var(--radius-sm);
-      padding: 1.5rem 1.25rem;
-      text-decoration: none;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      transition: border-color 0.15s, background 0.15s;
-      cursor: pointer;
-    }
+/* FILTERS */
+.filters{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.filter-chip{padding:5px 13px;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--glass-border);border-radius:20px;background:var(--glass-bg);cursor:pointer;transition:all .12s;color:var(--muted);backdrop-filter:blur(8px)}
+.filter-chip:hover{border-color:rgba(255,255,255,0.16);color:var(--ink)}
+.filter-chip.active{background:var(--ink2);color:var(--black);border-color:var(--ink2)}
 
-    .card:hover {
-      border-color: rgba(255,107,43,0.45);
-      background: rgba(255,107,43,0.07);
-    }
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.stat-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-top-color:var(--glass-border-top);border-radius:var(--radius);padding:14px 16px;box-shadow:var(--glass-shadow);backdrop-filter:blur(12px)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;line-height:1}
+.stat-label{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:.04em;text-transform:uppercase}
 
-    .card:hover .card-icon { color: var(--orange); }
-    .card:hover .card-arrow { opacity: 1; }
+/* POST CARDS */
+.posts-list{display:flex;flex-direction:column;gap:8px}
+.post-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius);padding:14px 16px;display:flex;gap:14px;align-items:flex-start;transition:all .15s;backdrop-filter:blur(12px);box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+.post-card:hover{border-color:rgba(255,255,255,0.14);background:var(--glass-bg-hover);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+.post-card.status-validated{border-left:3px solid var(--green)}
+.post-card.status-rejected{border-left:3px solid var(--red)}
+.post-card.status-pending{border-left:3px solid var(--amber)}
+.thumb{width:68px;height:68px;border-radius:10px;flex-shrink:0;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:22px;position:relative;cursor:pointer}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb-count{position:absolute;bottom:3px;right:3px;background:rgba(0,0,0,.7);color:white;font-size:10px;padding:1px 5px;border-radius:4px;backdrop-filter:blur(4px)}
+.thumb video{width:100%;height:100%;object-fit:cover}
+.post-body{flex:1;min-width:0}
+.post-meta{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:5px}
+.chip{font-size:10px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--glass-border)}
+.chip-type{background:rgba(88,86,214,0.12);color:#a78bfa;border-color:rgba(167,139,250,0.2)}
+.badge{font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:20px;text-transform:uppercase}
+.badge-pending{background:var(--amber-light);color:var(--amber)}
+.badge-validated{background:var(--green-light);color:var(--green)}
+.badge-rejected{background:var(--red-light);color:var(--red)}
+.post-date{font-size:11px;color:var(--muted)}
+.post-title{font-size:13px;font-weight:600;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink2)}
+.post-desc{font-size:12px;color:var(--muted);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.post-comment-box{font-size:12px;color:#fc8181;background:rgba(192,57,43,0.1);border:1px solid rgba(192,57,43,0.2);border-radius:8px;padding:6px 10px;margin-top:8px;line-height:1.5}
+.post-actions{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.btn-xs{font-size:11px;font-weight:600;letter-spacing:.03em;padding:4px 10px;border:1px solid var(--glass-border);border-radius:6px;background:rgba(255,255,255,0.05);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all .12s}
+.btn-xs:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.16)}
+.btn-xs-green{border-color:rgba(45,122,71,0.4);color:var(--green)}
+.btn-xs-green:hover{background:var(--green-light)}
+.btn-xs-red{border-color:rgba(192,57,43,0.4);color:#fc8181}
+.btn-xs-red:hover{background:var(--red-light)}
+.btn-xs-muted{color:var(--muted)}
 
-    .card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-    }
+/* FEED */
+.feed-section{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.feed-phone{background:var(--glass-bg);border:1px solid var(--glass-border);border-top-color:var(--glass-border-top);border-radius:20px;overflow:hidden;max-width:320px;box-shadow:var(--glass-shadow);backdrop-filter:blur(12px)}
+.feed-phone-header{padding:10px 14px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between}
+.feed-profile{display:flex;align-items:center;gap:8px}
+.feed-avatar{width:28px;height:28px;border-radius:50%;background:var(--green-light);border:1.5px solid var(--green-mid);display:flex;align-items:center;justify-content:center;font-size:13px}
+.feed-name{font-size:13px;font-weight:600;letter-spacing:-.01em;color:var(--ink2)}
+.feed-cell.drag-over{outline:2px solid var(--green);outline-offset:-2px;opacity:.6}
+.feed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px}
+.feed-cell{aspect-ratio:1/1;background:rgba(255,255,255,0.04);overflow:hidden;position:relative;cursor:default}
+.feed-cell img,.feed-cell video{width:100%;height:100%;object-fit:cover}
+.feed-cell-empty{display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:16px}
+.feed-tooltip{position:absolute;inset:0;background:rgba(0,0,0,.6);display:none;align-items:flex-end;padding:6px}
+.feed-cell:hover .feed-tooltip{display:flex}
+.feed-tooltip span{font-size:10px;color:white;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.feed-footer{padding:9px 14px;border-top:1px solid var(--glass-border);text-align:center}
+.feed-footer p{font-size:11px;color:var(--muted2);letter-spacing:.04em}
+.highlights-row{display:flex;gap:12px;padding:12px 14px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.05)}
+.highlight-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.highlight-circle{width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.04);border:2px solid var(--green-mid);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:18px}
+.highlight-circle img{width:100%;height:100%;object-fit:cover}
+.highlight-label{font-size:10px;font-weight:600;color:var(--ink);max-width:54px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-legend{background:var(--glass-bg);border:1px solid var(--glass-border);border-top-color:var(--glass-border-top);border-radius:var(--radius);padding:16px;box-shadow:var(--glass-shadow);backdrop-filter:blur(12px)}
+.feed-legend h4{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--ink2);margin-bottom:12px}
+.legend-list{display:flex;flex-direction:column;gap:8px}
+.legend-item{display:flex;align-items:center;gap:10px;font-size:12px}
+.legend-thumb{width:34px;height:34px;border-radius:7px;background:rgba(255,255,255,0.04);overflow:hidden;flex-shrink:0;border:1px solid var(--glass-border);display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:13px}
+.legend-thumb img,.legend-thumb video{width:100%;height:100%;object-fit:cover}
+.legend-info{min-width:0}
+.legend-title{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.legend-sub{color:var(--muted);font-size:11px;margin-top:1px}
 
-    .card-icon {
-      font-size: 26px;
-      color: rgba(255,255,255,0.3);
-      transition: color 0.15s;
-    }
+/* STORIES */
+.stories-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.story-card{background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.3);transition:all .15s;backdrop-filter:blur(12px)}
+.story-card:hover{border-color:rgba(255,255,255,0.14);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+.story-thumb{aspect-ratio:9/16;background:rgba(255,255,255,0.04);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:28px;max-height:180px}
+.story-thumb img{width:100%;height:100%;object-fit:cover}
+.story-info{padding:10px 12px}
+.story-title{font-size:12px;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink2)}
+.story-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.story-actions{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
 
-    .card-arrow {
-      font-size: 16px;
-      color: var(--orange);
-      opacity: 0;
-      transition: opacity 0.15s;
-    }
+/* EMPTY */
+.empty{text-align:center;padding:48px 24px;color:var(--muted);background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius);box-shadow:var(--glass-shadow)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.empty p{font-size:13px;line-height:1.6}
 
-    .card-name {
-      font-size: 15px;
-      font-weight: 500;
-      color: #fff;
-    }
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;overflow:hidden}
+.overlay.open{display:flex}
+.modal{background:rgba(18,18,26,0.95);border:1px solid var(--glass-border);border-top-color:var(--glass-border-top);border-radius:20px;padding:24px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.6);backdrop-filter:blur(20px)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.modal-head h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:3px;color:var(--ink2)}
+.close-btn{width:28px;height:28px;border:none;border-radius:50%;background:rgba(255,255,255,0.07);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);transition:all .12s}
+.close-btn:hover{background:rgba(255,255,255,0.14);color:var(--ink)}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.form-row input,.form-row select,.form-row textarea{width:100%;font-size:13px;padding:9px 12px;border:1px solid var(--glass-border);border-radius:var(--radius-xs);background:rgba(255,255,255,0.04);color:var(--ink);outline:none;transition:all .15s}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--green);background:rgba(255,255,255,0.06);box-shadow:0 0 0 3px var(--green-glow)}
+.form-row textarea{resize:vertical;min-height:90px;line-height:1.55}
+.form-row select option{background:#1a1a26;color:var(--ink)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.upload-zone{border:1.5px dashed rgba(255,255,255,0.1);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:all .15s;background:rgba(255,255,255,0.02)}
+.upload-zone:hover{border-color:var(--green);background:var(--green-light)}
+.upload-zone-icon{font-size:24px;margin-bottom:4px}
+.upload-zone span{font-size:12px;color:var(--muted)}
+.carousel-previews{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px;margin-top:10px}
+.carousel-thumb{position:relative;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.04);border:1px solid var(--glass-border)}
+.carousel-thumb img{width:100%;height:100%;object-fit:cover}
+.carousel-thumb-del{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:rgba(0,0,0,.6);color:white;font-size:11px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.carousel-thumb-num{position:absolute;bottom:2px;left:2px;font-size:10px;background:rgba(0,0,0,.6);color:white;padding:1px 5px;border-radius:3px}
+.reel-preview{width:100%;max-height:200px;border-radius:8px;margin-top:10px;display:none;object-fit:cover}
+.modal-footer{display:flex;justify-content:flex-end;gap:8px;padding-top:16px;border-top:1px solid var(--glass-border);margin-top:20px}
+input[type=file]{display:none}
+.reject-comment-area{width:100%;font-size:13px;padding:9px 12px;border:1px solid var(--glass-border);border-radius:var(--radius-xs);resize:none;min-height:80px;font-family:inherit;outline:none;transition:all .15s;background:rgba(255,255,255,0.04);color:var(--ink)}
+.reject-comment-area:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(192,57,43,0.1)}
+.page{display:none}
+.page.active{display:block}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.lightbox.open{display:flex}
+.lightbox img,.lightbox video{max-width:90vw;max-height:80vh;border-radius:14px;object-fit:contain}
+.lightbox-close{position:absolute;top:16px;right:20px;font-size:20px;color:white;cursor:pointer;background:rgba(255,255,255,0.1);border:none;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.lightbox-close:hover{background:rgba(255,255,255,0.2)}
+.lightbox-nav{display:flex;gap:10px;align-items:center}
+.lightbox-btn{padding:8px 18px;font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.15);border-radius:10px;background:rgba(255,255,255,0.06);color:white;cursor:pointer}
+.lightbox-btn:hover{background:rgba(255,255,255,0.14)}
+.lightbox-counter{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.06em}
+/* Block extension-injected elements */
+.legend-thumb *+div,.legend-thumb *+button,.legend-thumb *+a{display:none!important}
 
-    .card-desc {
-      font-size: 12px;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.5;
-    }
+/* BOTTOM NAV */
+.bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px;border:none;background:none;color:var(--muted);cursor:pointer;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;position:relative;transition:color .15s}
+.bnav-item.active{color:var(--green)}
+.bnav-item.bnav-add{background:var(--green);border-radius:50%;width:44px;height:44px;margin:4px auto 0;padding:0;color:white;font-size:24px;box-shadow:0 4px 16px var(--green-glow)}
+.bnav-badge{position:absolute;top:6px;right:8px;background:var(--amber);color:white;font-size:9px;font-weight:700;border-radius:20px;padding:1px 5px;min-width:16px;text-align:center}
+#bnav-link.copied{color:var(--green)}
+@media(max-width:720px){
+  /* BASE */
+  html,body{background:#060608!important}
 
-    .footer {
-      font-size: 10px;
-      color: rgba(255,255,255,0.12);
-      margin-top: 2.5rem;
-      letter-spacing: 0.04em;
-    }
-  </style>
-</head>
+  /* TOPBAR */
+  .topbar{padding:0 16px;height:52px}
+  .brand-name{font-size:15px;letter-spacing:2px}
+  .brand-sep,.brand-sub{display:none}
+  .mode-toggle{display:none}
+  #copy-pres-link{display:none!important}
+  .toast{font-size:11px;padding:4px 10px}
+
+  /* LAYOUT */
+  .layout{flex-direction:column;height:calc(100dvh - 52px)}
+  .sidebar{display:none}
+  .main{padding:16px 14px 100px;overflow-y:auto;height:100%;-webkit-overflow-scrolling:touch}
+
+  /* BOTTOM NAV visible */
+  .bottom-nav{display:block!important}
+
+  /* STATS — 2 colonnes compactes */
+  .stats-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+  .stat-card{padding:12px 14px}
+  .stat-num{font-size:28px}
+  .stat-label{font-size:10px}
+
+  /* SECTION HEADER */
+  .section-header{margin-bottom:14px;flex-wrap:wrap;gap:8px}
+  .section-title{font-size:18px;letter-spacing:2px}
+  .section-desc{font-size:11px}
+  .btn{font-size:11px;padding:6px 12px}
+
+  /* FILTERS — scroll horizontal */
+  .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;gap:6px;-webkit-overflow-scrolling:touch}
+  .filters::-webkit-scrollbar{display:none}
+  .filter-chip{flex-shrink:0;font-size:10px;padding:5px 12px}
+
+  /* POST CARDS */
+  .posts-list{gap:10px}
+  .post-card{padding:12px;gap:12px;border-radius:12px}
+  .thumb{width:64px;height:64px;border-radius:8px}
+  .post-title{font-size:13px}
+  .post-desc{font-size:12px;-webkit-line-clamp:2}
+  .post-meta{gap:4px;margin-bottom:4px}
+  .chip{font-size:10px;padding:2px 7px}
+  .badge{font-size:10px;padding:2px 7px}
+  .post-date{font-size:11px}
+  .post-actions{gap:5px;margin-top:8px;flex-wrap:wrap}
+  .btn-xs{font-size:11px;padding:5px 10px}
+
+  /* FEED */
+  .feed-section{grid-template-columns:1fr;gap:16px}
+  .feed-phone{max-width:100%}
+  .feed-legend{margin-top:0}
+
+  /* STORIES */
+  .stories-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+
+  /* MODAL — slide up from bottom */
+  .overlay{align-items:flex-end;padding:0;background:rgba(0,0,0,.7)}
+  .modal{border-radius:20px 20px 0 0;max-height:88dvh;max-width:100%;margin:0;padding:20px 18px 32px}
+  .modal-head h3{font-size:18px}
+  .form-grid{grid-template-columns:1fr}
+  .form-row input,.form-row select,.form-row textarea{font-size:16px}
+
+  /* EMPTY STATE */
+  .empty{padding:36px 20px}
+  .empty-icon{font-size:28px}
+  .empty p{font-size:13px}
+}
+
+@media(min-width:721px){
+  .bottom-nav{display:none!important}
+}
+}
+</style>
 <body>
 
-  <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production" class="logo" />
-  <p class="subtitle">Outils internes</p>
+<div id="pres-banner" class="pres-banner" style="display:none">
+  <div class="pres-dot"></div>
+  Mode validation — Calendrier éditorial JED TOGO
+</div>
 
-  <div class="grid">
-
-    <a class="card" href="correcteur sous titres.html">
-      <div class="card-top">
-        <i class="ti ti-subtitles card-icon"></i>
-        <i class="ti ti-arrow-right card-arrow"></i>
-      </div>
-      <div>
-        <p class="card-name">Correcteur SRT</p>
-        <p class="card-desc">Correction orthographique des sous-titres</p>
-      </div>
-    </a>
-
-    <a class="card" href="encodage.html">
-      <div class="card-top">
-        <i class="ti ti-file-export card-icon"></i>
-        <i class="ti ti-arrow-right card-arrow"></i>
-      </div>
-      <div>
-        <p class="card-name">Encodage</p>
-        <p class="card-desc">Générateur de presets Adobe Media Encoder</p>
-      </div>
-    </a>
-
-    <a class="card" href="pricing.html">
-      <div class="card-top">
-        <i class="ti ti-calculator card-icon"></i>
-        <i class="ti ti-arrow-right card-arrow"></i>
-      </div>
-      <div>
-        <p class="card-name">Pricing</p>
-        <p class="card-desc">Calculateur de devis client</p>
-      </div>
-    </a>
-
-    <a class="card" href="command-dl.html">
-      <div class="card-top">
-        <i class="ti ti-download card-icon"></i>
-        <i class="ti ti-arrow-right card-arrow"></i>
-      </div>
-      <div>
-        <p class="card-name">Téléchargement</p>
-        <p class="card-desc">Générateur de commande yt-dlp</p>
-      </div>
-    </a>
-
-    <a class="card" href="jed_togo_editorial.html">
-      <div class="card-top">
-        <i class="ti ti-calendar-month card-icon"></i>
-        <i class="ti ti-arrow-right card-arrow"></i>
-      </div>
-      <div>
-        <p class="card-name">JED TOGO</p>
-        <p class="card-desc">Calendrier éditorial & validation des posts</p>
-      </div>
-    </a>
-
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-dot"></div>
+    <span class="brand-name">JED TOGO</span>
+    <span class="brand-sep">|</span>
+    <span class="brand-sub">Calendrier éditorial</span>
   </div>
+  <div class="topbar-right">
+    <button class="btn" id="copy-pres-link" onclick="copyPresLink()" title="Copier le lien président" style="font-size:12px;padding:5px 12px">🔗 Lien président</button>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-editor" onclick="setMode('editor')">✏️ Éditeur</button>
+      <button class="mode-btn" id="btn-president" onclick="setMode('president')">👁 Président</button>
+    </div>
+    <div class="toast" id="toast">Sauvegardé</div>
+  </div>
+</div>
 
-  <p class="footer">maderinoprod.com &nbsp;·&nbsp; usage interne uniquement</p>
+<div class="layout">
+  <nav class="sidebar">
+    <div class="nav-label">Contenus</div>
+    <button class="nav-item active" onclick="goPage('posts',this)"><span class="nav-icon">📋</span> Tous les posts <span class="nav-count pending" id="nc-pending">0</span></button>
+    <button class="nav-item" onclick="goPage('stories',this)"><span class="nav-icon">⭕</span> Stories à la une <span class="nav-count" id="nc-stories">0</span></button>
+    <button class="nav-item" onclick="goPage('feed',this)"><span class="nav-icon">🖼</span> Aperçu feed</button>
+    <div class="nav-label" style="margin-top:8px">Statuts</div>
+    <button class="nav-item" onclick="goPage('posts',this);setFilter('pending')"><span class="nav-icon">🟡</span> En attente <span class="nav-count pending" id="nc-pending2">0</span></button>
+    <button class="nav-item" onclick="goPage('posts',this);setFilter('validated')"><span class="nav-icon">🟢</span> Validés <span class="nav-count" id="nc-validated">0</span></button>
+    <button class="nav-item" onclick="goPage('posts',this);setFilter('rejected')"><span class="nav-icon">🔴</span> Refusés <span class="nav-count" id="nc-rejected">0</span></button>
+    <div class="sidebar-add" id="sidebar-add">
+      <button class="btn-add" onclick="openModal()">＋ Ajouter un post</button>
+      <button onclick="deleteAll()" style="width:100%;margin-top:8px;padding:9px;font-size:12px;font-weight:500;border:0.5px solid var(--red-light);border-radius:var(--radius-sm);background:none;color:var(--red);cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--red-light)'" onmouseout="this.style.background='none'">🗑 Tout supprimer</button>
+    </div>
+  </nav>
 
+  <main class="main">
+    <!-- POSTS -->
+    <div class="page active" id="page-posts">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num" id="s-total">0</div><div class="stat-label">Posts planifiés</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--amber)" id="s-pending">0</div><div class="stat-label">En attente</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--green)" id="s-validated">0</div><div class="stat-label">Validés</div></div>
+        <div class="stat-card"><div class="stat-num" style="color:var(--red)" id="s-rejected">0</div><div class="stat-label">Refusés</div></div>
+      </div>
+      <div class="section-header">
+        <div><div class="section-title">Posts & Reels</div><div class="section-desc">Tous les contenus planifiés</div></div>
+        <button class="btn btn-green" onclick="openModal()" id="add-btn">＋ Ajouter</button>
+      </div>
+      <div class="filters" id="filters-row">
+        <div class="filter-chip active" onclick="setFilter('')" data-filter="">Tous</div>
+        <div class="filter-chip" onclick="setFilter('pending')" data-filter="pending">En attente</div>
+        <div class="filter-chip" onclick="setFilter('validated')" data-filter="validated">Validés</div>
+        <div class="filter-chip" onclick="setFilter('rejected')" data-filter="rejected">Refusés</div>
+        <div class="filter-chip" onclick="setFilter('reel')" data-filter="reel">Reels</div>
+        <div class="filter-chip" onclick="setFilter('carousel')" data-filter="carousel">Carrousels</div>
+      </div>
+      <div class="posts-list" id="posts-list"></div>
+    </div>
+
+    <!-- STORIES -->
+    <div class="page" id="page-stories">
+      <div class="section-header">
+        <div><div class="section-title">Stories à la une</div><div class="section-desc">Highlights du profil Instagram</div></div>
+        <button class="btn btn-green" onclick="openModal('story')" id="add-story-btn">＋ Ajouter une story</button>
+      </div>
+      <div class="stories-grid" id="stories-grid"></div>
+    </div>
+
+    <!-- FEED -->
+    <div class="page" id="page-feed">
+      <div class="section-header">
+        <div><div class="section-title">Aperçu du feed</div><div class="section-desc">Glisse les posts pour réordonner</div></div>
+      </div>
+      <div class="feed-section">
+        <div>
+          <div class="feed-phone">
+            <div class="feed-phone-header">
+              <div class="feed-profile">
+                <div class="feed-avatar">🌱</div>
+                <div><div class="feed-name">jedtogo</div></div>
+              </div>
+            </div>
+            <div class="highlights-row" id="highlights-row"></div>
+            <div class="feed-grid" id="feed-grid"></div>
+            <div class="feed-footer"><p>Tous les posts · ordre chronologique</p></div>
+          </div>
+        </div>
+        <div class="feed-legend">
+          <h4>Légende du feed</h4>
+          <div class="legend-list" id="legend-list"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,8,0.97);backdrop-filter:var(--glass-blur);border-top:1px solid var(--glass-border);z-index:40;padding:4px 0 16px">
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0">
+    <button class="bnav-item active" id="bnav-posts" onclick="goPageMobile('posts',this)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="14" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+      <span>Posts</span>
+      <span class="bnav-badge" id="bnav-badge">0</span>
+    </button>
+    <button class="bnav-item" id="bnav-stories" onclick="goPageMobile('stories',this)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9"/></svg>
+      <span>Stories</span>
+    </button>
+    <button class="bnav-item bnav-add" id="bnav-add-btn" onclick="openModal()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="bnav-item" id="bnav-feed" onclick="goPageMobile('feed',this)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Feed</span>
+    </button>
+    <button class="bnav-item" id="bnav-link" onclick="copyPresLinkMobile()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="bnav-link-label">Lien</span>
+    </button>
+  </div>
+</nav>
+
+<!-- MODAL AJOUT/EDIT -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Nouveau post</h3>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+
+    <!-- POST / REEL / CAROUSEL -->
+    <div id="modal-body-post">
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Thématique</label>
+          <select id="f-theme">
+            <option>Inclusion femmes & veuves</option>
+            <option>Parrainage & soutien scolaire</option>
+            <option>Maison d'accueil enfants</option>
+            <option>Camps chantier / bénévolat</option>
+            <option>Mission humanitaire</option>
+            <option>Reboisement</option>
+            <option>Village</option>
+            <option>École</option>
+            <option>En France</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Format</label>
+          <select id="f-format" onchange="onFormatChange()">
+            <option value="photo">Post photo</option>
+            <option value="carousel">Carrousel</option>
+            <option value="reel">Reel / TikTok</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Date de publication prévue</label>
+        <input type="date" id="f-date">
+      </div>
+      <div class="form-row">
+        <label>Titre / accroche</label>
+        <input type="text" id="f-title" placeholder="Ex : Des femmes invisibles. Des vies qui méritent mieux.">
+      </div>
+      <div class="form-row">
+        <label>Légende complète + hashtags</label>
+        <textarea id="f-desc" placeholder="Texte du post, hashtags..."></textarea>
+      </div>
+
+      <!-- PHOTO UNIQUE -->
+      <div id="upload-photo" class="form-row">
+        <label>Photo</label>
+        <div class="upload-zone" onclick="document.getElementById('f-file-photo').click()">
+          <div class="upload-zone-icon">📷</div>
+          <span id="upload-label-photo">Cliquez pour ajouter une photo</span>
+          <img id="photo-preview" style="max-height:140px;width:100%;object-fit:cover;border-radius:6px;margin-top:10px;display:none" alt="">
+        </div>
+        <input type="file" id="f-file-photo" accept="image/*" onchange="previewPhoto(event)">
+      </div>
+
+      <!-- CARROUSEL -->
+      <div id="upload-carousel" class="form-row" style="display:none">
+        <label>Photos du carrousel <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">(plusieurs photos)</span></label>
+        <div class="upload-zone" onclick="document.getElementById('f-file-carousel').click()">
+          <div class="upload-zone-icon">🖼</div>
+          <span>Cliquez pour ajouter des photos</span>
+        </div>
+        <input type="file" id="f-file-carousel" accept="image/*" multiple onchange="addCarouselPhotos(event)">
+        <div class="carousel-previews" id="carousel-previews"></div>
+      </div>
+
+      <!-- REEL -->
+      <div id="upload-reel" class="form-row" style="display:none">
+        <label>Lien vidéo (Google Drive ou YouTube)</label>
+        <input type="text" id="f-reel-url" placeholder="https://drive.google.com/file/d/... ou https://youtu.be/..." onchange="previewReelLink()" onblur="previewReelLink()">
+        <p style="font-size:11px;color:var(--muted);margin-top:6px">Google Drive : partage le fichier en "Tout le monde avec le lien" puis colle l'URL ici.</p>
+        <div id="reel-link-preview" style="margin-top:10px;display:none;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:var(--surface);position:relative;max-width:100%"></div>
+      </div>
+    </div>
+
+    <!-- STORY -->
+    <div id="modal-body-story" style="display:none">
+      <div class="form-row">
+        <label>Nom du highlight</label>
+        <input type="text" id="fs-name" placeholder="Ex : Inclusion, Enfants, Bénévolat...">
+      </div>
+      <div class="form-row">
+        <label>Date</label>
+        <input type="date" id="fs-date">
+      </div>
+      <div class="form-row">
+        <label>Description</label>
+        <textarea id="fs-desc" placeholder="Contexte, message..."></textarea>
+      </div>
+      <div class="form-row">
+        <label>Slides de la story <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">(plusieurs photos possibles)</span></label>
+        <div class="upload-zone" onclick="document.getElementById('fs-file').click()">
+          <div class="upload-zone-icon">📱</div>
+          <span>Cliquez pour ajouter une ou plusieurs slides</span>
+        </div>
+        <input type="file" id="fs-file" accept="image/*" multiple onchange="addStorySlides(event)">
+        <div class="carousel-previews" id="story-previews"></div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-green" onclick="saveItem()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL REFUS -->
+<div class="overlay" id="overlay-reject">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-head">
+      <h3>Refuser ce post</h3>
+      <button class="close-btn" onclick="closeReject()">✕</button>
+    </div>
+    <div class="form-row" style="margin-bottom:0">
+      <label>Commentaire pour l'équipe</label>
+      <textarea class="reject-comment-area" id="reject-comment" placeholder="Ex : Photo trop sombre, retravailler le texte de la slide 2..."></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeReject()">Annuler</button>
+      <button class="btn" style="background:var(--red);color:white;border-color:var(--red)" onclick="confirmReject()">Refuser</button>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lb-img" src="" alt="" style="display:none">
+  <video id="lb-video" controls style="display:none;max-width:90vw;max-height:80vh;border-radius:8px"></video>
+  <div class="lightbox-nav" id="lb-nav">
+    <button class="lightbox-btn" onclick="lbPrev()">← Précédent</button>
+    <span class="lightbox-counter" id="lb-counter"></span>
+    <button class="lightbox-btn" onclick="lbNext()">Suivant →</button>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script>
+// Polyfill: expose functions immediately so onclick handlers work
+// Real implementations loaded after Firebase init
+const _queue=[];
+['setFilter','goPage','openModal','closeModal','saveItem','openReject','closeReject','confirmReject',
+ 'deletePost','deleteStory','validatePost','validateStory','rejectStory','openLightbox','closeLightbox',
+ 'lbPrev','lbNext','openPostLightbox','onFormatChange','previewPhoto','addCarouselPhotos',
+ 'removeCarouselImg','previewReel','addStorySlides','removeStorySlide','renderCarouselPreviews',
+ 'renderStoryPreviews','setMode'].forEach(fn=>{
+  window[fn]=function(){_queue.push([fn,arguments]);};
+});
+</script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, doc, setDoc, onSnapshot, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ─── CONFIG ───────────────────────────────────────────────────────
+const CLOUDINARY_CLOUD = 'dztxdthmd';
+const CLOUDINARY_PRESET = 'jedtogo';
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyC7gzV6fsFuRs6hAtzgksRRFuXGU0OmUUc",
+  authDomain: "jed-togo-af119.firebaseapp.com",
+  projectId: "jed-togo-af119",
+  storageBucket: "jed-togo-af119.firebasestorage.app",
+  messagingSenderId: "772323461534",
+  appId: "1:772323461534:web:da9da22a8f583303b6ae8f"
+};
+
+// ─── STATE ────────────────────────────────────────────────────────
+let posts=[],stories=[],feedOrder=[];
+let editIdx=null,editType='post',rejectIdx=null;
+let currentMode='editor',currentFilter='';
+let carouselImgs=[],storySlides=[];
+let singleImg=null,reelSrc=null;
+let lbItems=[],lbIdx=0;
+let db=null;
+
+// ─── FIREBASE INIT ────────────────────────────────────────────────
+async function initFirebase(){
+  try{
+    const app=initializeApp(FIREBASE_CONFIG);
+    db=getFirestore(app);
+    showStatus('🔄 Connexion...');
+    // Listen realtime with debounce to prevent freezes
+    let renderTimeout=null;
+    onSnapshot(doc(db,'jedtogo','data'),snap=>{
+      if(snap.exists()){
+        const d=snap.data();
+        posts=d.posts||[];
+        stories=d.stories||[];
+        feedOrder=d.feedOrder||[];
+        if(renderTimeout)clearTimeout(renderTimeout);
+        renderTimeout=setTimeout(()=>renderAll(),300);
+      }
+      showStatus('🟢 En ligne');
+    });
+  }catch(e){
+    console.error('Firebase error:',e);
+    showStatus('🔴 Hors ligne (local)');
+    hydratLocal();
+    renderAll();
+  }
+}
+
+function showStatus(msg){
+  const el=document.getElementById('toast');
+  if(el){el.textContent=msg;el.classList.add('show');if(msg.includes('✅')||msg.includes('Sauvegardé'))setTimeout(()=>el.classList.remove('show'),2500);}
+}
+
+// ─── PERSIST ──────────────────────────────────────────────────────
+async function persist(){
+  // Local backup
+  try{localStorage.setItem('jed_posts',JSON.stringify(posts));localStorage.setItem('jed_stories',JSON.stringify(stories));localStorage.setItem('jed_feedorder',JSON.stringify(feedOrder));}catch(e){}
+  // Firebase
+  if(db){
+    try{
+      await setDoc(doc(db,'jedtogo','data'),{posts,stories,feedOrder,updatedAt:new Date().toISOString()});
+      showStatus('✅ Sauvegardé');
+    }catch(e){showStatus('⚠️ Sauvegarde locale uniquement');}
+  }
+}
+
+function hydratLocal(){
+  try{
+    const p=localStorage.getItem('jed_posts');
+    const s=localStorage.getItem('jed_stories');
+    const fo=localStorage.getItem('jed_feedorder');
+    if(p)posts=JSON.parse(p);
+    if(s)stories=JSON.parse(s);
+    if(fo)feedOrder=JSON.parse(fo);
+  }catch(e){}
+}
+
+function showToast(){showStatus('✅ Sauvegardé');}
+
+// ─── VIDEO LINK HELPERS ───────────────────────────────────────────
+function parseVideoUrl(url){
+  if(!url)return null;
+  // YouTube
+  const yt=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if(yt)return{type:'youtube',embedUrl:`https://www.youtube.com/embed/${yt[1]}`,thumbUrl:`https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg`};
+  // Google Drive
+  const gd=url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if(gd)return{type:'gdrive',embedUrl:`https://drive.google.com/file/d/${gd[1]}/preview`,thumbUrl:null};
+  // Already an embed URL
+  if(url.includes('embed'))return{type:'embed',embedUrl:url,thumbUrl:null};
+  return{type:'raw',embedUrl:url,thumbUrl:null};
+}
+
+function previewReelLink(){
+  const url=document.getElementById('f-reel-url').value.trim();
+  const ytId=getYoutubeId(url);
+  const preview=document.getElementById('reel-link-preview');
+  const iframe=document.getElementById('reel-iframe');
+  if(ytId){
+    reelSrc=url;
+    // Show thumbnail instead of iframe
+    preview.style.display='block';
+    preview.innerHTML=`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px" alt=""><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><a href="https://www.youtube.com/watch?v=${ytId}" target="_blank" style="width:48px;height:48px;background:rgba(255,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none">▶️</a></div>`;
+    preview.style.position='relative';
+  }else if(url){
+    reelSrc=url;
+    preview.style.display='block';
+    preview.innerHTML=`<div style="padding:12px;font-size:13px;color:var(--muted)">🎬 Lien vidéo ajouté — <a href="${url}" target="_blank" style="color:var(--green)">Ouvrir</a></div>`;
+  }else{
+    preview.style.display='none';
+  }
+}
+window.previewReelLink=previewReelLink;
+
+// ─── IMAGE COMPRESSION ────────────────────────────────────────────
+async function compressImage(file,maxSizeMB=8){
+  return new Promise((resolve)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        let w=img.width,h=img.height;
+        // Max 2000px
+        const MAX=2000;
+        if(w>MAX||h>MAX){if(w>h){h=Math.round(h*(MAX/w));w=MAX;}else{w=Math.round(w*(MAX/h));h=MAX;}}
+        canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        // Try quality 0.85 first, then lower if needed
+        let quality=0.85;
+        const tryCompress=()=>{
+          canvas.toBlob(blob=>{
+            if(blob&&blob.size>maxSizeMB*1024*1024&&quality>0.3){
+              quality-=0.1;
+              tryCompress();
+            }else{
+              resolve(new File([blob],file.name,{type:'image/jpeg'}));
+            }
+          },'image/jpeg',quality);
+        };
+        tryCompress();
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ─── CLOUDINARY UPLOAD ────────────────────────────────────────────
+async function uploadToCloudinary(file){
+  // Compress if image
+  let uploadFile=file;
+  if(file.type.startsWith('image/')){
+    showStatus('⏳ Compression...');
+    uploadFile=await compressImage(file);
+  }
+  const fd=new FormData();
+  fd.append('file',uploadFile);
+  fd.append('upload_preset','jedtogo');
+  showStatus('⏳ Upload en cours...');
+  const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,{method:'POST',body:fd});
+  const data=await res.json();
+  if(data.secure_url){showStatus('✅ Sauvegardé');return data.secure_url;}
+  throw new Error(data.error?.message||'Upload failed');
+}
+
+async function uploadMultiple(files){
+  const urls=[];
+  for(const file of files){
+    const url=await uploadToCloudinary(file);
+    urls.push(url);
+  }
+  return urls;
+}
+
+// ─── MODE ─────────────────────────────────────────────────────────
+function setMode(mode){
+  currentMode=mode;
+  document.getElementById('btn-editor').classList.toggle('active',mode==='editor');
+  document.getElementById('btn-president').classList.toggle('active',mode==='president');
+  ['sidebar-add','add-btn','add-story-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=mode==='editor'?'':'none';});
+  document.getElementById('pres-banner').style.display=mode==='president'?'flex':'none';
+  const copyBtn=document.getElementById('copy-pres-link');if(copyBtn)copyBtn.style.display=mode==='editor'?'':'none';
+  renderAll();
+}
+window.setMode=setMode;
+
+// ─── NAV ──────────────────────────────────────────────────────────
+function goPage(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  el.classList.add('active');
+  if(name==='feed')renderFeed();
+  if(name==='stories')renderStories();
+}
+window.goPage=goPage;
+
+function setFilter(f){
+  currentFilter=f;
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.toggle('active',c.dataset.filter===f));
+  renderPosts();
+}
+window.setFilter=setFilter;
+
+function onFormatChange(){
+  const fmt=document.getElementById('f-format').value;
+  document.getElementById('upload-photo').style.display=fmt==='photo'?'block':'none';
+  document.getElementById('upload-carousel').style.display=fmt==='carousel'?'block':'none';
+  document.getElementById('upload-reel').style.display=fmt==='reel'?'block':'none';
+}
+window.onFormatChange=onFormatChange;
+
+// ─── MODAL ────────────────────────────────────────────────────────
+function openModal(type,idx){
+  editType=type==='story'?'story':'post';
+  editIdx=idx!==undefined?idx:null;
+  singleImg=null;reelSrc=null;storySlides=[];carouselImgs=[];
+  document.getElementById('modal-body-post').style.display=editType==='post'?'block':'none';
+  document.getElementById('modal-body-story').style.display=editType==='story'?'block':'none';
+  document.getElementById('modal-title').textContent=editType==='story'?(editIdx!==null?'Modifier la story':'Nouvelle story'):(editIdx!==null?'Modifier le post':'Nouveau post');
+  resetPreviews();
+  if(editType==='post'){
+    if(editIdx!==null){
+      const p=posts[editIdx];
+      document.getElementById('f-theme').value=p.theme||'';
+      document.getElementById('f-format').value=p.format||'photo';
+      document.getElementById('f-date').value=p.date||'';
+      document.getElementById('f-title').value=p.title||'';
+      document.getElementById('f-desc').value=p.desc||'';
+      if(p.format==='carousel'&&p.imgs){carouselImgs=[...p.imgs];renderCarouselPreviews();}
+      if(p.format==='photo'&&p.img){singleImg=p.img;showImgPreview('photo-preview',p.img);}
+      if(p.format==='reel'&&p.video){reelSrc=p.video;document.getElementById('f-reel-url').value=p.video;previewReelLink();}
+    }else{
+      document.getElementById('f-theme').value='Inclusion femmes & veuves';
+      document.getElementById('f-format').value='photo';
+      document.getElementById('f-date').value='';
+      document.getElementById('f-title').value='';
+      document.getElementById('f-desc').value='';
+    }
+    onFormatChange();
+  }else{
+    if(editIdx!==null){
+      const s=stories[editIdx];
+      document.getElementById('fs-name').value=s.name||'';
+      document.getElementById('fs-date').value=s.date||'';
+      document.getElementById('fs-desc').value=s.desc||'';
+      if(s.slides&&s.slides.length){storySlides=[...s.slides];renderStoryPreviews();}
+    }else{
+      document.getElementById('fs-name').value='';
+      document.getElementById('fs-date').value='';
+      document.getElementById('fs-desc').value='';
+    }
+  }
+  document.getElementById('overlay').classList.add('open');
+}
+window.openModal=openModal;
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  const rv=document.getElementById('reel-link-preview');
+  if(rv){rv.style.display='none';rv.innerHTML='';}
+}
+window.closeModal=closeModal;
+
+function resetPreviews(){
+  const ph=document.getElementById('photo-preview');if(ph){ph.style.display='none';ph.src='';}
+  const rv=document.getElementById('reel-link-preview');if(rv){rv.style.display='none';rv.innerHTML='';}
+  const ri=document.getElementById('reel-iframe');if(ri){ri.src='';}
+  const ru=document.getElementById('f-reel-url');if(ru){ru.value='';}
+  const sp=document.getElementById('story-previews');if(sp)sp.innerHTML='';
+  const cp=document.getElementById('carousel-previews');if(cp)cp.innerHTML='';
+  const ul=document.getElementById('upload-label-photo');if(ul)ul.textContent='Cliquez pour ajouter une photo';
+}
+
+function showImgPreview(id,src){const el=document.getElementById(id);if(el){el.src=src;el.style.display='block';}}
+
+// ─── FILE INPUTS (local preview only, upload on save) ─────────────
+let pendingPhotoFile=null,pendingReelFile=null,pendingCarouselFiles=[],pendingStoryFiles=[];
+
+function previewPhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  pendingPhotoFile=file;
+  const url=URL.createObjectURL(file);
+  showImgPreview('photo-preview',url);
+  singleImg=url;// temp local url
+  document.getElementById('upload-label-photo').textContent=file.name;
+}
+window.previewPhoto=previewPhoto;
+
+function addCarouselPhotos(e){
+  const files=Array.from(e.target.files);
+  pendingCarouselFiles=[...pendingCarouselFiles,...files];
+  files.forEach(f=>{carouselImgs.push(URL.createObjectURL(f));});
+  renderCarouselPreviews();
+}
+window.addCarouselPhotos=addCarouselPhotos;
+
+function renderCarouselPreviews(){
+  const c=document.getElementById('carousel-previews');
+  c.innerHTML=carouselImgs.map((src,i)=>`<div class="carousel-thumb"><img src="${src}" alt=""><div class="carousel-thumb-num">${i+1}</div><button class="carousel-thumb-del" onclick="removeCarouselImg(${i})">✕</button></div>`).join('');
+}
+window.renderCarouselPreviews=renderCarouselPreviews;
+function removeCarouselImg(i){carouselImgs.splice(i,1);pendingCarouselFiles.splice(i,1);renderCarouselPreviews();}
+window.removeCarouselImg=removeCarouselImg;
+
+function previewReel(e){
+  const file=e.target.files[0];if(!file)return;
+  pendingReelFile=file;
+  const url=URL.createObjectURL(file);
+  reelSrc=url;
+  const v=document.getElementById('reel-preview');v.src=url;v.style.display='block';
+  document.getElementById('upload-label-reel').textContent=file.name;
+}
+window.previewReel=previewReel;
+
+function addStorySlides(e){
+  const files=Array.from(e.target.files);
+  pendingStoryFiles=[...pendingStoryFiles,...files];
+  files.forEach(f=>{storySlides.push(URL.createObjectURL(f));});
+  renderStoryPreviews();
+}
+window.addStorySlides=addStorySlides;
+
+function renderStoryPreviews(){
+  const c=document.getElementById('story-previews');
+  c.innerHTML=storySlides.map((src,i)=>`<div class="carousel-thumb"><img src="${src}" alt=""><div class="carousel-thumb-num">${i+1}</div><button class="carousel-thumb-del" onclick="removeStorySlide(${i})">✕</button></div>`).join('');
+}
+window.renderStoryPreviews=renderStoryPreviews;
+function removeStorySlide(i){storySlides.splice(i,1);pendingStoryFiles.splice(i,1);renderStoryPreviews();}
+window.removeStorySlide=removeStorySlide;
+
+// ─── SAVE (upload to Cloudinary then Firestore) ───────────────────
+async function saveItem(){
+  const saveBtn=document.querySelector('#overlay .btn-green');
+  if(saveBtn){saveBtn.disabled=true;saveBtn.textContent='Envoi...';}
+  try{
+    if(editType==='post'){
+      const title=document.getElementById('f-title').value.trim();
+      if(!title){alert('Ajoutez un titre.');return;}
+      const fmt=document.getElementById('f-format').value;
+      const item={theme:document.getElementById('f-theme').value,format:fmt,date:document.getElementById('f-date').value,title,desc:document.getElementById('f-desc').value,status:'pending',comment:''};
+      if(fmt==='photo'){
+        if(pendingPhotoFile)item.img=await uploadToCloudinary(pendingPhotoFile);
+        else if(editIdx!==null)item.img=posts[editIdx].img||null;
+      }
+      if(fmt==='carousel'){
+        // Upload new files, keep existing URLs for unchanged
+        const existingUrls=carouselImgs.filter(u=>u.startsWith('http'));
+        const newUrls=await uploadMultiple(pendingCarouselFiles);
+        item.imgs=[...existingUrls,...newUrls];
+      }
+      if(fmt==='reel'){
+        const reelUrl=document.getElementById('f-reel-url').value.trim();
+        if(reelUrl){item.video=reelUrl;}
+        else if(editIdx!==null)item.video=posts[editIdx].video||null;
+      }
+      if(editIdx!==null){item.status=posts[editIdx].status;item.comment=posts[editIdx].comment||'';posts[editIdx]=item;}
+      else posts.push(item);
+    }else{
+      const name=document.getElementById('fs-name').value.trim();
+      if(!name){alert('Donnez un nom.');return;}
+      const existingUrls=storySlides.filter(u=>u.startsWith('http'));
+      const newUrls=await uploadMultiple(pendingStoryFiles);
+      const item={name,date:document.getElementById('fs-date').value,desc:document.getElementById('fs-desc').value,slides:[...existingUrls,...newUrls],status:'pending',comment:''};
+      if(editIdx!==null){item.status=stories[editIdx].status;item.comment=stories[editIdx].comment||'';stories[editIdx]=item;}
+      else stories.push(item);
+    }
+    pendingPhotoFile=null;pendingReelFile=null;pendingCarouselFiles=[];pendingStoryFiles=[];
+    closeModal();
+    await persist();
+    renderAll();
+  }catch(e){
+    alert("Erreur lors de l'envoi : "+e.message);
+  }finally{
+    if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='Enregistrer';}
+  }
+}
+window.saveItem=saveItem;
+
+// ─── REJECT ───────────────────────────────────────────────────────
+function openReject(idx){rejectIdx=idx;document.getElementById('reject-comment').value=posts[idx].comment||'';document.getElementById('overlay-reject').classList.add('open');}
+window.openReject=openReject;
+function closeReject(){document.getElementById('overlay-reject').classList.remove('open');rejectIdx=null;}
+window.closeReject=closeReject;
+async function confirmReject(){if(rejectIdx===null)return;posts[rejectIdx].status='rejected';posts[rejectIdx].comment=document.getElementById('reject-comment').value.trim();closeReject();await persist();renderAll();}
+window.confirmReject=confirmReject;
+
+// ─── DELETE ───────────────────────────────────────────────────────
+async function deletePost(idx){if(!confirm('Supprimer ce post ?'))return;posts.splice(idx,1);await persist();renderAll();}
+window.deletePost=deletePost;
+async function deleteStory(idx){if(!confirm('Supprimer cette story ?'))return;stories.splice(idx,1);await persist();renderAll();}
+window.deleteStory=deleteStory;
+
+// ─── VALIDATE ─────────────────────────────────────────────────────
+async function validatePost(idx){posts[idx].status='validated';posts[idx].comment='';await persist();renderAll();}
+window.validatePost=validatePost;
+async function validateStory(idx){stories[idx].status='validated';stories[idx].comment='';await persist();renderAll();}
+window.validateStory=validateStory;
+async function rejectStory(idx){stories[idx].status='rejected';await persist();renderAll();}
+window.rejectStory=rejectStory;
+
+// ─── HELPERS ──────────────────────────────────────────────────────
+function fmtDate(d){if(!d)return'';const p=d.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function fmtType(t){return{photo:'Photo',carousel:'Carrousel',reel:'Reel / TikTok'}[t]||t;}
+function badgeHtml(s){
+  if(s==='validated')return'<span class="badge badge-validated">✓ Validé</span>';
+  if(s==='rejected')return'<span class="badge badge-rejected">✕ Refusé</span>';
+  return'<span class="badge badge-pending">⏳ En attente</span>';
+}
+function thumbHtml(p){
+  if(p.format==='carousel'&&p.imgs&&p.imgs.length)return`<img src="${p.imgs[0]}" alt=""><div class="thumb-count">1/${p.imgs.length}</div>`;
+  if(p.format==='photo'&&p.img)return`<img src="${p.img}" alt="">`;
+  if(p.format==='reel'&&p.video){const ytId=getYoutubeId(p.video);if(ytId)return`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover">`;return'🎬';}
+  return{photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼';
+}
+
+// ─── LIGHTBOX ─────────────────────────────────────────────────────
+function openLightbox(items,idx){lbItems=items;lbIdx=idx;showLbItem();document.getElementById('lightbox').classList.add('open');document.getElementById('lb-nav').style.display=items.length>1?'flex':'none';}
+window.openLightbox=openLightbox;
+function showLbItem(){
+  const it=lbItems[lbIdx];
+  const img=document.getElementById('lb-img');
+  const vid=document.getElementById('lb-video');
+  // Remove existing iframe if any
+  const existingIframe=document.getElementById('lb-iframe');
+  if(existingIframe)existingIframe.remove();
+  if(it&&it.type==='iframe'){
+    img.style.display='none';vid.style.display='none';
+    const iframe=document.createElement('iframe');
+    iframe.id='lb-iframe';
+    iframe.src=it.src;
+    iframe.style.cssText='width:90vw;max-width:900px;height:50vw;max-height:500px;border:none;border-radius:12px';
+    iframe.allowFullscreen=true;
+    document.getElementById('lightbox').insertBefore(iframe,document.getElementById('lb-nav'));
+  }else if(it&&it.type==='video'){
+    img.style.display='none';vid.style.display='block';vid.src=it.src;
+  }else{
+    vid.style.display='none';img.style.display='block';img.src=it?it.src:'';
+  }
+  document.getElementById('lb-counter').textContent=`${lbIdx+1} / ${lbItems.length}`;
+}
+function lbPrev(){lbIdx=(lbIdx-1+lbItems.length)%lbItems.length;showLbItem();}
+window.lbPrev=lbPrev;
+function lbNext(){lbIdx=(lbIdx+1)%lbItems.length;showLbItem();}
+window.lbNext=lbNext;
+function closeLightbox(e){if(!e||e.target===document.getElementById('lightbox'))document.getElementById('lightbox').classList.remove('open');}
+window.closeLightbox=closeLightbox;
+function openPostLightbox(idx){
+  const p=posts[idx];
+  if(p.format==='carousel'&&p.imgs&&p.imgs.length){openLightbox(p.imgs.map(s=>({type:'img',src:s})),0);return;}
+  if(p.format==='photo'&&p.img){openLightbox([{type:'img',src:p.img}],0);return;}
+  if(p.format==='reel'&&p.video){openVideoUrl(p.video);return;}
+}
+window.openPostLightbox=openPostLightbox;
+
+// ─── DELETE ALL ───────────────────────────────────────────────────
+async function deleteAll(){
+  if(!confirm('Supprimer TOUS les posts et stories ? Cette action est irréversible.'))return;
+  if(!confirm('Dernière confirmation — vraiment tout supprimer ?'))return;
+  posts=[];stories=[];feedOrder=[];
+  await persist();
+  renderAll();
+}
+window.deleteAll=deleteAll;
+function copyPresLink(){
+  const url=window.location.href.split('?')[0]+'?mode=president';
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById('copy-pres-link');
+    if(btn){const orig=btn.textContent;btn.textContent='✅ Copié !';setTimeout(()=>btn.textContent=orig,2000);}
+  });
+}
+window.copyPresLink=copyPresLink;
+
+// ─── VIDEO HELPERS ────────────────────────────────────────────────
+function getYoutubeId(url){
+  if(!url)return null;
+  const embed=url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+  if(embed)return embed[1];
+  const watch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if(watch)return watch[1];
+  const shorts=url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/);
+  if(shorts)return shorts[1];
+  return null;
+}
+
+function videoThumbHtml(videoUrl){
+  const ytId=getYoutubeId(videoUrl);
+  if(ytId)return`<div style="position:relative;width:100%;height:100%"><img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:28px;height:28px;background:rgba(255,0,0,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;pointer-events:none">▶</div></div>`;
+  return`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;gap:4px"><span style="font-size:20px">🎬</span><span style="font-size:9px;color:var(--muted2)">Vidéo</span></div>`;
+}
+
+function openVideoUrl(url){
+  // Convert embed URL back to watch URL for opening
+  const ytId=getYoutubeId(url);
+  if(ytId){window.open(`https://www.youtube.com/watch?v=${ytId}`,'_blank');return;}
+  window.open(url,'_blank');
+}
+window.openVideoUrl=openVideoUrl;
+function getFeedOrder(){const allIdx=posts.map((_,i)=>i);const validOrder=feedOrder.filter(i=>i<posts.length);const remaining=allIdx.filter(i=>!validOrder.includes(i));return[...validOrder,...remaining];}
+
+// ─── RENDER POSTS ─────────────────────────────────────────────────
+function renderPosts(){
+  const list=document.getElementById('posts-list');
+  let filtered=posts.map((p,i)=>({...p,_i:i}));
+  if(currentFilter==='pending')filtered=filtered.filter(p=>p.status==='pending');
+  else if(currentFilter==='validated')filtered=filtered.filter(p=>p.status==='validated');
+  else if(currentFilter==='rejected')filtered=filtered.filter(p=>p.status==='rejected');
+  else if(currentFilter==='reel')filtered=filtered.filter(p=>p.format==='reel');
+  else if(currentFilter==='carousel')filtered=filtered.filter(p=>p.format==='carousel');
+  filtered.sort((a,b)=>{if(!a.date)return 1;if(!b.date)return-1;return a.date<b.date?-1:1;});
+  if(filtered.length===0){list.innerHTML=`<div class="empty"><div class="empty-icon">📭</div><p>${posts.length===0?'Aucun post planifié.<br>Cliquez sur <strong>+ Ajouter</strong> pour commencer.':'Aucun post pour ce filtre.'}</p></div>`;return;}
+  const isEditor=currentMode==='editor';
+  list.innerHTML=filtered.map(p=>{
+    const actions=isEditor
+      ?`<button class="btn-xs btn-xs-green" onclick="validatePost(${p._i})">✓ Valider</button><button class="btn-xs btn-xs-red" onclick="openReject(${p._i})">✕ Refuser</button><button class="btn-xs" onclick="openModal('post',${p._i})">✏️ Modifier</button><button class="btn-xs btn-xs-muted" onclick="deletePost(${p._i})">🗑</button>`
+      :`${p.status!=='validated'?`<button class="btn-xs btn-xs-green" onclick="validatePost(${p._i})">✓ Valider</button>`:''}
+        ${p.status!=='rejected'?`<button class="btn-xs btn-xs-red" onclick="openReject(${p._i})">✕ Refuser</button>`:''}
+        <button class="btn-xs" onclick="togglePresComment(${p._i})">💬 Commenter</button>`;
+    const hasMedia=(p.format==='photo'&&p.img)||(p.format==='carousel'&&p.imgs&&p.imgs.length)||(p.format==='reel'&&p.video);
+    const presCommentArea=!isEditor?`<div id="pres-comment-${p._i}" style="display:none;margin-top:8px">
+      <textarea id="pres-comment-text-${p._i}" style="width:100%;font-size:12px;padding:8px 10px;border:0.5px solid var(--border);border-radius:7px;resize:none;min-height:60px;font-family:inherit;background:var(--surface);outline:none" placeholder="Votre commentaire...">${p.comment||''}</textarea>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button class="btn-xs btn-xs-green" onclick="savePresComment(${p._i})">Envoyer</button>
+        <button class="btn-xs btn-xs-muted" onclick="togglePresComment(${p._i})">Annuler</button>
+      </div>
+    </div>`:'';
+    return`<div class="post-card status-${p.status}"><div class="thumb" ${hasMedia?`onclick="openPostLightbox(${p._i})" style="cursor:pointer"`:''}>${thumbHtml(p)}</div><div class="post-body"><div class="post-meta">${p.date?`<span class="post-date">📅 ${fmtDate(p.date)}</span>`:''}<span class="chip chip-type">${fmtType(p.format)}</span><span class="chip">${p.theme}</span>${badgeHtml(p.status)}</div><div class="post-title">${p.title||'Sans titre'}</div>${p.desc?`<div class="post-desc">${p.desc}</div>`:''} ${p.comment?`<div class="post-comment-box">💬 ${p.comment}</div>`:''}<div class="post-actions">${actions}</div>${presCommentArea}</div></div>`;
+  }).join('');
+}
+
+function togglePresComment(idx){
+  const el=document.getElementById(`pres-comment-${idx}`);
+  if(el)el.style.display=el.style.display==='none'?'block':'none';
+}
+window.togglePresComment=togglePresComment;
+
+async function savePresComment(idx){
+  const txt=document.getElementById(`pres-comment-text-${idx}`);
+  if(!txt)return;
+  posts[idx].comment=txt.value.trim();
+  await persist();
+  renderAll();
+}
+window.savePresComment=savePresComment;
+
+// ─── RENDER STORIES ───────────────────────────────────────────────
+function renderStories(){
+  const grid=document.getElementById('stories-grid');
+  if(stories.length===0){grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📱</div><p>Aucune story à la une.<br>Cliquez sur <strong>+ Ajouter une story</strong>.</p></div>`;return;}
+  const isEditor=currentMode==='editor';
+  grid.innerHTML=stories.map((s,i)=>{
+    const slides=s.slides&&s.slides.length?s.slides:(s.img?[s.img]:[]);
+    const firstSlide=slides[0]||null;
+    const lbItemsJson=JSON.stringify(slides.map(src=>({type:'img',src}))).replace(/"/g,'&quot;');
+    const actions=isEditor
+      ?`<button class="btn-xs btn-xs-green" onclick="validateStory(${i})">✓</button><button class="btn-xs btn-xs-red" onclick="rejectStory(${i})">✕</button><button class="btn-xs" onclick="openModal('story',${i})">✏️</button><button class="btn-xs btn-xs-muted" onclick="deleteStory(${i})">🗑</button>`
+      :`${s.status!=='validated'?`<button class="btn-xs btn-xs-green" onclick="validateStory(${i})">✓ Valider</button>`:''}${s.status!=='rejected'?`<button class="btn-xs btn-xs-red" onclick="rejectStory(${i})">✕ Refuser</button>`:''}`;
+    return`<div class="story-card"><div class="story-thumb" ${slides.length?`onclick="openLightbox(JSON.parse(this.dataset.items),0)" data-items="${lbItemsJson}" style="cursor:pointer"`:''}>${firstSlide?`<img src="${firstSlide}" alt="">`:'📱'}${slides.length>1?`<div class="thumb-count" style="position:absolute;top:4px;right:4px">${slides.length} slides</div>`:''}</div><div class="story-info"><div class="story-title">${s.name}</div><div class="story-meta">${s.date?fmtDate(s.date):''} · ${badgeHtml(s.status)}</div>${s.desc?`<div class="post-desc" style="margin-top:4px">${s.desc}</div>`:''}<div class="story-actions">${actions}</div></div></div>`;
+  }).join('');
+}
+
+// ─── RENDER FEED ──────────────────────────────────────────────────
+function renderFeed(){
+  const orderedIdx=getFeedOrder();
+  const orderedPosts=orderedIdx.map(i=>({...posts[i],_oi:i}));
+  const vs=stories.filter(s=>s.status==='validated');
+  const hlRow=document.getElementById('highlights-row');
+  hlRow.innerHTML=vs.length?vs.map(s=>{const slides=s.slides&&s.slides.length?s.slides:(s.img?[s.img]:[]);const first=slides[0]||null;return`<div class="highlight-item"><div class="highlight-circle">${first?`<img src="${first}" alt="">`:'📱'}</div><div class="highlight-label">${s.name}</div></div>`;}).join(''):'<span style="font-size:12px;color:var(--muted2);padding:4px 8px">Aucun highlight validé</span>';
+  const grid=document.getElementById('feed-grid');
+  let html='';
+  for(let i=0;i<9;i++){
+    const p=orderedPosts[i];
+    if(p){
+      let thumb='';
+      if(p.format==='carousel'&&p.imgs&&p.imgs.length)thumb=`<img src="${p.imgs[0]}" alt="">`;
+      else if(p.format==='photo'&&p.img)thumb=`<img src="${p.img}" alt="">`;
+      else if(p.format==='reel'&&p.video)thumb=videoThumbHtml(p.video);
+      else thumb=`<div class="feed-cell-empty">${{photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼'}</div>`;
+      html+=`<div class="feed-cell" draggable="true" data-pos="${i}" data-oi="${p._oi}" style="cursor:grab">${thumb}<div class="feed-tooltip"><span>${p.title}</span></div></div>`;
+    }else{
+      html+=`<div class="feed-cell feed-cell-empty" data-pos="${i}">＋</div>`;
+    }
+  }
+  grid.innerHTML=html;
+  initFeedDrag();
+  const legend=document.getElementById('legend-list');
+  if(!orderedPosts.filter(p=>p).length){legend.innerHTML='<p style="font-size:12px;color:var(--muted)">Aucun post pour l\'instant.</p>';return;}
+  legend.innerHTML=orderedPosts.slice(0,9).filter(p=>p).map(p=>{
+    let thumbSrc='';
+    if(p.format==='carousel'&&p.imgs&&p.imgs.length)thumbSrc=`<img src="${p.imgs[0]}" alt="">`;
+    else if(p.format==='photo'&&p.img)thumbSrc=`<img src="${p.img}" alt="">`;
+    else if(p.format==='reel'&&p.video){const ytId=getYoutubeId(p.video);thumbSrc=ytId?`<img src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover" referrerpolicy="no-referrer">`:'🎬';}
+    else thumbSrc={photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼';
+    return`<div class="legend-item"><div class="legend-thumb">${thumbSrc}</div><div class="legend-info"><div class="legend-title">${p.title}</div><div class="legend-sub">${fmtType(p.format)} · ${p.date?fmtDate(p.date):'Date non définie'}</div></div></div>`;
+  }).join('');
+}
+
+let dragSrcPos=null;
+let touchDragPos=null;
+let touchClone=null;
+
+function initFeedDrag(){
+  const cells=document.querySelectorAll('#feed-grid .feed-cell[draggable]');
+  cells.forEach(cell=>{
+    // ── DESKTOP drag ──
+    cell.addEventListener('dragstart',e=>{dragSrcPos=parseInt(cell.dataset.pos);e.dataTransfer.effectAllowed='move';cell.style.opacity='0.4';});
+    cell.addEventListener('dragend',()=>{cell.style.opacity='1';document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));});
+    cell.addEventListener('dragover',e=>{e.preventDefault();document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));cell.classList.add('drag-over');});
+    cell.addEventListener('dragleave',()=>cell.classList.remove('drag-over'));
+    cell.addEventListener('drop',async e=>{
+      e.preventDefault();
+      const destPos=parseInt(cell.dataset.pos);
+      if(dragSrcPos===null||dragSrcPos===destPos)return;
+      await swapFeedCells(dragSrcPos,destPos);
+    });
+
+    // ── MOBILE touch ──
+    cell.addEventListener('touchstart',e=>{
+      touchDragPos=parseInt(cell.dataset.pos);
+      cell.style.opacity='0.5';
+      cell.style.transform='scale(0.95)';
+      e.preventDefault();
+    },{passive:false});
+
+    cell.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      const touch=e.touches[0];
+      const el=document.elementFromPoint(touch.clientX,touch.clientY);
+      const target=el?.closest('.feed-cell[draggable]');
+      document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));
+      if(target&&target!==cell)target.classList.add('drag-over');
+    },{passive:false});
+
+    cell.addEventListener('touchend',async e=>{
+      cell.style.opacity='1';
+      cell.style.transform='';
+      document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));
+      const touch=e.changedTouches[0];
+      const el=document.elementFromPoint(touch.clientX,touch.clientY);
+      const target=el?.closest('.feed-cell[draggable]');
+      if(target){
+        const destPos=parseInt(target.dataset.pos);
+        if(touchDragPos!==null&&touchDragPos!==destPos){
+          await swapFeedCells(touchDragPos,destPos);
+        }
+      }
+      touchDragPos=null;
+    });
+  });
+}
+
+async function swapFeedCells(srcPos,destPos){
+  const ordered=getFeedOrder();
+  const newOrder=[...ordered];
+  const tmp=newOrder[srcPos];newOrder[srcPos]=newOrder[destPos];newOrder[destPos]=tmp;
+  feedOrder=newOrder;
+  await persist();
+  renderFeed();
+}
+
+// ─── COUNTERS ─────────────────────────────────────────────────────
+function updateCounters(){
+  const pending=posts.filter(p=>p.status==='pending').length;
+  const validated=posts.filter(p=>p.status==='validated').length;
+  const rejected=posts.filter(p=>p.status==='rejected').length;
+  document.getElementById('s-total').textContent=posts.length;
+  document.getElementById('s-pending').textContent=pending;
+  document.getElementById('s-validated').textContent=validated;
+  document.getElementById('s-rejected').textContent=rejected;
+  document.getElementById('nc-pending').textContent=pending;
+  document.getElementById('nc-pending2').textContent=pending;
+  document.getElementById('nc-validated').textContent=validated;
+  document.getElementById('nc-rejected').textContent=rejected;
+  document.getElementById('nc-stories').textContent=stories.length;
+}
+
+function renderAll(){renderPosts();renderStories();updateCounters();if(document.getElementById('page-feed').classList.contains('active'))renderFeed();updateBottomNav();}
+
+function updateBottomNav(){
+  const isMobile=window.innerWidth<=720;
+  const bn=document.getElementById('bottom-nav');
+  if(bn)bn.style.display=isMobile?'block':'none';
+  // hide add btn in president mode
+  const addBtn=document.getElementById('bnav-add-btn');
+  if(addBtn)addBtn.style.display=(isMobile&&currentMode==='editor')?'flex':'none';
+  // update badge
+  const badge=document.getElementById('bnav-badge');
+  if(badge)badge.textContent=posts.filter(p=>p.status==='pending').length;
+  // update mode btn
+  const modeIcon=document.getElementById('bnav-mode-icon');
+  const modeLabel=document.getElementById('bnav-mode-label');
+  if(modeIcon)modeIcon.textContent=currentMode==='editor'?'👁':'✏️';
+  if(modeLabel)modeLabel.textContent=currentMode==='editor'?'Président':'Éditeur';
+}
+
+function goPageMobile(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  // sync sidebar
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(name==='feed')renderFeed();
+  if(name==='stories')renderStories();
+}
+window.goPageMobile=goPageMobile;
+
+function toggleModeMobile(){
+  const newMode=currentMode==='editor'?'president':'editor';
+  setMode(newMode);
+}
+window.toggleModeMobile=toggleModeMobile;
+
+function copyPresLinkMobile(){
+  const url=window.location.href.split('?')[0]+'?mode=president';
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById('bnav-link-label');
+    if(btn){btn.textContent='Copié !';setTimeout(()=>btn.textContent='Lien',2000);}
+  });
+}
+window.copyPresLinkMobile=copyPresLinkMobile;
+
+window.addEventListener('resize',updateBottomNav);
+
+// ─── INIT ─────────────────────────────────────────────────────────
+// Flush queued calls
+const _fnMap={setFilter,goPage,openModal,closeModal,saveItem,openReject,closeReject,confirmReject,
+  deletePost,deleteStory,validatePost,validateStory,rejectStory,openLightbox,closeLightbox,
+  lbPrev,lbNext,openPostLightbox,onFormatChange,previewPhoto,addCarouselPhotos,
+  removeCarouselImg,previewReel,addStorySlides,removeStorySlide,renderCarouselPreviews,
+  renderStoryPreviews,setMode,previewReelLink};
+Object.keys(_fnMap).forEach(k=>window[k]=_fnMap[k]);
+if(window._queue){window._queue.forEach(([fn,args])=>{if(_fnMap[fn])_fnMap[fn](...args);});}
+
+initFirebase();
+
+if(window.location.search.includes('mode=president')){
+  setMode('president');
+  const toggle=document.querySelector('.mode-toggle');
+  if(toggle)toggle.style.display='none';
+  window.setMode=()=>{};
+}
+</script>
 </body>
 </html>
