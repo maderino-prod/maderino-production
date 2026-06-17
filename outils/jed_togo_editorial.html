@@ -21,8 +21,8 @@
   --radius:14px;--radius-sm:10px;--radius-xs:8px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:14px;-webkit-font-smoothing:antialiased}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--black);color:var(--ink);min-height:100vh;
+html{font-size:14px;-webkit-font-smoothing:antialiased;background:#060608;color-scheme:dark}
+body{font-family:'Inter',system-ui,sans-serif;background:#060608;color:var(--ink);min-height:100vh;color-scheme:dark;
   background-image:radial-gradient(ellipse 60% 40% at 15% 5%,rgba(45,122,71,0.08) 0%,transparent 70%),
   radial-gradient(ellipse 50% 50% at 85% 85%,rgba(255,107,43,0.05) 0%,transparent 70%);
 }
@@ -206,15 +206,87 @@ input[type=file]{display:none}
 .lightbox-counter{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.06em}
 /* Block extension-injected elements */
 .legend-thumb *+div,.legend-thumb *+button,.legend-thumb *+a{display:none!important}
+
+/* BOTTOM NAV */
+.bnav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px;border:none;background:none;color:var(--muted);cursor:pointer;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;position:relative;transition:color .15s}
+.bnav-item.active{color:var(--green)}
+.bnav-item.bnav-add{background:var(--green);border-radius:50%;width:44px;height:44px;margin:4px auto 0;padding:0;color:white;font-size:24px;box-shadow:0 4px 16px var(--green-glow)}
+.bnav-badge{position:absolute;top:6px;right:8px;background:var(--amber);color:white;font-size:9px;font-weight:700;border-radius:20px;padding:1px 5px;min-width:16px;text-align:center}
+#bnav-link.copied{color:var(--green)}
 @media(max-width:720px){
-  .layout{flex-direction:column;height:auto}
-  .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--glass-border);flex-direction:row;overflow-x:auto;padding:8px;gap:4px;height:auto}
-  .nav-label{display:none}
-  .sidebar-add{margin-top:0;padding-top:0}
-  .main{padding:14px}
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .feed-section{grid-template-columns:1fr}
+  /* BASE */
+  html,body{background:#060608!important}
+
+  /* TOPBAR */
+  .topbar{padding:0 16px;height:52px}
+  .brand-name{font-size:15px;letter-spacing:2px}
+  .brand-sep,.brand-sub{display:none}
+  .mode-toggle{display:none}
+  #copy-pres-link{display:none!important}
+  .toast{font-size:11px;padding:4px 10px}
+
+  /* LAYOUT */
+  .layout{flex-direction:column;height:calc(100dvh - 52px)}
+  .sidebar{display:none}
+  .main{padding:16px 14px 100px;overflow-y:auto;height:100%;-webkit-overflow-scrolling:touch}
+
+  /* BOTTOM NAV visible */
+  .bottom-nav{display:block!important}
+
+  /* STATS — 2 colonnes compactes */
+  .stats-row{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+  .stat-card{padding:12px 14px}
+  .stat-num{font-size:28px}
+  .stat-label{font-size:10px}
+
+  /* SECTION HEADER */
+  .section-header{margin-bottom:14px;flex-wrap:wrap;gap:8px}
+  .section-title{font-size:18px;letter-spacing:2px}
+  .section-desc{font-size:11px}
+  .btn{font-size:11px;padding:6px 12px}
+
+  /* FILTERS — scroll horizontal */
+  .filters{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:16px;gap:6px;-webkit-overflow-scrolling:touch}
+  .filters::-webkit-scrollbar{display:none}
+  .filter-chip{flex-shrink:0;font-size:10px;padding:5px 12px}
+
+  /* POST CARDS */
+  .posts-list{gap:10px}
+  .post-card{padding:12px;gap:12px;border-radius:12px}
+  .thumb{width:64px;height:64px;border-radius:8px}
+  .post-title{font-size:13px}
+  .post-desc{font-size:12px;-webkit-line-clamp:2}
+  .post-meta{gap:4px;margin-bottom:4px}
+  .chip{font-size:10px;padding:2px 7px}
+  .badge{font-size:10px;padding:2px 7px}
+  .post-date{font-size:11px}
+  .post-actions{gap:5px;margin-top:8px;flex-wrap:wrap}
+  .btn-xs{font-size:11px;padding:5px 10px}
+
+  /* FEED */
+  .feed-section{grid-template-columns:1fr;gap:16px}
+  .feed-phone{max-width:100%}
+  .feed-legend{margin-top:0}
+
+  /* STORIES */
+  .stories-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+
+  /* MODAL — slide up from bottom */
+  .overlay{align-items:flex-end;padding:0;background:rgba(0,0,0,.7)}
+  .modal{border-radius:20px 20px 0 0;max-height:88dvh;max-width:100%;margin:0;padding:20px 18px 32px}
+  .modal-head h3{font-size:18px}
   .form-grid{grid-template-columns:1fr}
+  .form-row input,.form-row select,.form-row textarea{font-size:16px}
+
+  /* EMPTY STATE */
+  .empty{padding:36px 20px}
+  .empty-icon{font-size:28px}
+  .empty p{font-size:13px}
+}
+
+@media(min-width:721px){
+  .bottom-nav{display:none!important}
+}
 }
 </style>
 <body>
@@ -317,6 +389,32 @@ input[type=file]{display:none}
     </div>
   </main>
 </div>
+
+<!-- BOTTOM NAV (mobile only) -->
+<nav class="bottom-nav" id="bottom-nav" style="display:none;position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,8,0.97);backdrop-filter:var(--glass-blur);border-top:1px solid var(--glass-border);z-index:40;padding:4px 0 16px">
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:0">
+    <button class="bnav-item active" id="bnav-posts" onclick="goPageMobile('posts',this)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="14" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+      <span>Posts</span>
+      <span class="bnav-badge" id="bnav-badge">0</span>
+    </button>
+    <button class="bnav-item" id="bnav-stories" onclick="goPageMobile('stories',this)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9"/></svg>
+      <span>Stories</span>
+    </button>
+    <button class="bnav-item bnav-add" id="bnav-add-btn" onclick="openModal()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+    </button>
+    <button class="bnav-item" id="bnav-feed" onclick="goPageMobile('feed',this)">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Feed</span>
+    </button>
+    <button class="bnav-item" id="bnav-link" onclick="copyPresLinkMobile()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="bnav-link-label">Lien</span>
+    </button>
+  </div>
+</nav>
 
 <!-- MODAL AJOUT/EDIT -->
 <div class="overlay" id="overlay">
@@ -1112,7 +1210,53 @@ function updateCounters(){
   document.getElementById('nc-stories').textContent=stories.length;
 }
 
-function renderAll(){renderPosts();renderStories();updateCounters();if(document.getElementById('page-feed').classList.contains('active'))renderFeed();}
+function renderAll(){renderPosts();renderStories();updateCounters();if(document.getElementById('page-feed').classList.contains('active'))renderFeed();updateBottomNav();}
+
+function updateBottomNav(){
+  const isMobile=window.innerWidth<=720;
+  const bn=document.getElementById('bottom-nav');
+  if(bn)bn.style.display=isMobile?'block':'none';
+  // hide add btn in president mode
+  const addBtn=document.getElementById('bnav-add-btn');
+  if(addBtn)addBtn.style.display=(isMobile&&currentMode==='editor')?'flex':'none';
+  // update badge
+  const badge=document.getElementById('bnav-badge');
+  if(badge)badge.textContent=posts.filter(p=>p.status==='pending').length;
+  // update mode btn
+  const modeIcon=document.getElementById('bnav-mode-icon');
+  const modeLabel=document.getElementById('bnav-mode-label');
+  if(modeIcon)modeIcon.textContent=currentMode==='editor'?'👁':'✏️';
+  if(modeLabel)modeLabel.textContent=currentMode==='editor'?'Président':'Éditeur';
+}
+
+function goPageMobile(name,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.bnav-item').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  // sync sidebar
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  if(name==='feed')renderFeed();
+  if(name==='stories')renderStories();
+}
+window.goPageMobile=goPageMobile;
+
+function toggleModeMobile(){
+  const newMode=currentMode==='editor'?'president':'editor';
+  setMode(newMode);
+}
+window.toggleModeMobile=toggleModeMobile;
+
+function copyPresLinkMobile(){
+  const url=window.location.href.split('?')[0]+'?mode=president';
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById('bnav-link-label');
+    if(btn){btn.textContent='Copié !';setTimeout(()=>btn.textContent='Lien',2000);}
+  });
+}
+window.copyPresLinkMobile=copyPresLinkMobile;
+
+window.addEventListener('resize',updateBottomNav);
 
 // ─── INIT ─────────────────────────────────────────────────────────
 // Flush queued calls
