@@ -366,9 +366,7 @@ input[type=file]{display:none}
         <label>Lien vidéo (Google Drive ou YouTube)</label>
         <input type="text" id="f-reel-url" placeholder="https://drive.google.com/file/d/... ou https://youtu.be/..." onchange="previewReelLink()" onblur="previewReelLink()">
         <p style="font-size:11px;color:var(--muted);margin-top:6px">Google Drive : partage le fichier en "Tout le monde avec le lien" puis colle l'URL ici.</p>
-        <div id="reel-link-preview" style="margin-top:10px;display:none;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:#000">
-          <iframe id="reel-iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe>
-        </div>
+        <div id="reel-link-preview" style="margin-top:10px;display:none;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:var(--surface);position:relative"></div>
       </div>
     </div>
 
@@ -922,11 +920,12 @@ window.copyPresLink=copyPresLink;
 // ─── VIDEO HELPERS ────────────────────────────────────────────────
 function getYoutubeId(url){
   if(!url)return null;
-  // Handle embed URLs too
   const embed=url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
   if(embed)return embed[1];
   const watch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
   if(watch)return watch[1];
+  const shorts=url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/);
+  if(shorts)return shorts[1];
   return null;
 }
 
