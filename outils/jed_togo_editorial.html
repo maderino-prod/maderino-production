@@ -361,13 +361,12 @@ input[type=file]{display:none}
 
       <!-- REEL -->
       <div id="upload-reel" class="form-row" style="display:none">
-        <label>Vidéo (Reel / TikTok)</label>
-        <div class="upload-zone" onclick="document.getElementById('f-file-reel').click()">
-          <div class="upload-zone-icon">🎬</div>
-          <span id="upload-label-reel">Cliquez pour ajouter une vidéo</span>
+        <label>Lien vidéo (Google Drive ou YouTube)</label>
+        <input type="text" id="f-reel-url" placeholder="https://drive.google.com/file/d/... ou https://youtu.be/..." onchange="previewReelLink()" onblur="previewReelLink()">
+        <p style="font-size:11px;color:var(--muted);margin-top:6px">Google Drive : partage le fichier en "Tout le monde avec le lien" puis colle l'URL ici.</p>
+        <div id="reel-link-preview" style="margin-top:10px;display:none;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:#000">
+          <iframe id="reel-iframe" style="width:100%;height:100%;border:none" allowfullscreen></iframe>
         </div>
-        <input type="file" id="f-file-reel" accept="video/*" onchange="previewReel(event)">
-        <video id="reel-preview" class="reel-preview" controls></video>
       </div>
     </div>
 
@@ -527,16 +526,82 @@ function hydratLocal(){
 
 function showToast(){showStatus('✅ Sauvegardé');}
 
+// ─── VIDEO LINK HELPERS ───────────────────────────────────────────
+function parseVideoUrl(url){
+  if(!url)return null;
+  // YouTube
+  const yt=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if(yt)return{type:'youtube',embedUrl:`https://www.youtube.com/embed/${yt[1]}`,thumbUrl:`https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg`};
+  // Google Drive
+  const gd=url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if(gd)return{type:'gdrive',embedUrl:`https://drive.google.com/file/d/${gd[1]}/preview`,thumbUrl:null};
+  // Already an embed URL
+  if(url.includes('embed'))return{type:'embed',embedUrl:url,thumbUrl:null};
+  return{type:'raw',embedUrl:url,thumbUrl:null};
+}
+
+function previewReelLink(){
+  const url=document.getElementById('f-reel-url').value.trim();
+  const parsed=parseVideoUrl(url);
+  if(parsed){
+    reelSrc=parsed.embedUrl;
+    document.getElementById('reel-iframe').src=parsed.embedUrl;
+    document.getElementById('reel-link-preview').style.display='block';
+  }
+}
+window.previewReelLink=previewReelLink;
+
+// ─── IMAGE COMPRESSION ────────────────────────────────────────────
+async function compressImage(file,maxSizeMB=8){
+  return new Promise((resolve)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        let w=img.width,h=img.height;
+        // Max 2000px
+        const MAX=2000;
+        if(w>MAX||h>MAX){if(w>h){h=Math.round(h*(MAX/w));w=MAX;}else{w=Math.round(w*(MAX/h));h=MAX;}}
+        canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        // Try quality 0.85 first, then lower if needed
+        let quality=0.85;
+        const tryCompress=()=>{
+          canvas.toBlob(blob=>{
+            if(blob&&blob.size>maxSizeMB*1024*1024&&quality>0.3){
+              quality-=0.1;
+              tryCompress();
+            }else{
+              resolve(new File([blob],file.name,{type:'image/jpeg'}));
+            }
+          },'image/jpeg',quality);
+        };
+        tryCompress();
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 // ─── CLOUDINARY UPLOAD ────────────────────────────────────────────
 async function uploadToCloudinary(file){
+  // Compress if image
+  let uploadFile=file;
+  if(file.type.startsWith('image/')){
+    showStatus('⏳ Compression...');
+    uploadFile=await compressImage(file);
+  }
   const fd=new FormData();
-  fd.append('file',file);
+  fd.append('file',uploadFile);
   fd.append('upload_preset','jedtogo');
   showStatus('⏳ Upload en cours...');
   const res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,{method:'POST',body:fd});
   const data=await res.json();
   if(data.secure_url){showStatus('✅ Sauvegardé');return data.secure_url;}
-  throw new Error('Upload failed');
+  throw new Error(data.error?.message||'Upload failed');
 }
 
 async function uploadMultiple(files){
@@ -604,7 +669,7 @@ function openModal(type,idx){
       document.getElementById('f-desc').value=p.desc||'';
       if(p.format==='carousel'&&p.imgs){carouselImgs=[...p.imgs];renderCarouselPreviews();}
       if(p.format==='photo'&&p.img){singleImg=p.img;showImgPreview('photo-preview',p.img);}
-      if(p.format==='reel'&&p.video){reelSrc=p.video;const v=document.getElementById('reel-preview');v.src=p.video;v.style.display='block';}
+      if(p.format==='reel'&&p.video){reelSrc=p.video;document.getElementById('f-reel-url').value=p.video;const parsed=parseVideoUrl(p.video);if(parsed){document.getElementById('reel-iframe').src=parsed.embedUrl;document.getElementById('reel-link-preview').style.display='block';}}
     }else{
       document.getElementById('f-theme').value='Inclusion femmes & veuves';
       document.getElementById('f-format').value='photo';
@@ -634,7 +699,9 @@ window.closeModal=closeModal;
 
 function resetPreviews(){
   const ph=document.getElementById('photo-preview');if(ph){ph.style.display='none';ph.src='';}
-  const rv=document.getElementById('reel-preview');if(rv){rv.style.display='none';rv.src='';}
+  const rv=document.getElementById('reel-link-preview');if(rv){rv.style.display='none';}
+  const ri=document.getElementById('reel-iframe');if(ri){ri.src='';}
+  const ru=document.getElementById('f-reel-url');if(ru){ru.value='';}
   document.getElementById('story-previews').innerHTML='';
   document.getElementById('carousel-previews').innerHTML='';
   document.getElementById('upload-label-photo').textContent='Cliquez pour ajouter une photo';
@@ -719,7 +786,8 @@ async function saveItem(){
         item.imgs=[...existingUrls,...newUrls];
       }
       if(fmt==='reel'){
-        if(pendingReelFile)item.video=await uploadToCloudinary(pendingReelFile);
+        const reelUrl=document.getElementById('f-reel-url').value.trim();
+        if(reelUrl){const parsed=parseVideoUrl(reelUrl);item.video=parsed?parsed.embedUrl:reelUrl;}
         else if(editIdx!==null)item.video=posts[editIdx].video||null;
       }
       if(editIdx!==null){item.status=posts[editIdx].status;item.comment=posts[editIdx].comment||'';posts[editIdx]=item;}
@@ -778,21 +846,42 @@ function badgeHtml(s){
 function thumbHtml(p){
   if(p.format==='carousel'&&p.imgs&&p.imgs.length)return`<img src="${p.imgs[0]}" alt=""><div class="thumb-count">1/${p.imgs.length}</div>`;
   if(p.format==='photo'&&p.img)return`<img src="${p.img}" alt="">`;
-  if(p.format==='reel'&&p.video)return`<video src="${p.video}" muted></video>`;
+  if(p.format==='reel'&&p.video)return`<iframe src="${p.video}" style="width:100%;height:100%;border:none;pointer-events:none" allowfullscreen></iframe>`;
   return{photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼';
 }
 
 // ─── LIGHTBOX ─────────────────────────────────────────────────────
 function openLightbox(items,idx){lbItems=items;lbIdx=idx;showLbItem();document.getElementById('lightbox').classList.add('open');document.getElementById('lb-nav').style.display=items.length>1?'flex':'none';}
 window.openLightbox=openLightbox;
-function showLbItem(){const it=lbItems[lbIdx];const img=document.getElementById('lb-img');const vid=document.getElementById('lb-video');if(it&&it.type==='video'){img.style.display='none';vid.style.display='block';vid.src=it.src;}else{vid.style.display='none';img.style.display='block';img.src=it?it.src:'';}document.getElementById('lb-counter').textContent=`${lbIdx+1} / ${lbItems.length}`;}
+function showLbItem(){
+  const it=lbItems[lbIdx];
+  const img=document.getElementById('lb-img');
+  const vid=document.getElementById('lb-video');
+  // Remove existing iframe if any
+  const existingIframe=document.getElementById('lb-iframe');
+  if(existingIframe)existingIframe.remove();
+  if(it&&it.type==='iframe'){
+    img.style.display='none';vid.style.display='none';
+    const iframe=document.createElement('iframe');
+    iframe.id='lb-iframe';
+    iframe.src=it.src;
+    iframe.style.cssText='width:90vw;max-width:900px;height:50vw;max-height:500px;border:none;border-radius:12px';
+    iframe.allowFullscreen=true;
+    document.getElementById('lightbox').insertBefore(iframe,document.getElementById('lb-nav'));
+  }else if(it&&it.type==='video'){
+    img.style.display='none';vid.style.display='block';vid.src=it.src;
+  }else{
+    vid.style.display='none';img.style.display='block';img.src=it?it.src:'';
+  }
+  document.getElementById('lb-counter').textContent=`${lbIdx+1} / ${lbItems.length}`;
+}
 function lbPrev(){lbIdx=(lbIdx-1+lbItems.length)%lbItems.length;showLbItem();}
 window.lbPrev=lbPrev;
 function lbNext(){lbIdx=(lbIdx+1)%lbItems.length;showLbItem();}
 window.lbNext=lbNext;
 function closeLightbox(e){if(!e||e.target===document.getElementById('lightbox'))document.getElementById('lightbox').classList.remove('open');}
 window.closeLightbox=closeLightbox;
-function openPostLightbox(idx){const p=posts[idx];let items=[];if(p.format==='carousel'&&p.imgs)items=p.imgs.map(s=>({type:'img',src:s}));else if(p.format==='photo'&&p.img)items=[{type:'img',src:p.img}];else if(p.format==='reel'&&p.video)items=[{type:'video',src:p.video}];if(items.length)openLightbox(items,0);}
+function openPostLightbox(idx){const p=posts[idx];let items=[];if(p.format==='carousel'&&p.imgs)items=p.imgs.map(s=>({type:'img',src:s}));else if(p.format==='photo'&&p.img)items=[{type:'img',src:p.img}];else if(p.format==='reel'&&p.video)items=[{type:'iframe',src:p.video}];if(items.length)openLightbox(items,0);}
 window.openPostLightbox=openPostLightbox;
 
 // ─── FEED ORDER ───────────────────────────────────────────────────
@@ -917,12 +1006,18 @@ const _fnMap={setFilter,goPage,openModal,closeModal,saveItem,openReject,closeRej
   deletePost,deleteStory,validatePost,validateStory,rejectStory,openLightbox,closeLightbox,
   lbPrev,lbNext,openPostLightbox,onFormatChange,previewPhoto,addCarouselPhotos,
   removeCarouselImg,previewReel,addStorySlides,removeStorySlide,renderCarouselPreviews,
-  renderStoryPreviews,setMode};
+  renderStoryPreviews,setMode,previewReelLink};
 Object.keys(_fnMap).forEach(k=>window[k]=_fnMap[k]);
 if(window._queue){window._queue.forEach(([fn,args])=>{if(_fnMap[fn])_fnMap[fn](...args);});}
 
 initFirebase();
-if(window.location.search.includes('president'))setMode('president');
+
+if(window.location.search.includes('mode=president')){
+  setMode('president');
+  const toggle=document.querySelector('.mode-toggle');
+  if(toggle)toggle.style.display='none';
+  window.setMode=()=>{};
+}
 </script>
 </body>
 </html>
