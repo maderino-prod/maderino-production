@@ -205,6 +205,7 @@ input[type=file]{display:none}
     <span class="brand-sub">Calendrier éditorial</span>
   </div>
   <div class="topbar-right">
+    <button class="btn" id="copy-pres-link" onclick="copyPresLink()" title="Copier le lien président" style="font-size:12px;padding:5px 12px">🔗 Lien président</button>
     <div class="mode-toggle">
       <button class="mode-btn active" id="btn-editor" onclick="setMode('editor')">✏️ Éditeur</button>
       <button class="mode-btn" id="btn-president" onclick="setMode('president')">👁 Président</button>
@@ -620,6 +621,7 @@ function setMode(mode){
   document.getElementById('btn-president').classList.toggle('active',mode==='president');
   ['sidebar-add','add-btn','add-story-btn'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=mode==='editor'?'':'none';});
   document.getElementById('pres-banner').style.display=mode==='president'?'flex':'none';
+  const copyBtn=document.getElementById('copy-pres-link');if(copyBtn)copyBtn.style.display=mode==='editor'?'':'none';
   renderAll();
 }
 window.setMode=setMode;
@@ -883,7 +885,24 @@ window.closeLightbox=closeLightbox;
 function openPostLightbox(idx){const p=posts[idx];let items=[];if(p.format==='carousel'&&p.imgs)items=p.imgs.map(s=>({type:'img',src:s}));else if(p.format==='photo'&&p.img)items=[{type:'img',src:p.img}];else if(p.format==='reel'&&p.video)items=[{type:'iframe',src:p.video}];if(items.length)openLightbox(items,0);}
 window.openPostLightbox=openPostLightbox;
 
-// ─── FEED ORDER ───────────────────────────────────────────────────
+// ─── COPY PRESIDENT LINK ─────────────────────────────────────────
+function copyPresLink(){
+  const url=window.location.href.split('?')[0]+'?mode=president';
+  navigator.clipboard.writeText(url).then(()=>{
+    const btn=document.getElementById('copy-pres-link');
+    if(btn){const orig=btn.textContent;btn.textContent='✅ Copié !';setTimeout(()=>btn.textContent=orig,2000);}
+  });
+}
+window.copyPresLink=copyPresLink;
+
+// ─── VIDEO THUMB FOR FEED ─────────────────────────────────────────
+function videoThumbHtml(embedUrl){
+  // YouTube thumbnail
+  const yt=embedUrl.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+  if(yt)return`<img src="https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover">`;
+  // Google Drive — no thumbnail available, show icon
+  return`<div class="feed-cell-empty" style="flex-direction:column;gap:4px"><span style="font-size:20px">🎬</span><span style="font-size:9px;color:var(--muted2)">Drive</span></div>`;
+}
 function getFeedOrder(){const allIdx=posts.map((_,i)=>i);const validOrder=feedOrder.filter(i=>i<posts.length);const remaining=allIdx.filter(i=>!validOrder.includes(i));return[...validOrder,...remaining];}
 
 // ─── RENDER POSTS ─────────────────────────────────────────────────
@@ -901,11 +920,35 @@ function renderPosts(){
   list.innerHTML=filtered.map(p=>{
     const actions=isEditor
       ?`<button class="btn-xs btn-xs-green" onclick="validatePost(${p._i})">✓ Valider</button><button class="btn-xs btn-xs-red" onclick="openReject(${p._i})">✕ Refuser</button><button class="btn-xs" onclick="openModal('post',${p._i})">✏️ Modifier</button><button class="btn-xs btn-xs-muted" onclick="deletePost(${p._i})">🗑</button>`
-      :`${p.status!=='validated'?`<button class="btn-xs btn-xs-green" onclick="validatePost(${p._i})">✓ Valider</button>`:''}${p.status!=='rejected'?`<button class="btn-xs btn-xs-red" onclick="openReject(${p._i})">✕ Refuser</button>`:''}`;
+      :`${p.status!=='validated'?`<button class="btn-xs btn-xs-green" onclick="validatePost(${p._i})">✓ Valider</button>`:''}
+        ${p.status!=='rejected'?`<button class="btn-xs btn-xs-red" onclick="openReject(${p._i})">✕ Refuser</button>`:''}
+        <button class="btn-xs" onclick="togglePresComment(${p._i})">💬 Commenter</button>`;
     const hasMedia=(p.format==='photo'&&p.img)||(p.format==='carousel'&&p.imgs&&p.imgs.length)||(p.format==='reel'&&p.video);
-    return`<div class="post-card status-${p.status}"><div class="thumb" ${hasMedia?`onclick="openPostLightbox(${p._i})" style="cursor:pointer"`:''}>${thumbHtml(p)}</div><div class="post-body"><div class="post-meta">${p.date?`<span class="post-date">📅 ${fmtDate(p.date)}</span>`:''}<span class="chip chip-type">${fmtType(p.format)}</span><span class="chip">${p.theme}</span>${badgeHtml(p.status)}</div><div class="post-title">${p.title||'Sans titre'}</div>${p.desc?`<div class="post-desc">${p.desc}</div>`:''} ${p.comment?`<div class="post-comment-box">💬 ${p.comment}</div>`:''}<div class="post-actions">${actions}</div></div></div>`;
+    const presCommentArea=!isEditor?`<div id="pres-comment-${p._i}" style="display:none;margin-top:8px">
+      <textarea id="pres-comment-text-${p._i}" style="width:100%;font-size:12px;padding:8px 10px;border:0.5px solid var(--border);border-radius:7px;resize:none;min-height:60px;font-family:inherit;background:var(--surface);outline:none" placeholder="Votre commentaire...">${p.comment||''}</textarea>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button class="btn-xs btn-xs-green" onclick="savePresComment(${p._i})">Envoyer</button>
+        <button class="btn-xs btn-xs-muted" onclick="togglePresComment(${p._i})">Annuler</button>
+      </div>
+    </div>`:'';
+    return`<div class="post-card status-${p.status}"><div class="thumb" ${hasMedia?`onclick="openPostLightbox(${p._i})" style="cursor:pointer"`:''}>${thumbHtml(p)}</div><div class="post-body"><div class="post-meta">${p.date?`<span class="post-date">📅 ${fmtDate(p.date)}</span>`:''}<span class="chip chip-type">${fmtType(p.format)}</span><span class="chip">${p.theme}</span>${badgeHtml(p.status)}</div><div class="post-title">${p.title||'Sans titre'}</div>${p.desc?`<div class="post-desc">${p.desc}</div>`:''} ${p.comment?`<div class="post-comment-box">💬 ${p.comment}</div>`:''}<div class="post-actions">${actions}</div>${presCommentArea}</div></div>`;
   }).join('');
 }
+
+function togglePresComment(idx){
+  const el=document.getElementById(`pres-comment-${idx}`);
+  if(el)el.style.display=el.style.display==='none'?'block':'none';
+}
+window.togglePresComment=togglePresComment;
+
+async function savePresComment(idx){
+  const txt=document.getElementById(`pres-comment-text-${idx}`);
+  if(!txt)return;
+  posts[idx].comment=txt.value.trim();
+  await persist();
+  renderAll();
+}
+window.savePresComment=savePresComment;
 
 // ─── RENDER STORIES ───────────────────────────────────────────────
 function renderStories(){
@@ -938,7 +981,7 @@ function renderFeed(){
       let thumb='';
       if(p.format==='carousel'&&p.imgs&&p.imgs.length)thumb=`<img src="${p.imgs[0]}" alt="">`;
       else if(p.format==='photo'&&p.img)thumb=`<img src="${p.img}" alt="">`;
-      else if(p.format==='reel'&&p.video)thumb=`<video src="${p.video}" muted></video>`;
+      else if(p.format==='reel'&&p.video)thumb=videoThumbHtml(p.video);
       else thumb=`<div class="feed-cell-empty">${{photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼'}</div>`;
       html+=`<div class="feed-cell" draggable="true" data-pos="${i}" data-oi="${p._oi}" style="cursor:grab">${thumb}<div class="feed-tooltip"><span>${p.title}</span></div></div>`;
     }else{
@@ -953,7 +996,7 @@ function renderFeed(){
     let thumbSrc='';
     if(p.format==='carousel'&&p.imgs&&p.imgs.length)thumbSrc=`<img src="${p.imgs[0]}" alt="">`;
     else if(p.format==='photo'&&p.img)thumbSrc=`<img src="${p.img}" alt="">`;
-    else if(p.format==='reel'&&p.video)thumbSrc=`<video src="${p.video}" muted></video>`;
+    else if(p.format==='reel'&&p.video)thumbSrc=videoThumbHtml(p.video);
     else thumbSrc={photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼';
     return`<div class="legend-item"><div class="legend-thumb">${thumbSrc}</div><div class="legend-info"><div class="legend-title">${p.title}</div><div class="legend-sub">${fmtType(p.format)} · ${p.date?fmtDate(p.date):'Date non définie'}</div></div></div>`;
   }).join('');
