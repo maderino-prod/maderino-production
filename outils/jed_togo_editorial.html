@@ -104,7 +104,7 @@ input,textarea,select,button{font-family:inherit}
 .feed-name{font-size:13px;font-weight:600;letter-spacing:-.01em}
 .feed-cell.drag-over{outline:2px solid var(--green);outline-offset:-2px;opacity:.6}
 .feed-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px}
-.feed-cell{aspect-ratio:1/1;background:var(--surface);overflow:hidden;position:relative}
+.feed-cell{aspect-ratio:1/1;background:var(--surface);overflow:hidden;position:relative;cursor:default}
 .feed-cell img,.feed-cell video{width:100%;height:100%;object-fit:cover}
 .feed-cell-empty{display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:16px}
 .feed-tooltip{position:absolute;inset:0;background:rgba(0,0,0,.48);display:none;align-items:flex-end;padding:6px}
@@ -476,14 +476,16 @@ async function initFirebase(){
     const app=initializeApp(FIREBASE_CONFIG);
     db=getFirestore(app);
     showStatus('🔄 Connexion...');
-    // Listen realtime
+    // Listen realtime with debounce to prevent freezes
+    let renderTimeout=null;
     onSnapshot(doc(db,'jedtogo','data'),snap=>{
       if(snap.exists()){
         const d=snap.data();
         posts=d.posts||[];
         stories=d.stories||[];
         feedOrder=d.feedOrder||[];
-        renderAll();
+        if(renderTimeout)clearTimeout(renderTimeout);
+        renderTimeout=setTimeout(()=>renderAll(),300);
       }
       showStatus('🟢 En ligne');
     });
@@ -680,7 +682,7 @@ function openModal(type,idx){
       document.getElementById('f-desc').value=p.desc||'';
       if(p.format==='carousel'&&p.imgs){carouselImgs=[...p.imgs];renderCarouselPreviews();}
       if(p.format==='photo'&&p.img){singleImg=p.img;showImgPreview('photo-preview',p.img);}
-      if(p.format==='reel'&&p.video){reelSrc=p.video;document.getElementById('f-reel-url').value=p.video;const parsed=parseVideoUrl(p.video);if(parsed){document.getElementById('reel-iframe').src=parsed.embedUrl;document.getElementById('reel-link-preview').style.display='block';}}
+      if(p.format==='reel'&&p.video){reelSrc=p.video;document.getElementById('f-reel-url').value=p.video;previewReelLink();}
     }else{
       document.getElementById('f-theme').value='Inclusion femmes & veuves';
       document.getElementById('f-format').value='photo';
@@ -931,7 +933,7 @@ function getYoutubeId(url){
 
 function videoThumbHtml(videoUrl){
   const ytId=getYoutubeId(videoUrl);
-  if(ytId)return`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:32px;height:32px;background:rgba(255,0,0,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px">▶️</div></div>`;
+  if(ytId)return`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="width:28px;height:28px;background:rgba(255,0,0,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px">▶</div></div>`;
   return`<div class="feed-cell-empty" style="flex-direction:column;gap:4px"><span style="font-size:20px">🎬</span><span style="font-size:9px;color:var(--muted2)">Vidéo</span></div>`;
 }
 
