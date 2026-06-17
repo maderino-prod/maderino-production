@@ -366,7 +366,7 @@ input[type=file]{display:none}
         <label>Lien vidéo (Google Drive ou YouTube)</label>
         <input type="text" id="f-reel-url" placeholder="https://drive.google.com/file/d/... ou https://youtu.be/..." onchange="previewReelLink()" onblur="previewReelLink()">
         <p style="font-size:11px;color:var(--muted);margin-top:6px">Google Drive : partage le fichier en "Tout le monde avec le lien" puis colle l'URL ici.</p>
-        <div id="reel-link-preview" style="margin-top:10px;display:none;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:var(--surface);position:relative"></div>
+        <div id="reel-link-preview" style="margin-top:10px;display:none;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:var(--surface);position:relative;max-width:100%"></div>
       </div>
     </div>
 
@@ -712,7 +712,7 @@ window.closeModal=closeModal;
 
 function resetPreviews(){
   const ph=document.getElementById('photo-preview');if(ph){ph.style.display='none';ph.src='';}
-  const rv=document.getElementById('reel-link-preview');if(rv){rv.style.display='none';}
+  const rv=document.getElementById('reel-link-preview');if(rv){rv.style.display='none';rv.innerHTML='';}
   const ri=document.getElementById('reel-iframe');if(ri){ri.src='';}
   const ru=document.getElementById('f-reel-url');if(ru){ru.value='';}
   const sp=document.getElementById('story-previews');if(sp)sp.innerHTML='';
