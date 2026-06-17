@@ -226,6 +226,7 @@ input[type=file]{display:none}
     <button class="nav-item" onclick="goPage('posts',this);setFilter('rejected')"><span class="nav-icon">🔴</span> Refusés <span class="nav-count" id="nc-rejected">0</span></button>
     <div class="sidebar-add" id="sidebar-add">
       <button class="btn-add" onclick="openModal()">＋ Ajouter un post</button>
+      <button onclick="deleteAll()" style="width:100%;margin-top:8px;padding:9px;font-size:12px;font-weight:500;border:0.5px solid var(--red-light);border-radius:var(--radius-sm);background:none;color:var(--red);cursor:pointer;transition:all .15s" onmouseover="this.style.background='var(--red-light)'" onmouseout="this.style.background='none'">🗑 Tout supprimer</button>
     </div>
   </nav>
 
@@ -885,7 +886,15 @@ window.closeLightbox=closeLightbox;
 function openPostLightbox(idx){const p=posts[idx];let items=[];if(p.format==='carousel'&&p.imgs)items=p.imgs.map(s=>({type:'img',src:s}));else if(p.format==='photo'&&p.img)items=[{type:'img',src:p.img}];else if(p.format==='reel'&&p.video)items=[{type:'iframe',src:p.video}];if(items.length)openLightbox(items,0);}
 window.openPostLightbox=openPostLightbox;
 
-// ─── COPY PRESIDENT LINK ─────────────────────────────────────────
+// ─── DELETE ALL ───────────────────────────────────────────────────
+async function deleteAll(){
+  if(!confirm('Supprimer TOUS les posts et stories ? Cette action est irréversible.'))return;
+  if(!confirm('Dernière confirmation — vraiment tout supprimer ?'))return;
+  posts=[];stories=[];feedOrder=[];
+  await persist();
+  renderAll();
+}
+window.deleteAll=deleteAll;
 function copyPresLink(){
   const url=window.location.href.split('?')[0]+'?mode=president';
   navigator.clipboard.writeText(url).then(()=>{
