@@ -727,7 +727,7 @@ async function saveItem(){
     await persist();
     renderAll();
   }catch(e){
-    alert('Erreur lors de l'envoi : '+e.message);
+    alert("Erreur lors de l'envoi : "+e.message);
   }finally{
     if(saveBtn){saveBtn.disabled=false;saveBtn.textContent='Enregistrer';}
   }
