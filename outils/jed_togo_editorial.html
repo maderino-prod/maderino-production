@@ -434,6 +434,18 @@ input[type=file]{display:none}
 </div>
 
 <!-- Firebase SDK -->
+<script>
+// Polyfill: expose functions immediately so onclick handlers work
+// Real implementations loaded after Firebase init
+const _queue=[];
+['setFilter','goPage','openModal','closeModal','saveItem','openReject','closeReject','confirmReject',
+ 'deletePost','deleteStory','validatePost','validateStory','rejectStory','openLightbox','closeLightbox',
+ 'lbPrev','lbNext','openPostLightbox','onFormatChange','previewPhoto','addCarouselPhotos',
+ 'removeCarouselImg','previewReel','addStorySlides','removeStorySlide','renderCarouselPreviews',
+ 'renderStoryPreviews','setMode'].forEach(fn=>{
+  window[fn]=function(){_queue.push([fn,arguments]);};
+});
+</script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getFirestore, collection, doc, setDoc, onSnapshot, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
@@ -849,7 +861,7 @@ function renderFeed(){
   grid.innerHTML=html;
   initFeedDrag();
   const legend=document.getElementById('legend-list');
-  if(!orderedPosts.filter(p=>p).length){legend.innerHTML='<p style="font-size:12px;color:var(--muted)">Aucun post pour l'instant.</p>';return;}
+  if(!orderedPosts.filter(p=>p).length){legend.innerHTML='<p style="font-size:12px;color:var(--muted)">Aucun post pour l\'instant.</p>';return;}
   legend.innerHTML=orderedPosts.slice(0,9).filter(p=>p).map(p=>{
     let thumbSrc='';
     if(p.format==='carousel'&&p.imgs&&p.imgs.length)thumbSrc=`<img src="${p.imgs[0]}" alt="">`;
@@ -901,6 +913,15 @@ function updateCounters(){
 function renderAll(){renderPosts();renderStories();updateCounters();if(document.getElementById('page-feed').classList.contains('active'))renderFeed();}
 
 // ─── INIT ─────────────────────────────────────────────────────────
+// Flush queued calls
+const _fnMap={setFilter,goPage,openModal,closeModal,saveItem,openReject,closeReject,confirmReject,
+  deletePost,deleteStory,validatePost,validateStory,rejectStory,openLightbox,closeLightbox,
+  lbPrev,lbNext,openPostLightbox,onFormatChange,previewPhoto,addCarouselPhotos,
+  removeCarouselImg,previewReel,addStorySlides,removeStorySlide,renderCarouselPreviews,
+  renderStoryPreviews,setMode};
+Object.keys(_fnMap).forEach(k=>window[k]=_fnMap[k]);
+if(window._queue){window._queue.forEach(([fn,args])=>{if(_fnMap[fn])_fnMap[fn](...args);});}
+
 initFirebase();
 if(window.location.search.includes('president'))setMode('president');
 </script>
