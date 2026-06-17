@@ -702,10 +702,9 @@ function resetPreviews(){
   const rv=document.getElementById('reel-link-preview');if(rv){rv.style.display='none';}
   const ri=document.getElementById('reel-iframe');if(ri){ri.src='';}
   const ru=document.getElementById('f-reel-url');if(ru){ru.value='';}
-  document.getElementById('story-previews').innerHTML='';
-  document.getElementById('carousel-previews').innerHTML='';
-  document.getElementById('upload-label-photo').textContent='Cliquez pour ajouter une photo';
-  document.getElementById('upload-label-reel').textContent='Cliquez pour ajouter une vidéo';
+  const sp=document.getElementById('story-previews');if(sp)sp.innerHTML='';
+  const cp=document.getElementById('carousel-previews');if(cp)cp.innerHTML='';
+  const ul=document.getElementById('upload-label-photo');if(ul)ul.textContent='Cliquez pour ajouter une photo';
 }
 
 function showImgPreview(id,src){const el=document.getElementById(id);if(el){el.src=src;el.style.display='block';}}
