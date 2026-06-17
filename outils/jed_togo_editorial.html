@@ -544,11 +544,21 @@ function parseVideoUrl(url){
 
 function previewReelLink(){
   const url=document.getElementById('f-reel-url').value.trim();
-  const parsed=parseVideoUrl(url);
-  if(parsed){
-    reelSrc=parsed.embedUrl;
-    document.getElementById('reel-iframe').src=parsed.embedUrl;
-    document.getElementById('reel-link-preview').style.display='block';
+  const ytId=getYoutubeId(url);
+  const preview=document.getElementById('reel-link-preview');
+  const iframe=document.getElementById('reel-iframe');
+  if(ytId){
+    reelSrc=url;
+    // Show thumbnail instead of iframe
+    preview.style.display='block';
+    preview.innerHTML=`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:8px" alt=""><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><a href="https://www.youtube.com/watch?v=${ytId}" target="_blank" style="width:48px;height:48px;background:rgba(255,0,0,0.9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none">▶️</a></div>`;
+    preview.style.position='relative';
+  }else if(url){
+    reelSrc=url;
+    preview.style.display='block';
+    preview.innerHTML=`<div style="padding:12px;font-size:13px;color:var(--muted)">🎬 Lien vidéo ajouté — <a href="${url}" target="_blank" style="color:var(--green)">Ouvrir</a></div>`;
+  }else{
+    preview.style.display='none';
   }
 }
 window.previewReelLink=previewReelLink;
@@ -789,7 +799,7 @@ async function saveItem(){
       }
       if(fmt==='reel'){
         const reelUrl=document.getElementById('f-reel-url').value.trim();
-        if(reelUrl){const parsed=parseVideoUrl(reelUrl);item.video=parsed?parsed.embedUrl:reelUrl;}
+        if(reelUrl){item.video=reelUrl;}
         else if(editIdx!==null)item.video=posts[editIdx].video||null;
       }
       if(editIdx!==null){item.status=posts[editIdx].status;item.comment=posts[editIdx].comment||'';posts[editIdx]=item;}
@@ -848,7 +858,7 @@ function badgeHtml(s){
 function thumbHtml(p){
   if(p.format==='carousel'&&p.imgs&&p.imgs.length)return`<img src="${p.imgs[0]}" alt=""><div class="thumb-count">1/${p.imgs.length}</div>`;
   if(p.format==='photo'&&p.img)return`<img src="${p.img}" alt="">`;
-  if(p.format==='reel'&&p.video)return`<iframe src="${p.video}" style="width:100%;height:100%;border:none;pointer-events:none" allowfullscreen></iframe>`;
+  if(p.format==='reel'&&p.video){const ytId=getYoutubeId(p.video);if(ytId)return`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover">`;return'🎬';}
   return{photo:'📷',carousel:'🖼',reel:'🎬'}[p.format]||'🖼';
 }
 
@@ -883,7 +893,12 @@ function lbNext(){lbIdx=(lbIdx+1)%lbItems.length;showLbItem();}
 window.lbNext=lbNext;
 function closeLightbox(e){if(!e||e.target===document.getElementById('lightbox'))document.getElementById('lightbox').classList.remove('open');}
 window.closeLightbox=closeLightbox;
-function openPostLightbox(idx){const p=posts[idx];let items=[];if(p.format==='carousel'&&p.imgs)items=p.imgs.map(s=>({type:'img',src:s}));else if(p.format==='photo'&&p.img)items=[{type:'img',src:p.img}];else if(p.format==='reel'&&p.video)items=[{type:'iframe',src:p.video}];if(items.length)openLightbox(items,0);}
+function openPostLightbox(idx){
+  const p=posts[idx];
+  if(p.format==='carousel'&&p.imgs&&p.imgs.length){openLightbox(p.imgs.map(s=>({type:'img',src:s})),0);return;}
+  if(p.format==='photo'&&p.img){openLightbox([{type:'img',src:p.img}],0);return;}
+  if(p.format==='reel'&&p.video){openVideoUrl(p.video);return;}
+}
 window.openPostLightbox=openPostLightbox;
 
 // ─── DELETE ALL ───────────────────────────────────────────────────
@@ -904,14 +919,30 @@ function copyPresLink(){
 }
 window.copyPresLink=copyPresLink;
 
-// ─── VIDEO THUMB FOR FEED ─────────────────────────────────────────
-function videoThumbHtml(embedUrl){
-  // YouTube thumbnail
-  const yt=embedUrl.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
-  if(yt)return`<img src="https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover">`;
-  // Google Drive — no thumbnail available, show icon
-  return`<div class="feed-cell-empty" style="flex-direction:column;gap:4px"><span style="font-size:20px">🎬</span><span style="font-size:9px;color:var(--muted2)">Drive</span></div>`;
+// ─── VIDEO HELPERS ────────────────────────────────────────────────
+function getYoutubeId(url){
+  if(!url)return null;
+  // Handle embed URLs too
+  const embed=url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+  if(embed)return embed[1];
+  const watch=url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if(watch)return watch[1];
+  return null;
 }
+
+function videoThumbHtml(videoUrl){
+  const ytId=getYoutubeId(videoUrl);
+  if(ytId)return`<img src="https://img.youtube.com/vi/${ytId}/hqdefault.jpg" alt="" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:32px;height:32px;background:rgba(255,0,0,0.85);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px">▶️</div></div>`;
+  return`<div class="feed-cell-empty" style="flex-direction:column;gap:4px"><span style="font-size:20px">🎬</span><span style="font-size:9px;color:var(--muted2)">Vidéo</span></div>`;
+}
+
+function openVideoUrl(url){
+  // Convert embed URL back to watch URL for opening
+  const ytId=getYoutubeId(url);
+  if(ytId){window.open(`https://www.youtube.com/watch?v=${ytId}`,'_blank');return;}
+  window.open(url,'_blank');
+}
+window.openVideoUrl=openVideoUrl;
 function getFeedOrder(){const allIdx=posts.map((_,i)=>i);const validOrder=feedOrder.filter(i=>i<posts.length);const remaining=allIdx.filter(i=>!validOrder.includes(i));return[...validOrder,...remaining];}
 
 // ─── RENDER POSTS ─────────────────────────────────────────────────
