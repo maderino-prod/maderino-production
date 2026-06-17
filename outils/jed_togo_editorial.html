@@ -1173,9 +1173,13 @@ function renderFeed(){
 }
 
 let dragSrcPos=null;
+let touchDragPos=null;
+let touchClone=null;
+
 function initFeedDrag(){
   const cells=document.querySelectorAll('#feed-grid .feed-cell[draggable]');
   cells.forEach(cell=>{
+    // ── DESKTOP drag ──
     cell.addEventListener('dragstart',e=>{dragSrcPos=parseInt(cell.dataset.pos);e.dataTransfer.effectAllowed='move';cell.style.opacity='0.4';});
     cell.addEventListener('dragend',()=>{cell.style.opacity='1';document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));});
     cell.addEventListener('dragover',e=>{e.preventDefault();document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));cell.classList.add('drag-over');});
@@ -1184,14 +1188,51 @@ function initFeedDrag(){
       e.preventDefault();
       const destPos=parseInt(cell.dataset.pos);
       if(dragSrcPos===null||dragSrcPos===destPos)return;
-      const ordered=getFeedOrder();
-      const newOrder=[...ordered];
-      const tmp=newOrder[dragSrcPos];newOrder[dragSrcPos]=newOrder[destPos];newOrder[destPos]=tmp;
-      feedOrder=newOrder;
-      await persist();
-      renderFeed();
+      await swapFeedCells(dragSrcPos,destPos);
+    });
+
+    // ── MOBILE touch ──
+    cell.addEventListener('touchstart',e=>{
+      touchDragPos=parseInt(cell.dataset.pos);
+      cell.style.opacity='0.5';
+      cell.style.transform='scale(0.95)';
+      e.preventDefault();
+    },{passive:false});
+
+    cell.addEventListener('touchmove',e=>{
+      e.preventDefault();
+      const touch=e.touches[0];
+      const el=document.elementFromPoint(touch.clientX,touch.clientY);
+      const target=el?.closest('.feed-cell[draggable]');
+      document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));
+      if(target&&target!==cell)target.classList.add('drag-over');
+    },{passive:false});
+
+    cell.addEventListener('touchend',async e=>{
+      cell.style.opacity='1';
+      cell.style.transform='';
+      document.querySelectorAll('#feed-grid .feed-cell').forEach(c=>c.classList.remove('drag-over'));
+      const touch=e.changedTouches[0];
+      const el=document.elementFromPoint(touch.clientX,touch.clientY);
+      const target=el?.closest('.feed-cell[draggable]');
+      if(target){
+        const destPos=parseInt(target.dataset.pos);
+        if(touchDragPos!==null&&touchDragPos!==destPos){
+          await swapFeedCells(touchDragPos,destPos);
+        }
+      }
+      touchDragPos=null;
     });
   });
+}
+
+async function swapFeedCells(srcPos,destPos){
+  const ordered=getFeedOrder();
+  const newOrder=[...ordered];
+  const tmp=newOrder[srcPos];newOrder[srcPos]=newOrder[destPos];newOrder[destPos]=tmp;
+  feedOrder=newOrder;
+  await persist();
+  renderFeed();
 }
 
 // ─── COUNTERS ─────────────────────────────────────────────────────
