@@ -74,6 +74,26 @@
       display: block;
     }
 
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .gh-link {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.15s;
+    }
+
+    .gh-link:hover { color: var(--orange); }
+    .gh-link i { font-size: 13px; }
+
     .url-input {
       width: 100%;
       background: rgba(255,255,255,0.06);
@@ -147,6 +167,31 @@
 
     .toggle.active i { color: var(--orange); }
 
+    .platform-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .platform {
+      background: rgba(255,255,255,0.05);
+      border: 0.5px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 8px 6px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .platform.active {
+      background: rgba(255,107,43,0.14);
+      border-color: rgba(255,107,43,0.5);
+      color: #fff;
+    }
+
     .cmd-box {
       background: rgba(0,0,0,0.45);
       border: 0.5px solid rgba(255,107,43,0.22);
@@ -198,12 +243,35 @@
       line-height: 1.65;
     }
 
+    .cmd-text.multi { line-height: 1.8; }
+
     .notice {
       font-size: 12px;
       color: var(--orange);
       text-align: center;
       height: 18px;
       transition: opacity 0.2s;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 1.25rem 0 0.875rem;
+    }
+
+    .divider span {
+      font-size: 10px;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .divider .line {
+      flex: 1;
+      height: 1px;
+      background: rgba(255,255,255,0.08);
     }
 
     .footer {
@@ -213,6 +281,13 @@
       margin-top: 0.625rem;
       letter-spacing: 0.04em;
     }
+
+    .footer a {
+      color: rgba(255,107,43,0.6);
+      text-decoration: none;
+    }
+
+    .footer a:hover { color: var(--orange); }
   </style>
 </head>
 <body>
@@ -259,23 +334,38 @@
     </div>
   </div>
 
+  <div class="section">
+    <div class="label-row">
+      <span class="label" style="margin-bottom:0;">Plateforme</span>
+      <a class="gh-link" href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">
+        <i class="ti ti-brand-github"></i> yt-dlp/yt-dlp
+      </a>
+    </div>
+    <div class="platform-row">
+      <div class="platform active" id="plat-mac" onclick="setPlatform('mac')">macOS</div>
+      <div class="platform" id="plat-win" onclick="setPlatform('win')">Windows</div>
+      <div class="platform" id="plat-linux" onclick="setPlatform('linux')">Linux</div>
+    </div>
+  </div>
+
   <div class="cmd-box">
     <div class="cmd-header">
-      <span class="cmd-header-label">Commande</span>
+      <span class="cmd-header-label">Commande (maj auto + téléchargement)</span>
       <button class="btn-copy" onclick="copyCmd()">
         <i class="ti ti-copy"></i> Copier
       </button>
     </div>
-    <div class="cmd-text" id="cmd"></div>
+    <div class="cmd-text multi" id="cmd"></div>
   </div>
 
   <div class="notice" id="notice" style="opacity:0;"></div>
-  <div class="footer">maderinoprod.com &nbsp;·&nbsp; powered by yt-dlp</div>
+  <div class="footer">maderinoprod.com &nbsp;·&nbsp; powered by <a href="https://github.com/yt-dlp/yt-dlp" target="_blank" rel="noopener">yt-dlp</a></div>
 </div>
 
 <script>
   let mode = 'audio';
   let opts = { thumb: false, meta: false, playlist: false };
+  let platform = 'mac';
 
   function setMode(m) {
     mode = m;
@@ -288,6 +378,26 @@
     opts[key] = !opts[key];
     document.getElementById('tog-' + key).classList.toggle('active', opts[key]);
     gen();
+  }
+
+  function setPlatform(p) {
+    platform = p;
+    ['mac','win','linux'].forEach(k => {
+      document.getElementById('plat-' + k).classList.toggle('active', k === p);
+    });
+    gen();
+  }
+
+  function updatePrefix() {
+    // Commande de maj silencieuse de yt-dlp (+ ffmpeg si absent), executee
+    // avant chaque telechargement pour etre toujours a jour.
+    if (platform === 'mac') {
+      return '(brew upgrade yt-dlp ffmpeg 2>/dev/null || brew install yt-dlp ffmpeg)';
+    } else if (platform === 'win') {
+      return 'winget upgrade --id yt-dlp.yt-dlp -e --silent & winget install --id Gyan.FFmpeg -e --silent';
+    } else {
+      return 'python3 -m pip install -U yt-dlp -q && (which ffmpeg > /dev/null || sudo apt install -y ffmpeg)';
+    }
   }
 
   function gen() {
@@ -303,7 +413,10 @@
     if (opts.playlist) parts.push('--yes-playlist');
     else parts.push('--no-playlist');
     parts.push('"' + url + '"');
-    document.getElementById('cmd').textContent = parts.join(' ');
+    const dlCmd = parts.join(' ');
+
+    const sep = platform === 'win' ? ' & ' : ' && ';
+    document.getElementById('cmd').textContent = updatePrefix() + sep + dlCmd;
   }
 
   function copyCmd() {
