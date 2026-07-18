@@ -350,7 +350,7 @@
 
   <div class="cmd-box">
     <div class="cmd-header">
-      <span class="cmd-header-label">Commande (maj auto + téléchargement)</span>
+      <span class="cmd-header-label">Commande (maj silencieuse + téléchargement)</span>
       <button class="btn-copy" onclick="copyCmd()">
         <i class="ti ti-copy"></i> Copier
       </button>
@@ -390,13 +390,13 @@
 
   function updatePrefix() {
     // Commande de maj silencieuse de yt-dlp (+ ffmpeg si absent), executee
-    // avant chaque telechargement pour etre toujours a jour.
+    // avant chaque telechargement pour etre toujours a jour. Sortie masquee.
     if (platform === 'mac') {
-      return '(brew upgrade yt-dlp ffmpeg 2>/dev/null || brew install yt-dlp ffmpeg)';
+      return '(brew upgrade yt-dlp ffmpeg > /dev/null 2>&1 || brew install yt-dlp ffmpeg > /dev/null 2>&1)';
     } else if (platform === 'win') {
-      return 'winget upgrade --id yt-dlp.yt-dlp -e --silent & winget install --id Gyan.FFmpeg -e --silent';
+      return 'winget upgrade --id yt-dlp.yt-dlp -e --silent >nul 2>&1 & winget install --id Gyan.FFmpeg -e --silent >nul 2>&1';
     } else {
-      return 'python3 -m pip install -U yt-dlp -q && (which ffmpeg > /dev/null || sudo apt install -y ffmpeg)';
+      return 'python3 -m pip install -U yt-dlp -q > /dev/null 2>&1 && (which ffmpeg > /dev/null 2>&1 || sudo apt install -y ffmpeg > /dev/null 2>&1)';
     }
   }
 
@@ -415,8 +415,13 @@
     parts.push('"' + url + '"');
     const dlCmd = parts.join(' ');
 
-    const sep = platform === 'win' ? ' & ' : ' && ';
-    document.getElementById('cmd').textContent = updatePrefix() + sep + dlCmd;
+    let fullCmd;
+    if (platform === 'win') {
+      fullCmd = updatePrefix() + ' & ' + dlCmd + ' & echo. & echo ✅ Telechargement termine !';
+    } else {
+      fullCmd = updatePrefix() + ' && ' + dlCmd + ' && echo "\\n✅ Téléchargement terminé !"';
+    }
+    document.getElementById('cmd').textContent = fullCmd;
   }
 
   function copyCmd() {
