@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Maderino Downloader — Télécharge YouTube, Spotify, Deezer en un clic</title>
+<meta name="description" content="Maderino Downloader : télécharge audio/vidéo depuis YouTube, Instagram, Spotify et Deezer (pistes et playlists), en MP3 ou MP4. Licence à vie, 2,99 €." />
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" />
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF6B00;
+    --dark: #060608;
+    --text: #F5F0EB;
+    --glass-bg: rgba(255,255,255,0.09);
+    --glass-border: rgba(255,255,255,0.22);
+    --text-muted: rgba(245,240,235,0.6);
+  }
+
+  html, body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Outfit', -apple-system, sans-serif;
+    font-weight: 300;
+    min-height: 100%;
+  }
+
+  h1, h2, h3, .brand-font {
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .bg-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.45;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .orb-1 { width: 480px; height: 480px; background: radial-gradient(circle, var(--orange) 0%, transparent 70%); top: -160px; left: -120px; }
+  .orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, #ff9159 0%, transparent 70%); bottom: -140px; right: -100px; }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  header.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 3rem;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  header.top img { height: 32px; }
+  header.top .brand-font { font-size: 18px; }
+  .back-link {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .back-link:hover { color: var(--text); }
+
+  .hero { text-align: center; margin-bottom: 3rem; }
+  .hero-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    background: rgba(255,107,0,0.1);
+    border: 1px solid rgba(255,107,0,0.35);
+    border-radius: 100px;
+    padding: 6px 16px;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    line-height: 1.1;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--orange); }
+  .hero p {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .sources {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 1.75rem 0;
+  }
+  .source-pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 16px;
+    border-radius: 100px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15);
+  }
+
+  .cta-wrap { text-align: center; margin: 2rem 0 3rem; }
+  .btn-buy {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 16px 40px;
+    border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(255,107,0,0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+    transition: transform 0.15s, box-shadow 0.2s;
+  }
+  .btn-buy:hover { box-shadow: 0 12px 34px rgba(255,107,0,0.45), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .btn-buy:active { transform: scale(0.98); }
+  .btn-download {
+    display: inline-block;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 100px;
+    border: 1px solid var(--glass-border);
+    margin: 0 10px 14px;
+    transition: background 0.15s;
+  }
+  .btn-download:hover { background: var(--glass-bg); }
+  .price-note { margin-top: 14px; font-size: 12px; color: var(--text-muted); }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 3rem;
+  }
+  @media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 24px 22px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.28);
+  }
+  .feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px; height: 36px;
+    font-size: 16px;
+    background: rgba(255,107,0,0.1);
+    border: 1px solid rgba(255,107,0,0.35);
+    border-radius: 12px;
+    box-shadow: inset 0 1px 0 rgba(255,107,0,0.25);
+    margin-bottom: 12px;
+  }
+  .glass-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: none;
+    margin-bottom: 6px;
+  }
+  .glass-card p { font-size: 12.5px; font-weight: 300; color: var(--text-muted); line-height: 1.5; }
+
+  .steps { margin-bottom: 3rem; }
+  .steps h2 { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--orange); margin-bottom: 1rem; }
+  .step {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: rgba(255,107,0,0.1);
+    border: 1px solid rgba(255,107,0,0.35);
+    color: var(--orange);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step p { font-size: 13.5px; font-weight: 300; color: rgba(245,240,235,0.85); line-height: 1.5; }
+  .step strong { font-weight: 600; color: #fff; }
+
+  .faq { margin-bottom: 2rem; }
+  .faq h2 { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--orange); margin-bottom: 1rem; }
+  .faq-item { margin-bottom: 14px; }
+  .faq-item h4 { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 13.5px; margin-bottom: 4px; }
+  .faq-item p { font-size: 12.5px; font-weight: 300; color: var(--text-muted); line-height: 1.5; }
+
+  footer.bottom {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 300;
+    color: rgba(245,240,235,0.35);
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+</style>
+</head>
+<body>
+
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+
+  <div class="wrap">
+
+    <header class="top">
+      <div class="brand">
+        <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino" />
+        <span class="brand-font">Maderino Downloader</span>
+      </div>
+    </header>
+
+    <section class="hero">
+      <span class="hero-badge">Application Windows</span>
+      <h1>Télécharge tes musiques et vidéos <span>en un clic</span></h1>
+      <p>YouTube, Instagram, Spotify et Deezer — pistes ou playlists entières, en MP3 haute qualité ou MP4. Licence à vie.</p>
+
+      <div class="sources">
+        <span class="source-pill">YouTube</span>
+        <span class="source-pill">Instagram</span>
+        <span class="source-pill">Spotify</span>
+        <span class="source-pill">Deezer</span>
+      </div>
+    </section>
+
+    <div class="cta-wrap">
+      <a class="btn-download" href="https://f.io/fjUFq2fA" rel="noopener">
+        Télécharger l'app (Windows)
+      </a>
+      <a class="btn-buy" href="https://buy.stripe.com/fZu00l2Je0VZ7LO5C7gMw00" target="_blank" rel="noopener">
+        Acheter — 2,99 €
+      </a>
+      <p class="price-note">Paiement sécurisé par Stripe · Licence à vie, aucun abonnement</p>
+    </div>
+
+    <section class="features">
+      <div class="glass-card">
+        <div class="feature-icon">🎵</div>
+        <h3>Audio &amp; vidéo</h3>
+        <p>MP3 qualité maximale, ou MP4 en H.264 (compatible partout) ou meilleure qualité disponible (4K si dispo).</p>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon">📃</div>
+        <h3>Playlists entières</h3>
+        <p>Colle un lien de playlist Spotify ou Deezer : tous les morceaux sont retrouvés et téléchargés automatiquement.</p>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon">📁</div>
+        <h3>Dossiers récents</h3>
+        <p>Tes derniers dossiers de destination sont mémorisés, sélectionnables en un clic.</p>
+      </div>
+      <div class="glass-card">
+        <div class="feature-icon">🔄</div>
+        <h3>Mises à jour intégrées</h3>
+        <p>Le moteur de téléchargement se met à jour tout seul, sans jamais avoir à réinstaller l'app.</p>
+      </div>
+    </section>
+
+    <section class="steps">
+      <h2>Comment ça marche</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong>Télécharge et installe l'app</strong> — l'écran d'activation affiche ton empreinte machine.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong>Achète</strong> via le bouton ci-dessus (2,99 €, paiement Stripe sécurisé) et renseigne cette empreinte au moment du paiement.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong>Reçois ta clé de licence</strong> par email automatiquement, quelques secondes après le paiement.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong>Colle ta clé</strong> sur l'écran d'activation, et télécharge sans limite.</p>
+      </div>
+    </section>
+
+    <section class="faq">
+      <h2>Questions fréquentes</h2>
+      <div class="faq-item">
+        <h4>La licence fonctionne sur combien de machines ?</h4>
+        <p>Une licence = une machine. Si tu changes de PC, contacte-nous avec ta nouvelle empreinte pour une réactivation gratuite.</p>
+      </div>
+      <div class="faq-item">
+        <h4>Je ne trouve pas mon empreinte machine, où est-elle ?</h4>
+        <p>Elle s'affiche automatiquement à l'ouverture de l'app, sur l'écran d'activation, avant même de payer — installe l'app d'abord si besoin.</p>
+      </div>
+      <div class="faq-item">
+        <h4>C'est compatible Mac / Linux ?</h4>
+        <p>Non, Maderino Downloader est disponible pour Windows uniquement pour le moment.</p>
+      </div>
+    </section>
+
+    <footer class="bottom">
+      Maderino Production — Application non affiliée à YouTube, Instagram, Spotify ou Deezer.
+    </footer>
+
+  </div>
+
+</body>
+</html>
