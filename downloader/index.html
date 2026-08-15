@@ -118,6 +118,14 @@
   }
 
   .cta-wrap { text-align: center; margin: 2rem 0 3rem; }
+  .cta-hint {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    max-width: 440px;
+    margin: 0 auto 1.25rem;
+    line-height: 1.5;
+  }
+  .cta-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
   .btn-buy {
     display: inline-block;
     background: var(--orange);
@@ -144,7 +152,7 @@
     padding: 14px 32px;
     border-radius: 100px;
     border: 1px solid var(--glass-border);
-    margin: 0 10px 14px;
+    margin-bottom: 14px;
     transition: background 0.15s;
   }
   .btn-download:hover { background: var(--glass-bg); }
@@ -255,12 +263,15 @@
     </section>
 
     <div class="cta-wrap">
-      <a class="btn-download" href="https://f.io/fjUFq2fA" rel="noopener">
-        Télécharger l'app (Windows)
-      </a>
-      <a class="btn-buy" href="https://buy.stripe.com/fZu00l2Je0VZ7LO5C7gMw00" target="_blank" rel="noopener">
-        Acheter — 2,99 €
-      </a>
+      <p class="cta-hint">En 2 temps : télécharge d'abord l'app (gratuite) — l'achat te demandera ensuite un code généré à l'intérieur.</p>
+      <div class="cta-buttons">
+        <a class="btn-buy" href="https://f.io/fjUFq2fA" rel="noopener">
+          1. Télécharger l'app — Gratuit
+        </a>
+        <a class="btn-download" href="https://buy.stripe.com/fZu00l2Je0VZ7LO5C7gMw00" target="_blank" rel="noopener">
+          2. Acheter la licence — 2,99 €
+        </a>
+      </div>
       <p class="price-note">Paiement sécurisé par Stripe · Licence à vie, aucun abonnement</p>
     </div>
 
@@ -291,11 +302,11 @@
       <h2>Comment ça marche</h2>
       <div class="step">
         <div class="step-num">1</div>
-        <p><strong>Télécharge et installe l'app</strong> — l'écran d'activation affiche ton empreinte machine.</p>
+        <p><strong>Télécharge et installe l'app</strong> (bouton "1." ci-dessus) — l'écran d'activation affiche ton "empreinte machine", un code unique à ton PC.</p>
       </div>
       <div class="step">
         <div class="step-num">2</div>
-        <p><strong>Achète</strong> via le bouton ci-dessus (2,99 €, paiement Stripe sécurisé) et renseigne cette empreinte au moment du paiement.</p>
+        <p><strong>Copie ce code, puis clique sur "Acheter"</strong> — colle-le dans le champ "Empreinte machine" pendant le paiement Stripe (2,99 €, sécurisé).</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
