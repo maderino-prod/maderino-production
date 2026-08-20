@@ -247,6 +247,62 @@
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.08);
   }
+
+  .os-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 1.25rem;
+  }
+  .os-tab {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .os-tab:hover { color: var(--text); background: var(--glass-bg); }
+  .os-tab[aria-selected="true"] {
+    color: #fff;
+    background: var(--orange);
+    border-color: var(--orange);
+    box-shadow: 0 6px 20px rgba(255,107,0,0.35);
+  }
+
+  .mac-note {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(255,107,0,0.08);
+    border: 1px solid rgba(255,107,0,0.35);
+    border-radius: 20px;
+    padding: 16px 18px;
+    margin-bottom: 2rem;
+  }
+  .mac-note span.icon { font-size: 18px; flex-shrink: 0; }
+  .mac-note p { font-size: 12.5px; font-weight: 300; color: rgba(245,240,235,0.85); line-height: 1.55; }
+  .mac-note strong { font-weight: 600; color: #fff; }
+
+  .beta-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--orange);
+    background: rgba(255,107,0,0.12);
+    border: 1px solid rgba(255,107,0,0.4);
+    border-radius: 100px;
+    padding: 3px 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
 </style>
 </head>
 <body>
@@ -264,9 +320,9 @@
     </header>
 
     <section class="hero">
-      <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
-        <span class="hero-badge">App Windows</span>
-        <span class="hero-badge" style="color: var(--text); background: var(--glass-bg); border-color: var(--glass-border);">Plugin Premiere Pro : Windows &amp; Mac</span>
+      <div class="os-tabs" role="tablist">
+        <button class="os-tab" id="tab-btn-windows" role="tab" aria-selected="true" aria-controls="panel-windows" onclick="showOS('windows')">🪟 Windows</button>
+        <button class="os-tab" id="tab-btn-mac" role="tab" aria-selected="false" aria-controls="panel-mac" onclick="showOS('mac')">🍎 Mac</button>
       </div>
       <h1>Télécharge tes musiques et vidéos <span>en un clic</span></h1>
       <p>YouTube, Instagram, Spotify et Deezer — pistes ou playlists entières, en MP3 haute qualité ou MP4. Licence à vie.</p>
@@ -277,94 +333,163 @@
         <span class="source-pill">Spotify</span>
         <span class="source-pill">Deezer</span>
       </div>
-
-      <img class="app-preview" src="app-screenshot.png" alt="Interface de Maderino Downloader" />
     </section>
 
-    <div class="cta-wrap">
-      <p class="cta-hint">En 2 temps : télécharge d'abord l'app (gratuite) — l'achat te demandera ensuite un code généré à l'intérieur.</p>
-      <div class="cta-buttons">
-        <a class="btn-buy" href="https://github.com/maderino-prod/maderino-downloader/releases/download/v3.4.4/MaderinoDownloader_Setup_v3.4.4.exe" rel="noopener">
-          1. Télécharger l'app — Gratuit
-        </a>
-        <a class="btn-download" href="https://buy.stripe.com/fZu00l2Je0VZ7LO5C7gMw00" target="_blank" rel="noopener">
-          2. Acheter la licence — 2,99 €
-        </a>
+    <div id="panel-windows" role="tabpanel" aria-labelledby="tab-btn-windows">
+      <img class="app-preview" src="app-screenshot.png" alt="Interface de Maderino Downloader" />
+
+      <div class="cta-wrap">
+        <p class="cta-hint">En 2 temps : télécharge d'abord l'app (gratuite) — l'achat te demandera ensuite un code généré à l'intérieur.</p>
+        <div class="cta-buttons">
+          <a class="btn-buy" href="https://github.com/maderino-prod/maderino-downloader/releases/download/v3.4.4/MaderinoDownloader_Setup_v3.4.4.exe" rel="noopener">
+            1. Télécharger l'app — Gratuit
+          </a>
+          <a class="btn-download" href="https://buy.stripe.com/fZu00l2Je0VZ7LO5C7gMw00" target="_blank" rel="noopener">
+            2. Acheter la licence — 2,99 €
+          </a>
+        </div>
+        <p class="price-note">Paiement sécurisé par Stripe · Licence à vie, aucun abonnement</p>
       </div>
-      <p class="price-note">Paiement sécurisé par Stripe · Licence à vie, aucun abonnement</p>
+
+      <section class="features">
+        <div class="glass-card">
+          <div class="feature-icon">🎵</div>
+          <h3>Audio &amp; vidéo</h3>
+          <p>MP3 qualité maximale, ou MP4 en H.264 (compatible partout) ou meilleure qualité disponible (4K si dispo).</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon">📃</div>
+          <h3>Playlists entières</h3>
+          <p>Colle un lien de playlist Spotify ou Deezer : tous les morceaux sont retrouvés et téléchargés automatiquement.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon">📁</div>
+          <h3>Dossiers récents</h3>
+          <p>Tes derniers dossiers de destination sont mémorisés, sélectionnables en un clic.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Mises à jour intégrées</h3>
+          <p>Le moteur de téléchargement se met à jour tout seul, sans jamais avoir à réinstaller l'app.</p>
+        </div>
+      </section>
+
+      <section class="plugin-promo glass-card">
+        <div class="feature-icon">🎬</div>
+        <h3>Tu montes sur Premiere Pro ?</h3>
+        <p>Le plugin Maderino Downloader s'installe directement dans Premiere : télécharge et importe tes rushs sur la timeline sans quitter le logiciel. Même licence que l'app — rien à racheter.</p>
+        <a class="btn-download" href="https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v1.0.8/MaderinoPluginSetup_v1.0.8.exe" rel="noopener">
+          Télécharger le plugin Premiere Pro
+        </a>
+      </section>
+
+      <section class="steps">
+        <h2>Comment ça marche</h2>
+        <div class="step">
+          <div class="step-num">1</div>
+          <p><strong>Télécharge et installe l'app</strong> (bouton "1." ci-dessus) — l'écran d'activation affiche ton "empreinte machine", un code unique à ton PC.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <p><strong>Copie ce code, puis clique sur "Acheter"</strong> — colle-le dans le champ "Empreinte machine" pendant le paiement Stripe (2,99 €, sécurisé).</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <p><strong>Reçois ta clé de licence</strong> par email automatiquement, quelques secondes après le paiement.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <p><strong>Colle ta clé</strong> sur l'écran d'activation, et télécharge sans limite.</p>
+        </div>
+      </section>
+
+      <section class="faq">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+          <h4>La licence fonctionne sur combien de machines ?</h4>
+          <p>Une licence = une machine. Si tu changes de PC, contacte-nous avec ta nouvelle empreinte pour une réactivation gratuite.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Je ne trouve pas mon empreinte machine, où est-elle ?</h4>
+          <p>Elle s'affiche automatiquement à l'ouverture de l'app, sur l'écran d'activation, avant même de payer — installe l'app d'abord si besoin.</p>
+        </div>
+      </section>
     </div>
 
-    <section class="features">
-      <div class="glass-card">
-        <div class="feature-icon">🎵</div>
-        <h3>Audio &amp; vidéo</h3>
-        <p>MP3 qualité maximale, ou MP4 en H.264 (compatible partout) ou meilleure qualité disponible (4K si dispo).</p>
+    <div id="panel-mac" role="tabpanel" aria-labelledby="tab-btn-mac" hidden>
+      <div class="mac-note">
+        <span class="icon">ℹ️</span>
+        <p><strong>Pas d'app standalone sur Mac pour l'instant.</strong> Seul le plugin Premiere Pro est disponible côté Mac, en bêta (Apple Silicon et Intel).</p>
       </div>
-      <div class="glass-card">
-        <div class="feature-icon">📃</div>
-        <h3>Playlists entières</h3>
-        <p>Colle un lien de playlist Spotify ou Deezer : tous les morceaux sont retrouvés et téléchargés automatiquement.</p>
-      </div>
-      <div class="glass-card">
-        <div class="feature-icon">📁</div>
-        <h3>Dossiers récents</h3>
-        <p>Tes derniers dossiers de destination sont mémorisés, sélectionnables en un clic.</p>
-      </div>
-      <div class="glass-card">
-        <div class="feature-icon">🔄</div>
-        <h3>Mises à jour intégrées</h3>
-        <p>Le moteur de téléchargement se met à jour tout seul, sans jamais avoir à réinstaller l'app.</p>
-      </div>
-    </section>
 
-    <section class="plugin-promo glass-card">
-      <div class="feature-icon">🎬</div>
-      <h3>Tu montes sur Premiere Pro ?</h3>
-      <p>Le plugin Maderino Downloader s'installe directement dans Premiere : télécharge et importe tes rushs sur la timeline sans quitter le logiciel. Même licence que l'app — rien à racheter.</p>
-      <a class="btn-download" href="https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v1.0.8/MaderinoPluginSetup_v1.0.8.exe" rel="noopener">
-        Télécharger le plugin Premiere Pro (Windows)
-      </a>
-      <a href="plugin-mac.html" style="display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 13px; font-weight: 500; color: var(--text); text-decoration: none;">
-        🍎 Version Mac
-        <span style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--orange); background: rgba(255,107,0,0.12); border: 1px solid rgba(255,107,0,0.4); border-radius: 100px; padding: 3px 9px;">Bêta</span>
-      </a>
-    </section>
+      <section class="plugin-promo glass-card">
+        <div class="feature-icon">🎬</div>
+        <h3>Le plugin Premiere Pro<span class="beta-tag">Bêta</span></h3>
+        <p>S'installe directement dans Premiere : télécharge et importe tes rushs sur la timeline sans quitter le logiciel. Même moteur, mêmes sources (YouTube, Instagram, Spotify, Deezer) que la version Windows.</p>
+        <a class="btn-buy" href="plugin-mac.html" style="display: inline-block; text-decoration: none;">
+          Installer le plugin (Mac)
+        </a>
+      </section>
 
-    <section class="steps">
-      <h2>Comment ça marche</h2>
-      <div class="step">
-        <div class="step-num">1</div>
-        <p><strong>Télécharge et installe l'app</strong> (bouton "1." ci-dessus) — l'écran d'activation affiche ton "empreinte machine", un code unique à ton PC.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <p><strong>Copie ce code, puis clique sur "Acheter"</strong> — colle-le dans le champ "Empreinte machine" pendant le paiement Stripe (2,99 €, sécurisé).</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <p><strong>Reçois ta clé de licence</strong> par email automatiquement, quelques secondes après le paiement.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">4</div>
-        <p><strong>Colle ta clé</strong> sur l'écran d'activation, et télécharge sans limite.</p>
-      </div>
-    </section>
+      <section class="features">
+        <div class="glass-card">
+          <div class="feature-icon">🎵</div>
+          <h3>Audio &amp; vidéo</h3>
+          <p>MP3 qualité maximale, ou MP4 en H.264 (compatible partout) ou meilleure qualité disponible, converti via l'encodeur GPU Apple.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon">📃</div>
+          <h3>Playlists entières</h3>
+          <p>Colle un lien de playlist Spotify ou Deezer : tous les morceaux sont retrouvés et téléchargés automatiquement.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon">🎯</div>
+          <h3>Import direct</h3>
+          <p>Le fichier atterrit dans le dossier du projet Premiere ouvert, et se place automatiquement sur la timeline.</p>
+        </div>
+        <div class="glass-card">
+          <div class="feature-icon">🔄</div>
+          <h3>Mises à jour intégrées</h3>
+          <p>Une bannière dans le panneau prévient dès qu'une nouvelle version est disponible — un clic suffit.</p>
+        </div>
+      </section>
 
-    <section class="faq">
-      <h2>Questions fréquentes</h2>
-      <div class="faq-item">
-        <h4>La licence fonctionne sur combien de machines ?</h4>
-        <p>Une licence = une machine. Si tu changes de PC, contacte-nous avec ta nouvelle empreinte pour une réactivation gratuite.</p>
-      </div>
-      <div class="faq-item">
-        <h4>Je ne trouve pas mon empreinte machine, où est-elle ?</h4>
-        <p>Elle s'affiche automatiquement à l'ouverture de l'app, sur l'écran d'activation, avant même de payer — installe l'app d'abord si besoin.</p>
-      </div>
-      <div class="faq-item">
-        <h4>C'est compatible Mac / Linux ?</h4>
-        <p>L'app standalone reste Windows uniquement pour le moment. Le plugin Premiere Pro fonctionne aussi sur Mac (Apple Silicon et Intel), <strong>en bêta</strong> — <a href="plugin-mac.html" style="color: var(--orange);">voir l'installation Mac</a>.</p>
-      </div>
-    </section>
+      <section class="steps">
+        <h2>Comment ça marche</h2>
+        <div class="step">
+          <div class="step-num">1</div>
+          <p><strong>Installe le plugin</strong> (bouton ci-dessus) — l'écran d'activation, dans le panneau Premiere, affiche ton "empreinte machine".</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <p><strong>Copie ce code, puis clique sur "Acheter"</strong> — colle-le dans le champ "Empreinte machine" pendant le paiement Stripe (2,99 €, sécurisé). Même lien d'achat que pour Windows.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <p><strong>Reçois ta clé de licence</strong> par email automatiquement, quelques secondes après le paiement.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <p><strong>Colle ta clé</strong> dans le panneau du plugin, et télécharge sans limite.</p>
+        </div>
+      </section>
+
+      <section class="faq">
+        <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+          <h4>La licence fonctionne sur combien de machines ?</h4>
+          <p>Une licence = une machine. Si tu changes de machine (ou passes de Windows à Mac), contacte-nous avec ta nouvelle empreinte pour une réactivation gratuite.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Pourquoi "bêta" ?</h4>
+          <p>Le portage Mac est récent : installation manuelle (pas encore de vrai installeur), testé sur peu de configurations. Ça fonctionne, mais signale-nous le moindre souci.</p>
+        </div>
+        <div class="faq-item">
+          <h4>Un souci à l'installation ?</h4>
+          <p>Écris-nous à <a href="mailto:contact@maderinoprod.com" style="color: var(--orange);">contact@maderinoprod.com</a>.</p>
+        </div>
+      </section>
+    </div>
 
     <footer class="bottom">
       Maderino Production — Application non affiliée à YouTube, Instagram, Spotify ou Deezer.
@@ -372,5 +497,16 @@
 
   </div>
 
+<script>
+function showOS(os) {
+  const isMac = os === 'mac';
+  document.getElementById('panel-windows').hidden = isMac;
+  document.getElementById('panel-mac').hidden = !isMac;
+  document.getElementById('tab-btn-windows').setAttribute('aria-selected', String(!isMac));
+  document.getElementById('tab-btn-mac').setAttribute('aria-selected', String(isMac));
+  if (history.replaceState) history.replaceState(null, '', isMac ? '#mac' : '#windows');
+}
+if (window.location.hash === '#mac') showOS('mac');
+</script>
 </body>
 </html>
