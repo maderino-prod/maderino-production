@@ -228,6 +228,42 @@
     border-top: 1px solid rgba(255,255,255,0.08);
   }
   footer.bottom a { color: rgba(245,240,235,0.5); }
+
+  .beta-notice {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: rgba(255,107,0,0.08);
+    border: 1px solid rgba(255,107,0,0.4);
+    border-radius: 20px;
+    padding: 18px 20px;
+    margin-bottom: 2.5rem;
+    box-shadow: inset 0 1px 0 rgba(255,107,0,0.15);
+  }
+  .beta-notice .icon {
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    background: rgba(255,107,0,0.15);
+    border: 1px solid rgba(255,107,0,0.4);
+    border-radius: 10px;
+  }
+  .beta-notice h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--orange);
+    margin-bottom: 5px;
+  }
+  .beta-notice p {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(245,240,235,0.85);
+    line-height: 1.6;
+  }
 </style>
 </head>
 <body>
@@ -246,10 +282,18 @@
     </header>
 
     <section class="hero">
-      <span class="hero-badge">Bêta macOS · v1.0.8</span>
+      <span class="hero-badge">macOS · v1.0.8</span>
       <h1>Le plugin Premiere Pro, <span>version Mac</span></h1>
       <p>Apple Silicon et Intel. Pas encore d'installeur packagé : une seule commande Terminal fait tout le travail.</p>
     </section>
+
+    <div class="beta-notice">
+      <span class="icon">🧪</span>
+      <div>
+        <h3>Version bêta</h3>
+        <p>Le portage Mac est récent et pas encore éprouvé à grande échelle : installation manuelle (pas de vrai installeur pour l'instant), et certaines fonctions n'ont été testées que sur peu de configurations. Ça fonctionne, mais signale-nous le moindre souci.</p>
+      </div>
+    </div>
 
     <div class="glass-card" style="margin-bottom: 2rem;">
       <div class="action-label">
