@@ -203,6 +203,43 @@
   }
   .glass-card p { font-size: 12.5px; font-weight: 300; color: var(--text-muted); line-height: 1.5; }
 
+  .fp-highlight { text-align: center; margin-bottom: 3rem; }
+  .fp-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .fp-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    font-family: Consolas, 'SFMono-Regular', monospace;
+    font-size: clamp(12px, 3.3vw, 18px);
+    white-space: nowrap;
+    letter-spacing: 0.06em;
+    color: var(--orange);
+    background: rgba(255,107,0,0.1);
+    border: 1px solid rgba(255,107,0,0.35);
+    border-radius: 14px;
+    padding: 12px 14px 12px 18px;
+    margin-bottom: 14px;
+  }
+  .fp-copy {
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0;
+    color: var(--text);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 5px 9px;
+  }
+  .fp-highlight p { font-size: 13px; color: var(--text-muted); line-height: 1.55; max-width: 520px; margin: 0 auto; }
+  .fp-highlight strong { color: var(--text); font-weight: 500; }
   .plugin-promo { text-align: center; margin-bottom: 3rem; }
   .plugin-promo .feature-icon { margin: 0 auto 12px; }
   .plugin-promo h3 { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 16px; margin-bottom: 8px; }
@@ -333,7 +370,7 @@
         </button>
       </div>
       <h1>Télécharge tes musiques et vidéos <span>en un clic</span></h1>
-      <p>YouTube, Instagram, Spotify et Deezer — pistes ou playlists entières, en MP3 haute qualité ou MP4. Licence à vie.</p>
+      <p>YouTube, Instagram, Spotify et Deezer — pistes ou playlists entières, en MP3 haute qualité ou MP4. Essai gratuit 24h, puis licence à vie.</p>
 
       <div class="sources">
         <span class="source-pill">YouTube</span>
@@ -347,17 +384,20 @@
       <img class="app-preview" src="app-screenshot.png" alt="Interface de Maderino Downloader" />
 
       <div class="cta-wrap">
-        <p class="cta-hint">En 2 temps : télécharge d'abord l'app (gratuite) — l'achat te demandera ensuite un code généré à l'intérieur.</p>
+        <p class="cta-hint"><strong>Tout se passe dans l'app :</strong> installe-la, essaie-la gratuitement pendant 24h (sans carte bancaire), puis achète ta licence directement depuis l'app si tu es convaincu.</p>
         <div class="cta-buttons">
-          <a class="btn-buy" href="https://github.com/maderino-prod/maderino-downloader/releases/download/v4.0.1/MaderinoDownloader_Setup_v4.0.1.exe" rel="noopener">
-            1. Télécharger l'app — Gratuit
-          </a>
-          <a class="btn-download" href="https://buy.stripe.com/fZu00l2Je0VZ7LO5C7gMw00" target="_blank" rel="noopener">
-            2. Acheter la licence — 2,99 €
+          <a class="btn-buy" href="https://github.com/maderino-prod/maderino-downloader/releases/download/v4.1.0/MaderinoDownloader_Setup_v4.1.0.exe" rel="noopener">
+            Télécharger l'app — Essai gratuit 24h
           </a>
         </div>
-        <p class="price-note">Paiement sécurisé par Stripe · Licence à vie, aucun abonnement</p>
+        <p class="price-note">Puis 2,99 € une seule fois · Licence à vie, aucun abonnement · Paiement sécurisé par Stripe</p>
       </div>
+
+      <section class="fp-highlight glass-card">
+        <div class="fp-label">Ton empreinte machine <span style="text-transform:none;letter-spacing:0">(exemple)</span></div>
+        <div class="fp-chip"><span>A1B2-C3D4-E5F6-7A8B-9C0D</span><span class="fp-copy">Copier</span></div>
+        <p>C'est le code unique de ton PC, affiché dans l'app. Ta licence y est liée. Quand tu cliques sur <strong>Acheter</strong> dans l'app, il est <strong>copié automatiquement</strong> : tu n'as plus qu'à le coller dans le champ « Empreinte machine » au moment du paiement.</p>
+      </section>
 
       <section class="features">
         <div class="glass-card">
@@ -386,7 +426,7 @@
         <div class="feature-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="12" rx="1.5"/><path d="M3 8l2-4h4l-2 4"/><path d="M9 8l2-4h4l-2 4"/><path d="M15 8l2-4h3l-2 4"/></svg></div>
         <h3>Tu montes sur Premiere Pro ?</h3>
         <p>Le plugin Maderino Downloader s'installe directement dans Premiere : télécharge et importe tes rushs sur la timeline sans quitter le logiciel. Même licence que l'app — rien à racheter.</p>
-        <a class="btn-download" href="https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v2.0.1/MaderinoPluginSetup_v2.0.1.exe" rel="noopener">
+        <a class="btn-download" href="https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v2.1.0/MaderinoPluginSetup_v2.1.0.exe" rel="noopener">
           Télécharger le plugin Premiere Pro
         </a>
       </section>
@@ -395,31 +435,35 @@
         <h2>Comment ça marche</h2>
         <div class="step">
           <div class="step-num">1</div>
-          <p><strong>Télécharge et installe l'app</strong> (bouton "1." ci-dessus) — l'écran d'activation affiche ton "empreinte machine", un code unique à ton PC.</p>
+          <p><strong>Télécharge et installe l'app</strong> avec le bouton ci-dessus.</p>
         </div>
         <div class="step">
           <div class="step-num">2</div>
-          <p><strong>Copie ce code, puis clique sur "Acheter"</strong> — colle-le dans le champ "Empreinte machine" pendant le paiement Stripe (2,99 €, sécurisé).</p>
+          <p><strong>Clique sur "Essayer gratuitement 24h"</strong> à l'ouverture de l'app : accès complet, sans carte bancaire.</p>
         </div>
         <div class="step">
           <div class="step-num">3</div>
-          <p><strong>Reçois ta clé de licence</strong> par email automatiquement, quelques secondes après le paiement.</p>
+          <p><strong>Convaincu ? Clique sur "Acheter" dans l'app.</strong> Ton empreinte machine est copiée et la page de paiement s'ouvre : colle-la dans le champ "Empreinte machine" et paie 2,99 €.</p>
         </div>
         <div class="step">
           <div class="step-num">4</div>
-          <p><strong>Colle ta clé</strong> sur l'écran d'activation, et télécharge sans limite.</p>
+          <p><strong>Reçois ta clé de licence par email</strong> quelques secondes après, colle-la dans l'app : c'est à vie.</p>
         </div>
       </section>
 
       <section class="faq">
         <h2>Questions fréquentes</h2>
         <div class="faq-item">
+          <h4>Comment marche l'essai gratuit ?</h4>
+          <p>24h d'accès complet (toutes les sources, playlists, MP3 et MP4), sans carte bancaire, un essai par machine, partagé entre l'app et le plugin Premiere. À la fin, l'app te propose d'acheter la licence à vie (2,99 €).</p>
+        </div>
+        <div class="faq-item">
           <h4>La licence fonctionne sur combien de machines ?</h4>
           <p>Une licence = une machine. Si tu changes de PC, contacte-nous avec ta nouvelle empreinte pour une réactivation gratuite.</p>
         </div>
         <div class="faq-item">
           <h4>Je ne trouve pas mon empreinte machine, où est-elle ?</h4>
-          <p>Elle s'affiche automatiquement à l'ouverture de l'app, sur l'écran d'activation, avant même de payer — installe l'app d'abord si besoin.</p>
+          <p>Elle s'affiche en orange sur l'écran d'activation de l'app, et elle est copiée automatiquement quand tu cliques sur "Acheter". Installe l'app d'abord : on ne peut pas l'obtenir depuis le site.</p>
         </div>
       </section>
     </div>
@@ -466,24 +510,28 @@
         <h2>Comment ça marche</h2>
         <div class="step">
           <div class="step-num">1</div>
-          <p><strong>Installe le plugin</strong> (bouton ci-dessus) — l'écran d'activation, dans le panneau Premiere, affiche ton "empreinte machine".</p>
+          <p><strong>Installe le plugin</strong> avec le bouton ci-dessus, puis ouvre-le dans Premiere Pro.</p>
         </div>
         <div class="step">
           <div class="step-num">2</div>
-          <p><strong>Copie ce code, puis clique sur "Acheter"</strong> — colle-le dans le champ "Empreinte machine" pendant le paiement Stripe (2,99 €, sécurisé). Même lien d'achat que pour Windows.</p>
+          <p><strong>Clique sur "Essayer gratuitement 24h"</strong> dans le panneau : accès complet, sans carte bancaire.</p>
         </div>
         <div class="step">
           <div class="step-num">3</div>
-          <p><strong>Reçois ta clé de licence</strong> par email automatiquement, quelques secondes après le paiement.</p>
+          <p><strong>Convaincu ? Clique sur "Acheter" dans le panneau.</strong> Ton empreinte machine est copiée et la page de paiement s'ouvre : colle-la dans le champ "Empreinte machine" et paie 2,99 €.</p>
         </div>
         <div class="step">
           <div class="step-num">4</div>
-          <p><strong>Colle ta clé</strong> dans le panneau du plugin, et télécharge sans limite.</p>
+          <p><strong>Reçois ta clé de licence par email</strong> quelques secondes après, colle-la dans le panneau : c'est à vie.</p>
         </div>
       </section>
 
       <section class="faq">
         <h2>Questions fréquentes</h2>
+        <div class="faq-item">
+          <h4>Comment marche l'essai gratuit ?</h4>
+          <p>24h d'accès complet (toutes les sources, playlists, MP3 et MP4), sans carte bancaire, un essai par machine, partagé entre l'app et le plugin Premiere. À la fin, l'app te propose d'acheter la licence à vie (2,99 €).</p>
+        </div>
         <div class="faq-item">
           <h4>La licence fonctionne sur combien de machines ?</h4>
           <p>Une licence = une machine. Si tu changes de machine (ou passes de Windows à Mac), contacte-nous avec ta nouvelle empreinte pour une réactivation gratuite.</p>
