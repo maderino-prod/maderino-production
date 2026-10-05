@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Outils — Maderino Production</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
     --orange: #FF6B2B;
@@ -26,7 +26,7 @@
 
   body {
     background: var(--black);
-    font-family: 'Inter Tight', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: var(--text);
     min-height: 100vh;
     display: flex;
@@ -55,6 +55,8 @@
     height: 48px;
     width: auto;
     opacity: 0.92;
+    display: block;
+    margin: 0 auto 16px;
   }
 
   .logo-eyebrow {
@@ -67,7 +69,7 @@
   }
 
   .logo-title {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Inter', sans-serif; font-weight: 700;
     font-size: 42px;
     letter-spacing: 6px;
     color: var(--white);
@@ -148,7 +150,7 @@
   }
 
   .tool-name {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Inter', sans-serif; font-weight: 700;
     font-size: 18px;
     letter-spacing: 2px;
     color: var(--white);
@@ -200,11 +202,18 @@
     .tool-name { font-size: 16px; }
   }
 </style>
+  <!-- Typo « style méta instagram » : Inter Bold serré + Playfair Display italique -->
+  <style>
+    h1, h2, h3 { letter-spacing: -0.035em !important; }
+    h1, .logo-title { font-weight: 700 !important; line-height: 1.05 !important; text-transform: lowercase !important; letter-spacing: -0.045em !important; }
+    h1 em, h1 span, h2 em, .logo-title span { font-family: 'Playfair Display', Georgia, serif !important; font-style: italic !important; font-weight: 400 !important; letter-spacing: -0.01em !important; }
+  </style>
 </head>
 <body>
 <div class="container">
 
   <div class="logo-wrap">
+    <img src="../assets/logo-maderino-blanc.png" alt="Maderino Prod">
     <div class="logo-eyebrow">Usage interne</div>
     <div class="logo-title">MADERINO <span>PROD</span></div>
     <div class="logo-sub">Outils internes</div>
@@ -212,31 +221,10 @@
 
   <div class="tools-grid">
 
-    <a class="tool-card" href="correcteur sous titres.html">
-      <span class="tool-icon">📝</span>
-      <div class="tool-name">Correcteur SRT</div>
-      <div class="tool-desc">Correction orthographique des sous-titres</div>
-      <span class="tool-arrow">→</span>
-    </a>
-
-    <a class="tool-card" href="encodage.html">
-      <span class="tool-icon">🎬</span>
-      <div class="tool-name">Encodage</div>
-      <div class="tool-desc">Générateur de presets Adobe Media Encoder</div>
-      <span class="tool-arrow">→</span>
-    </a>
-
-    <a class="tool-card" href="pricing.html">
+    <a class="tool-card tool-card--full" href="pricing.html">
       <span class="tool-icon">💶</span>
       <div class="tool-name">Pricing</div>
-      <div class="tool-desc">Calculateur de devis client</div>
-      <span class="tool-arrow">→</span>
-    </a>
-
-    <a class="tool-card" href="command-dl.html">
-      <span class="tool-icon">⬇︎</span>
-      <div class="tool-name">Téléchargement</div>
-      <div class="tool-desc">Générateur de commande yt-dlp</div>
+      <div class="tool-desc">Taux horaire et calcul de prix</div>
       <span class="tool-arrow">→</span>
     </a>
 

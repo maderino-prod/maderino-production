@@ -3,806 +3,596 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculateur de Devis — Maderino Production</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<meta name="robots" content="noindex, nofollow">
+<title>Pricing — Maderino Production</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
     --orange: #FF6B2B;
-    --orange-dim: rgba(255,107,43,0.18);
-    --orange-glow: rgba(255,107,43,0.08);
     --black: #060608;
     --text: #D8D8DC;
     --muted: #6E6E76;
     --white: #FFFFFF;
-
-    /* Liquid Glass tokens */
-    --glass-bg: rgba(28, 28, 36, 0.55);
-    --glass-bg-hover: rgba(38, 38, 48, 0.65);
-    --glass-bg-selected: rgba(255, 107, 43, 0.14);
+    --green: #3DDC84;
+    --red: #FF5A5A;
+    --glass-bg: rgba(18, 18, 26, 0.80);
     --glass-border: rgba(255, 255, 255, 0.10);
     --glass-border-top: rgba(255, 255, 255, 0.18);
     --glass-shadow: 0 8px 32px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.06) inset;
-    --glass-blur: blur(24px) saturate(180%);
     --glass-radius: 14px;
-    --glass-radius-sm: 10px;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
-    background: var(--black);
-    font-family: 'Inter Tight', sans-serif;
-    color: var(--text);
-    min-height: 100vh;
-    padding: 40px 20px 140px;
-    /* subtle radial glow behind everything */
+    background: var(--black); font-family: 'Inter', sans-serif; color: var(--text);
+    min-height: 100vh; padding: 40px 20px;
     background-image:
       radial-gradient(ellipse 60% 40% at 20% 10%, rgba(255,107,43,0.07) 0%, transparent 70%),
       radial-gradient(ellipse 50% 50% at 80% 80%, rgba(80,60,180,0.06) 0%, transparent 70%);
+    background-attachment: fixed; -webkit-font-smoothing: antialiased;
   }
+  .container { max-width: 980px; margin: 0 auto; }
+  .layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+  .cart { position: sticky; top: 20px; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } .cart { position: static; } }
 
-  .container {
-    max-width: 760px;
-    margin: 0 auto;
+  .add { margin-top: 12px; width: 100%; background: transparent; border: 1px solid var(--glass-border); color: var(--text); border-radius: 9px; padding: 9px; font: 600 12px 'Inter'; cursor: pointer; }
+  .add:hover { border-color: var(--orange); color: var(--orange); }
+  .cart-empty { font-size: 12px; color: var(--muted); text-align: center; padding: 18px 0; }
+  .item { display: grid; grid-template-columns: 1fr auto; gap: 4px 8px; padding: 10px 0; border-bottom: 1px dashed var(--glass-border); font-size: 13px; }
+  .item .name { color: var(--white); font-weight: 600; }
+  .item .price { text-align: right; color: var(--white); font-weight: 600; }
+  .item .ctrl { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
+  .item .ctrl button { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--glass-border); background: transparent; color: var(--text); cursor: pointer; }
+  .item .ctrl button:hover { border-color: var(--orange); color: var(--orange); }
+  .item .rm { text-align: right; font-size: 11px; color: var(--muted); cursor: pointer; }
+  .item .rm:hover { color: var(--red); }
+  .item.deduc .name, .item.deduc .price { color: var(--green); }
+  .opt-ded { display: flex; gap: 8px; align-items: center; font-size: 12px; margin-top: 12px; cursor: pointer; }
+  .opt-ded input { width: auto; accent-color: var(--orange); }
+  .cart-tot { margin-top: 14px; display: grid; gap: 5px; font-size: 12px; }
+  .cart-tot div { display: flex; justify-content: space-between; }
+  .cart-tot div span:last-child { color: var(--white); font-weight: 600; }
+  .cart-tot .grand { font-size: 22px; padding-top: 10px; margin-top: 4px; border-top: 1px solid var(--glass-border); }
+  .cart-tot .grand span:last-child { color: var(--orange); }
+  .clear { margin-top: 12px; background: none; border: 0; color: var(--muted); font: 500 11px 'Inter'; cursor: pointer; width: 100%; }
+  .clear:hover { color: var(--red); }
+
+  .menu { margin-bottom: 14px; }
+  .menu summary {
+    list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border); border-top-color: var(--glass-border-top);
+    border-radius: var(--glass-radius); padding: 16px 20px; color: var(--white); font-weight: 600; font-size: 14px;
   }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary::before { content: '▸'; color: var(--orange); transition: transform 0.15s; }
+  .menu[open] summary::before { transform: rotate(90deg); }
+  .menu summary span { margin-left: auto; font-size: 11px; color: var(--muted); font-weight: 400; }
+  .menu summary:hover { border-color: var(--orange); }
+  .menu-body { padding: 12px 0 0 14px; border-left: 1px solid var(--glass-border); margin: 0 0 0 10px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 12px; }
+  .back:hover { color: var(--orange); }
+  h1 { font-size: 36px; color: var(--white); margin: 14px 0 20px; font-weight: 700; line-height: 1.05; text-transform: lowercase; letter-spacing: -0.045em; }
+  h1 span { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 400; color: var(--orange); letter-spacing: -0.01em; }
 
-  /* ── HEADER ── */
-  header {
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-radius: var(--glass-radius);
-    border: 1px solid var(--glass-border);
-    border-top-color: var(--glass-border-top);
-    box-shadow: var(--glass-shadow);
-    padding: 28px 28px 24px;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
+  .card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-top-color: var(--glass-border-top); border-radius: var(--glass-radius); box-shadow: var(--glass-shadow); padding: 20px; margin-bottom: 14px; }
+  .card h2 { font-size: 14px; color: var(--white); margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .card h2 small { font-weight: 400; color: var(--muted); font-size: 11px; cursor: pointer; white-space: nowrap; }
+  .card h2 small:hover { color: var(--orange); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  input { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--white); font: 500 13px 'Inter', sans-serif; padding: 8px 9px; }
+  input:focus { outline: none; border-color: var(--orange); }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 10px; line-height: 1.5; }
+  .hint b { color: var(--text); }
+
+  .rate { display: flex; align-items: center; gap: 12px; }
+  .rate input { font-size: 28px; font-weight: 700; color: var(--orange); width: 130px; padding: 6px 10px; }
+  .rate span { font-size: 14px; color: var(--muted); }
+  .badge { display: inline-block; font-size: 11px; padding: 4px 9px; border-radius: 999px; margin-top: 12px; }
+  .ok { background: rgba(61,220,132,0.12); color: var(--green); }
+  .bad { background: rgba(255,90,90,0.12); color: var(--red); }
+  .plancher { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--glass-border); }
+  .hidden { display: none; }
+
+  .section { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin: 28px 0 12px; font-weight: 600; }
+  .offre-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .offre-head .nom { font-size: 16px; color: var(--white); font-weight: 700; letter-spacing: -0.02em; }
+  .offre-head .nom small { display: block; font-size: 11px; color: var(--muted); font-weight: 400; letter-spacing: 0; margin-top: 2px; }
+  .offre-head .prix { font-size: 26px; font-weight: 700; color: var(--orange); letter-spacing: -0.03em; white-space: nowrap; }
+  .offre ul { list-style: none; margin: 12px 0; font-size: 13px; display: grid; gap: 4px; }
+  .offre li::before { content: '→ '; color: var(--orange); }
+  .offre .tag { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 999px; background: rgba(255,107,43,0.14); color: var(--orange); margin-top: 4px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding-top: 12px; border-top: 1px solid var(--glass-border); }
+  .stats div { font-size: 10px; color: var(--muted); }
+  .stats b { display: block; font-size: 14px; color: var(--white); margin-top: 2px; }
+  .stats b.low { color: var(--red); }
+  @media (max-width: 480px) { .stats { grid-template-columns: 1fr 1fr; } }
+
+  @media (max-width: 480px) { body { padding: 28px 16px; } h1 { font-size: 30px; } }
+  /* ── Mobile ── */
+  .mbar { display: none; }
+  input[type=range] { height: 28px; }
+  @media (max-width: 860px) {
+    body { padding-bottom: 90px; }
+    .mbar {
+      display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 50;
+      align-items: center; justify-content: space-between; gap: 10px;
+      background: rgba(18,18,26,0.95); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--glass-border-top); border-radius: 14px; padding: 12px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6); color: var(--text); font-size: 12px; text-decoration: none;
+    }
+    .mbar b { font-size: 20px; color: var(--orange); letter-spacing: -0.02em; }
+    .mbar span.go { background: var(--orange); color: #fff; font-weight: 600; padding: 8px 12px; border-radius: 9px; }
   }
-
-  /* inner highlight arc — liquid glass signature */
-  header::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 10%; right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
-    border-radius: 100%;
-  }
-
-  header::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 60px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, transparent 100%);
-    border-radius: var(--glass-radius) var(--glass-radius) 0 0;
-    pointer-events: none;
-  }
-
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 18px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .logo-block .eyebrow {
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 6px;
-  }
-
-  .logo-block h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 44px;
-    letter-spacing: 6px;
-    color: var(--white);
-    line-height: 1;
-    text-shadow: 0 0 40px rgba(255,107,43,0.25);
-  }
-
-  .logo-block h1 span { color: var(--orange); }
-
-  .header-badge {
-    flex-shrink: 0;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--glass-border);
-    border-top-color: rgba(255,255,255,0.12);
-    border-radius: var(--glass-radius-sm);
-    padding: 10px 14px;
-    text-align: right;
-    backdrop-filter: blur(8px);
-  }
-
-  .badge-label {
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 3px;
-  }
-
-  .badge-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 16px;
-    letter-spacing: 1px;
-    color: var(--text);
-  }
-
-  .header-sub {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-    position: relative;
-    z-index: 1;
-  }
-
-  .header-sub span { color: var(--text); }
-
-  /* ── SECTION ── */
-  .section-num {
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--orange);
-    text-transform: uppercase;
-    font-weight: 600;
-    margin-bottom: 8px;
-    margin-top: 32px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-num::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 4px;
-    color: var(--white);
-    margin-bottom: 2px;
-  }
-
-  /* ── PRESTATION LIST ── */
-  .prestation-list {
-    margin-top: 12px;
-    border-radius: var(--glass-radius);
-    overflow: hidden;
-    /* glass container */
-    background: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 1px solid var(--glass-border);
-    border-top-color: var(--glass-border-top);
-    box-shadow: var(--glass-shadow);
-  }
-
-  .prestation-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 13px 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    cursor: pointer;
-    transition: background 0.15s, backdrop-filter 0.15s;
-    user-select: none;
-    position: relative;
-  }
-
-  .prestation-item:last-child { border-bottom: none; }
-
-  .prestation-item:hover {
-    background: rgba(255,255,255,0.04);
-  }
-
-  .prestation-item.selected {
-    background: var(--glass-bg-selected) !important;
-  }
-
-  /* selected left glow bar */
-  .prestation-item.selected::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: linear-gradient(180deg, var(--orange), rgba(255,107,43,0.3));
-    border-radius: 0 2px 2px 0;
-  }
-
-  /* checkbox */
-  .checkbox {
-    width: 18px;
-    height: 18px;
-    border-radius: 5px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.04);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.06);
-  }
-
-  .prestation-item.selected .checkbox {
-    background: var(--orange);
-    border-color: var(--orange);
-    box-shadow: 0 0 10px rgba(255,107,43,0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-  }
-
-  .checkbox-tick {
-    display: none;
-    color: white;
-    font-size: 10px;
-    font-weight: 700;
-  }
-
-  .prestation-item.selected .checkbox-tick { display: block; }
-
-  /* info */
-  .prestation-info {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .prestation-name {
-    font-size: 13px;
-    color: var(--text);
-    font-weight: 400;
-  }
-
-  .prestation-item.selected .prestation-name {
-    color: var(--white);
-    font-weight: 500;
-  }
-
-  .prestation-meta {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    flex-shrink: 0;
-  }
-
-  .prestation-duree {
-    font-size: 11px;
-    color: var(--muted);
-    min-width: 80px;
-    text-align: right;
-  }
-
-  .prestation-prix {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 17px;
-    letter-spacing: 1px;
-    color: var(--orange);
-    min-width: 56px;
-    text-align: right;
-    text-shadow: 0 0 16px rgba(255,107,43,0.35);
-  }
-
-  /* qty */
-  .qty-control {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-
-  .prestation-item.selected .qty-control { display: flex; }
-
-  .qty-btn {
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.05);
-    color: var(--muted);
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.12s;
-    backdrop-filter: blur(4px);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  .qty-btn:hover {
-    border-color: rgba(255,107,43,0.5);
-    color: var(--orange);
-    background: rgba(255,107,43,0.08);
-    box-shadow: 0 0 8px rgba(255,107,43,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  .qty-val {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--white);
-    min-width: 14px;
-    text-align: center;
-  }
-
-  /* ── TOTAL ── */
-  .total-box {
-    position: sticky;
-    bottom: 24px;
-    margin-top: 40px;
-    /* full liquid glass */
-    background: rgba(18, 18, 24, 0.70);
-    backdrop-filter: blur(40px) saturate(200%);
-    -webkit-backdrop-filter: blur(40px) saturate(200%);
-    border: 1px solid rgba(255,255,255,0.10);
-    border-top-color: rgba(255,255,255,0.20);
-    border-radius: var(--glass-radius);
-    padding: 20px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    box-shadow:
-      0 16px 48px rgba(0,0,0,0.6),
-      0 1px 0 rgba(255,255,255,0.08) inset,
-      0 0 0 1px rgba(255,107,43,0.08);
-    position: sticky;
-    overflow: hidden;
-  }
-
-  /* top arc */
-  .total-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 8%; right: 8%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-  }
-
-  /* orange ambient bottom glow */
-  .total-box::after {
-    content: '';
-    position: absolute;
-    bottom: -20px; left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 40px;
-    background: radial-gradient(ellipse, rgba(255,107,43,0.15), transparent 70%);
-    pointer-events: none;
-  }
-
-  .total-left { position: relative; z-index: 1; }
-
-  .total-eyebrow {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--orange);
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  .total-lines {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  .total-lines span { color: var(--text); }
-
-  .total-right {
-    text-align: right;
-    flex-shrink: 0;
-    position: relative;
-    z-index: 1;
-  }
-
-  .total-amount {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 50px;
-    color: var(--white);
-    letter-spacing: 2px;
-    line-height: 1;
-    text-shadow: 0 0 30px rgba(255,255,255,0.1);
-  }
-
-  .total-amount .currency { color: var(--orange); }
-
-  .total-ht {
-    font-size: 9px;
-    color: var(--muted);
-    text-align: right;
-    margin-top: 3px;
-    letter-spacing: 0.5px;
-  }
-
-  .reset-btn {
-    display: inline-block;
-    margin-top: 8px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: var(--muted);
-    font-family: 'Inter Tight', sans-serif;
-    font-size: 10px;
-    padding: 5px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.15s;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    backdrop-filter: blur(4px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-  }
-
-  .reset-btn:hover {
-    border-color: rgba(255,107,43,0.3);
-    color: var(--orange);
-    background: rgba(255,107,43,0.06);
-  }
-
-  .empty-state {
-    font-size: 11px;
-    color: var(--muted);
-    font-style: italic;
-  }
-
-  .footer-note {
-    margin-top: 20px;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.3px;
-    padding-bottom: 4px;
-  }
-
-  /* ── MOBILE ── */
   @media (max-width: 560px) {
-    body {
-      padding: 16px 12px 140px;
-      /* stronger glows on mobile for glass to read better */
-      background-image:
-        radial-gradient(ellipse 80% 35% at 50% 5%, rgba(255,107,43,0.10) 0%, transparent 70%),
-        radial-gradient(ellipse 70% 50% at 80% 90%, rgba(80,60,180,0.08) 0%, transparent 70%);
-    }
-
-    /* Header */
-    header {
-      padding: 20px 18px 18px;
-      border-radius: 18px;
-      /* stronger top arc on mobile */
-    }
-
-    .header-top { flex-direction: column; gap: 10px; }
-    .logo-block h1 { font-size: 36px; letter-spacing: 4px; }
-
-    .header-badge {
-      text-align: left;
-      width: 100%;
-      display: flex;
-      gap: 20px;
-      align-items: center;
-      padding: 8px 12px;
-    }
-
-    .header-badge > div { margin-top: 0 !important; }
-
-    /* Section labels */
-    .section-num { margin-top: 24px; font-size: 9px; }
-    .section-title { font-size: 19px; letter-spacing: 3px; }
-
-    /* Glass cards — keep blur, adjust spacing */
-    .prestation-list {
-      border-radius: 16px;
-      /* slightly more opaque on mobile since bg is simpler */
-      background: rgba(22, 22, 30, 0.72);
-    }
-
-    .prestation-item {
-      flex-wrap: wrap;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 14px 16px;
-      min-height: 56px; /* better touch target */
-    }
-
-    .checkbox {
-      width: 24px;
-      height: 24px;
-      border-radius: 7px;
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
-
-    .prestation-info {
-      flex: 1;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .prestation-name { font-size: 13px; line-height: 1.4; }
-
-    .prestation-meta {
-      width: 100%;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .prestation-duree { font-size: 10px; min-width: auto; text-align: left; }
-    .prestation-prix { font-size: 16px; min-width: auto; }
-
-    /* qty — bigger tap targets */
-    .qty-btn {
-      width: 32px;
-      height: 32px;
-      font-size: 16px;
-      border-radius: 8px;
-    }
-    .qty-val { font-size: 14px; min-width: 18px; }
-
-    /* Total — full glass sheet sliding up from bottom */
-    .total-box {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      border-radius: 20px 20px 0 0;
-      border-left: none; border-right: none; border-bottom: none;
-      border-top: 1px solid rgba(255,255,255,0.18);
-      padding: 16px 20px calc(env(safe-area-inset-bottom, 0px) + 14px);
-      flex-direction: row;
-      align-items: center;
-      margin-top: 0;
-      /* stronger glass on mobile total */
-      background: rgba(14, 14, 20, 0.85);
-      backdrop-filter: blur(48px) saturate(220%);
-      -webkit-backdrop-filter: blur(48px) saturate(220%);
-      box-shadow:
-        0 -1px 0 rgba(255,255,255,0.10),
-        0 -24px 48px rgba(0,0,0,0.5),
-        inset 0 1px 0 rgba(255,255,255,0.12);
-    }
-
-    /* hide lines on mobile — not enough space */
-    .total-lines { display: none; }
-
-    .total-eyebrow { font-size: 8px; margin-bottom: 2px; }
-    .total-amount { font-size: 40px; }
-    .total-ht { font-size: 8px; }
-    .reset-btn { padding: 6px 12px; font-size: 10px; margin-top: 6px; }
+    body { padding-left: 12px; padding-right: 12px; }
+    input, select { font-size: 16px !important; }
+    .rate input { font-size: 26px !important; }
+    .menu-body { padding-left: 0; margin-left: 0; border-left: 0; }
+    .menu summary { padding: 14px 16px; }
+    .menu summary span { display: none; }
+    .card { padding: 16px; }
+    .offre-head .prix { font-size: 22px; }
+    .grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .stats { grid-template-columns: 1fr 1fr !important; }
+    #yStyles { grid-template-columns: 1fr !important; }
+    #yStyles button { text-align: left; }
+    #yStyles button br { display: none; }
+    #yStyles button small { display: inline !important; margin-left: 6px; }
+    .add, .item .ctrl button { min-height: 40px; }
+    .item .ctrl button { width: 34px; }
+    input[type=range] { height: 34px; }
   }
 </style>
 </head>
 <body>
 <div class="container">
+  <a class="back" href="index.html">← Outils</a>
+  <h1>calcul <span>pricing</span></h1>
 
-  <header>
-    <div class="header-top">
-      <div class="logo-block">
-        <div class="eyebrow">Calculateur de devis</div>
-        <h1>MADERINO <span>PROD</span></h1>
+  <div class="layout">
+  <div class="main">
+  <div class="card">
+    <h2>Mon taux horaire <small id="togglePlancher">calculer mon plancher</small></h2>
+    <div class="rate"><input type="number" id="taux" value="40" min="0"><span>€ / heure</span></div>
+    <div id="tauxBadge"></div>
+    <div class="plancher hidden" id="plancher">
+      <div class="grid">
+        <div><label>Net visé / mois (€)</label><input type="number" id="revenu" value="2000"></div>
+        <div><label>Frais pro / an (€)</label><input type="number" id="frais" value="4000"></div>
+        <div><label>Semaines / an</label><input type="number" id="semaines" value="45"></div>
+        <div><label>Heures facturées / sem.</label><input type="number" id="heures" value="22"></div>
+        <div><label>Cotisations (%)</label><input type="number" id="cotis" value="27" step="0.1"></div>
       </div>
-      <div class="header-badge">
-        <div class="badge-label">Régime</div>
-        <div class="badge-val">Auto-Entrepreneur</div>
-        <div class="badge-label" style="margin-top:8px;">Statut TVA</div>
-        <div class="badge-val">Art. 293B CGI</div>
-      </div>
-    </div>
-    <div class="header-sub">
-      Sélectionne les prestations pour composer ton devis — tous les tarifs sont <span>HT</span>, TVA non applicable.
-    </div>
-  </header>
-
-  <div id="sections-container"></div>
-
-  <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent);margin-top:40px;"></div>
-  <div class="footer-note">Maderino Production · Haute-Savoie · contact@maderinoprod.com</div>
-
-  <div class="total-box">
-    <div class="total-left">
-      <div class="total-eyebrow">Total devis</div>
-      <div class="total-lines" id="total-lines">
-        <span class="empty-state">Sélectionne des prestations</span>
-      </div>
-    </div>
-    <div class="total-right">
-      <div class="total-amount" id="total-amount">0 <span class="currency">€</span></div>
-      <div class="total-ht">HT — TVA non applicable</div>
-      <button class="reset-btn" onclick="resetAll()">Effacer</button>
+      <p class="hint">Plancher : <b id="plancherOut">–</b> — en dessous tu n'atteins pas ton net visé (CA nécessaire : <b id="caOut">–</b>).</p>
     </div>
   </div>
 
+  <h2 class="section">Mes offres</h2>
+  <details class="menu">
+    <summary>Offres classiques <span>4 offres</span></summary>
+    <div class="menu-body">
+      <div id="offres"></div>
+      <p class="hint">Inclus partout : call brief 30 min, tournage sur place, montage soigné avec sous-titres. Calcul : 2 h de montage / vidéo + 2 h de déplacement et installation par tournage.</p>
+    </div>
+  </details>
+
+  <details class="menu">
+    <summary>Montage seul <span>reels · podcast · mariage · YouTube</span></summary>
+    <div class="menu-body">
+      <div id="montages"></div>
+      <div class="card offre">
+        <div class="offre-head">
+          <div class="nom">Podcast<small>Multicam, synchro, nettoyage audio, étalonnage</small></div>
+          <div class="prix" id="pPrix">–</div>
+        </div>
+        <label style="margin-top:14px">Durée de l'épisode : <b id="pDur" style="color:var(--white)">–</b></label>
+        <input type="range" id="pMin" min="15" max="180" step="5" value="60" style="padding:0;accent-color:var(--orange)">
+        <label class="opt-ded"><input type="checkbox" id="pSub"> Sous-titres sur tout l’épisode</label>
+        <div class="stats" style="margin-top:12px; grid-template-columns: repeat(3, 1fr)">
+          <div>Temps<b id="pH">–</b></div>
+          <div>Par minute<b id="pMinPrix">–</b></div>
+          <div>Taux<b id="pTx">–</b></div>
+        </div>
+        <button class="add" id="addPodcast">+ Ajouter au panier</button>
+      </div>
+      <div class="card offre">
+        <div class="offre-head">
+          <div class="nom">Mariage<small>Montage à partir de rushes fournis</small></div>
+          <div class="prix" id="mPrix">–</div>
+        </div>
+        <label style="margin-top:14px">Rushes à traiter : <b id="mRushOut" style="color:var(--white)">–</b></label>
+        <input type="range" id="mRush" min="1" max="12" step="0.5" value="2" style="padding:0;accent-color:var(--orange)">
+        <label style="margin-top:10px">Durée du film final : <b id="mFilmOut" style="color:var(--white)">–</b></label>
+        <input type="range" id="mFilm" min="0" max="60" step="1" value="30" style="padding:0;accent-color:var(--orange)">
+        <label class="opt-ded"><input type="checkbox" id="mTeaser"> Option teaser 60 s (~2 h)</label>
+        <label class="opt-ded"><input type="checkbox" id="mCeremonie"> Cérémonie intégrale (~2 h 30)</label>
+        <div class="stats" style="margin-top:12px; grid-template-columns: repeat(4, 1fr)">
+          <div>Dérush<b id="mHDer">–</b></div>
+          <div>Film<b id="mHFilm">–</b></div>
+          <div>Teaser + cérém.<b id="mHOpt">–</b></div>
+          <div>Total<b id="mH">–</b></div>
+        </div>
+        <button class="add" id="addMariage">+ Ajouter au panier</button>
+      </div>
+      <div class="card offre">
+        <div class="offre-head">
+          <div class="nom">YouTube<small>Montage à partir de rushes fournis</small></div>
+          <div class="prix" id="yPrix">–</div>
+        </div>
+        <div class="types" id="yStyles" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px"></div>
+        <label style="margin-top:10px">Rushes à traiter : <b id="yRushOut" style="color:var(--white)">–</b></label>
+        <input type="range" id="yRush" min="0.5" max="24" step="0.5" value="1" style="padding:0;accent-color:var(--orange)">
+        <label style="margin-top:10px">Durée de la vidéo finale : <b id="yDurOut" style="color:var(--white)">–</b></label>
+        <input type="range" id="yDur" min="1" max="180" step="1" value="10" style="padding:0;accent-color:var(--orange)">
+        <label class="opt-ded"><input type="checkbox" id="ySub"> Sous-titres (+5 min / min)</label>
+        <label class="opt-ded"><input type="checkbox" id="yMini"> Miniature (~1 h)</label>
+        <div class="stats" style="margin-top:12px; grid-template-columns: repeat(4, 1fr)">
+          <div>Dérush<b id="yHDer">–</b></div>
+          <div>Montage<b id="yHMont">–</b></div>
+          <div>Options<b id="yHOpt">–</b></div>
+          <div>Total<b id="yH">–</b></div>
+        </div>
+        <button class="add" id="addYoutube">+ Ajouter au panier</button>
+      </div>
+      <p class="hint">Rushes fournis par le client. 1 aller-retour de modifications compris dans le temps. Astuce podcast : propose l’épisode + 3 extraits en reel basique.</p>
+    </div>
+  </details>
+
+  <details class="menu">
+    <summary>Tournage à la carte <span>temps seul · déplacement à part</span></summary>
+    <div class="menu-body">
+      <div class="card">
+        <div class="grid">
+          <div><label>Temps de tournage (h)</label><input type="number" id="tTour" value="2" step="0.5" min="0"></div>
+          <div><label>Installation / rangement (h)</label><input type="number" id="tInst" value="1" step="0.5" min="0"></div>
+          <div><label>Taux tournage (€/h)</label><input type="number" id="tTaux" value="60" placeholder="= mon taux"></div>
+        </div>
+        <div class="stats" style="margin-top:14px; grid-template-columns: repeat(2, 1fr)">
+          <div>Tournage<b id="tOutTour">–</b></div>
+          <div>Install.<b id="tOutInst">–</b></div>
+        </div>
+        <div class="offre-head" style="margin-top:14px">
+          <div class="nom">Total tournage<small id="tOutH">–</small></div>
+          <div class="prix" id="tOutTot">–</div>
+        </div>
+        <button class="add" id="addTournage">+ Ajouter au panier</button>
+      </div>
+    </div>
+  </details>
+
+  <details class="menu">
+    <summary>Déplacement hors zone <span>s'ajoute à n'importe quelle offre</span></summary>
+    <div class="menu-body">
+      <div class="card">
+        <div class="grid">
+          <div><label>Distance depuis Lyon centre (km, aller)</label><input type="number" id="dKm" value="0" min="0"></div>
+          <div><label>Inclus jusqu'à (km)</label><input type="number" id="dSeuil" value="15" min="0"></div>
+          <div><label>Prix au km (€)</label><input type="number" id="dPrixKm" value="0.50" step="0.01" min="0"></div>
+          <div><label>Temps de route en plus A/R (h)</label><input type="number" id="dTemps" value="0" step="0.25" min="0"></div>
+        </div>
+        <p class="hint">Le temps de route en plus est facturé à ton taux horaire (au-delà du trajet déjà compté dans l'offre).</p>
+        <div class="offre-head" style="margin-top:14px">
+          <div class="nom">Total déplacement<small id="dOut">–</small></div>
+          <div class="prix" id="dOutTot">–</div>
+        </div>
+        <button class="add" id="addDeplacement">+ Ajouter au panier</button>
+      </div>
+    </div>
+  </details>
+  </div>
+
+  <!-- ── PANIER ── -->
+  <aside class="cart" id="panier">
+    <div class="card">
+      <h2>Panier</h2>
+      <div id="cartItems"></div>
+      <label class="opt-ded"><input type="checkbox" id="dedTest"> Le client a déjà fait la vidéo découverte (−290 €)</label>
+      <div class="cart-tot" id="cartTot"></div>
+      <button class="clear" id="clearCart">Vider le panier</button>
+    </div>
+  </aside>
+  </div>
 </div>
 
+<a class="mbar" href="#panier"><span>Panier · <span id="mbarN">0</span> article(s)</span><b id="mbarTot">0 €</b><span class="go">Voir</span></a>
+
 <script>
-const catalogue = [
-  {
-    section: "Tournage",
-    num: "01",
-    items: [
-      { id: "t1", name: "Tournage — demi-journée", duree: "4h", prix: 105 },
-    ]
-  },
-  {
-    section: "Mariage",
-    num: "02",
-    items: [
-      { id: "m1", name: "Montage mariage — formule courte", duree: "12h (3 demi-journées)", prix: 315 },
-      { id: "m2", name: "Montage mariage — formule complète", duree: "16h (2 journées)", prix: 420 },
-    ]
-  },
-  {
-    section: "Montage YouTube",
-    num: "03",
-    items: [
-      { id: "y1", name: "Montage YouTube — demi-journée", duree: "4h", prix: 105 },
-      { id: "y2", name: "Montage YouTube — journée", duree: "8h", prix: 210 },
-      { id: "y3", name: "Montage YouTube — journée et demie", duree: "12h", prix: 315 },
-    ]
-  },
-  {
-    section: "Reels & Shorts",
-    num: "04",
-    items: [
-      { id: "r1", name: "Réel ultra simple", duree: "30 min", prix: 15 },
-      { id: "r2", name: "Réel simple", duree: "1h", prix: 30 },
-      { id: "r3", name: "Réel poussé — motion design", duree: "2h", prix: 55 },
-    ]
-  },
-  {
-    section: "Podcast",
-    num: "05",
-    items: [
-      { id: "p1", name: "Podcast classic — cut POV", duree: "4h", prix: 105 },
-      { id: "p2", name: "Podcast — habillage sonore + inserts libres de droit", duree: "8h", prix: 210 },
-      { id: "p3", name: "Intro / Outro motion simple", duree: "4h", prix: 105 },
-      { id: "p4", name: "+ Extrait Réel simple (supplément)", duree: "+1h", prix: 30 },
-      { id: "p5", name: "+ Extrait Réel poussé motion (supplément)", duree: "+2h", prix: 55 },
-    ]
-  }
-];
+  const $ = id => document.getElementById(id);
+  const n = id => parseFloat($(id).value) || 0;
+  const FIELDS = ['taux', 'revenu', 'frais', 'semaines', 'heures', 'cotis'];
+  const KEY = 'mp-pricing-v5';
 
-const state = {};
+  // Grille validée le 05/10/2026 — temps en heures
+  const OFFRES = [
+    { nom: 'Vidéo découverte', sous: 'Porte d\'entrée pour les nouveaux clients', prix: 290, videos: 1, tournage: 1.5, nbTournages: 1,
+      inclus: ['1 vidéo RS courte', 'Tournage court (~1 h 30)', 'Call brief 30 min'],
+      tag: '290 € déduits si le client prend l\'offre 2 ou 3 sous 30 jours' },
+    { nom: 'Offre 1', sous: '2 vidéos', prix: 379, videos: 2, tournage: 2.5, nbTournages: 1,
+      inclus: ['2 vidéos RS courtes', 'Tournage 2 h 30', 'Call brief 30 min'] },
+    { nom: 'Offre 2', sous: '5 vidéos', prix: 699, videos: 5, tournage: 4, nbTournages: 1,
+      inclus: ['5 vidéos RS courtes', '½ journée de tournage (4 h)', 'Call brief 30 min'] },
+    { nom: 'Offre 3', sous: '10 vidéos', prix: 1390, videos: 10, tournage: 8, nbTournages: 2,
+      inclus: ['10 vidéos RS courtes', '2 × ½ journée de tournage', 'Call brief 30 min'] },
+  ];
+  const H_CALL = 0.5, H_MONTAGE = 2, H_DEPLACEMENT = 2;
+  const eur = v => Math.round(v).toLocaleString('fr-FR') + ' €';
 
-const container = document.getElementById('sections-container');
-catalogue.forEach(sec => {
-  const secDiv = document.createElement('div');
-
-  const numEl = document.createElement('div');
-  numEl.className = 'section-num';
-  numEl.textContent = sec.num + ' — ' + sec.section.toUpperCase();
-  secDiv.appendChild(numEl);
-
-  const titleEl = document.createElement('div');
-  titleEl.className = 'section-title';
-  titleEl.textContent = sec.section;
-  secDiv.appendChild(titleEl);
-
-  const list = document.createElement('div');
-  list.className = 'prestation-list';
-
-  sec.items.forEach(item => {
-    state[item.id] = 0;
-
-    const row = document.createElement('div');
-    row.className = 'prestation-item';
-    row.id = 'row-' + item.id;
-
-    row.innerHTML = `
-      <div class="checkbox"><span class="checkbox-tick">✓</span></div>
-      <div class="prestation-info">
-        <div class="prestation-name">${item.name}</div>
-        <div class="prestation-meta">
-          <div class="qty-control">
-            <button class="qty-btn" onclick="changeQty(event,'${item.id}',-1)">−</button>
-            <div class="qty-val" id="qty-${item.id}">1</div>
-            <button class="qty-btn" onclick="changeQty(event,'${item.id}',+1)">+</button>
-          </div>
-          <div class="prestation-duree">${item.duree}</div>
-          <div class="prestation-prix" id="prix-${item.id}">${item.prix} €</div>
+  function renderOffres(t) {
+    $('offres').innerHTML = OFFRES.map((o, i) => {
+      const h = H_CALL + o.tournage + o.nbTournages * H_DEPLACEMENT + o.videos * H_MONTAGE;
+      const reel = o.prix / h, cout = h * t;
+      return `<div class="card offre">
+        <div class="offre-head">
+          <div class="nom">${o.nom}<small>${o.sous}</small></div>
+          <div class="prix">${eur(o.prix)}</div>
         </div>
-      </div>
-    `;
-
-    row.addEventListener('click', (e) => {
-      if (e.target.classList.contains('qty-btn')) return;
-      toggleItem(item.id, item.prix);
-    });
-
-    list.appendChild(row);
-  });
-
-  secDiv.appendChild(list);
-  container.appendChild(secDiv);
-});
-
-function toggleItem(id, prix) {
-  if (state[id] === 0) {
-    state[id] = 1;
-    document.getElementById('row-' + id).classList.add('selected');
-  } else {
-    state[id] = 0;
-    document.getElementById('row-' + id).classList.remove('selected');
-    document.getElementById('qty-' + id).textContent = '1';
+        <ul>${o.inclus.map(i => `<li>${i}</li>`).join('')}</ul>
+        ${o.tag ? `<span class="tag">${o.tag}</span>` : ''}
+        <div class="stats" style="margin-top:12px">
+          <div>Temps<b>${h.toLocaleString('fr-FR')} h</b></div>
+          <div>Coût à ${t} €/h<b>${eur(cout)}</b></div>
+          <div>Taux réel<b class="${reel < t ? 'low' : ''}">${reel.toFixed(1).replace('.', ',')} €/h</b></div>
+          <div>Par vidéo<b>${eur(o.prix / o.videos)}</b></div>
+        </div>
+        <button class="add" data-add="${i}">+ Ajouter au panier</button>
+      </div>`;
+    }).join('');
   }
-  updatePrix(id, prix);
-  updateTotal();
-}
 
-function changeQty(e, id, delta) {
-  e.stopPropagation();
-  const newQty = Math.max(1, (state[id] || 1) + delta);
-  state[id] = newQty;
-  document.getElementById('qty-' + id).textContent = newQty;
-  const item = findItem(id);
-  updatePrix(id, item.prix);
-  updateTotal();
-}
+  // ── Panier ──
+  const hours = o => H_CALL + o.tournage + o.nbTournages * H_DEPLACEMENT + o.videos * H_MONTAGE;
+  let cart = [];
+  try { cart = JSON.parse(localStorage.getItem('mp-panier') || '[]'); } catch (e) {}
 
-function updatePrix(id, basePrix) {
-  const qty = state[id];
-  const el = document.getElementById('prix-' + id);
-  el.textContent = (qty > 0 ? qty * basePrix : basePrix) + ' €';
-}
+  function renderCart() {
+    const t = n('taux');
+    const items = cart.map(c => ({ ...c, o: c.custom || OFFRES[c.i] })).filter(c => c.o);
+    const canDeduct = items.some(c => c.i >= 2);
+    $('dedTest').disabled = !canDeduct;
+    if (!canDeduct) $('dedTest').checked = false;
+    const ded = $('dedTest').checked ? 290 : 0;
 
-function findItem(id) {
-  for (const sec of catalogue) {
-    for (const item of sec.items) {
-      if (item.id === id) return item;
-    }
+    $('cartItems').innerHTML = items.length ? items.map((c, k) => `
+      <div class="item">
+        <span class="name">${c.o.nom} <small style="color:var(--muted);font-weight:400">· ${c.o.sous}</small></span>
+        <span class="price">${eur(c.o.prix * c.q)}</span>
+        <span class="ctrl"><button data-q="${k}" data-d="-1">−</button>${c.q}<button data-q="${k}" data-d="1">+</button></span>
+        <span class="rm" data-rm="${k}">retirer</span>
+      </div>`).join('') + (ded ? `<div class="item deduc"><span class="name">Vidéo découverte déduite</span><span class="price">− ${eur(ded)}</span></div>` : '')
+      : `<div class="cart-empty">Ajoute une offre pour démarrer</div>`;
+
+    const total = items.reduce((s, c) => s + c.o.prix * c.q, 0) - ded;
+    const h = items.reduce((s, c) => s + (c.custom ? c.custom.h : hours(c.o)) * c.q, 0);
+    const vids = items.reduce((s, c) => s + c.o.videos * c.q, 0);
+    const reel = h ? total / h : 0;
+    $('cartTot').innerHTML = items.length ? `
+      <div><span>Vidéos</span><span>${vids}</span></div>
+      <div><span>Temps de travail</span><span>${h.toLocaleString('fr-FR')} h</span></div>
+      <div><span>Coût à ${t} €/h</span><span>${eur(h * t)}</span></div>
+      <div><span>Taux réel</span><span style="color:${reel < t ? 'var(--red)' : 'var(--green)'}">${reel.toFixed(1).replace('.', ',')} €/h</span></div>
+      <div class="grand"><span>Total</span><span>${eur(total)}</span></div>` : '';
+    $('mbarN').textContent = items.reduce((x, c) => x + c.q, 0);
+    $('mbarTot').textContent = eur(Math.max(0, total));
+    try { localStorage.setItem('mp-panier', JSON.stringify(cart)); } catch (e) {}
   }
-}
 
-function updateTotal() {
-  let total = 0;
-  const lines = [];
-
-  catalogue.forEach(sec => {
-    sec.items.forEach(item => {
-      const qty = state[item.id];
-      if (qty > 0) {
-        const subtotal = qty * item.prix;
-        total += subtotal;
-        const label = qty > 1 ? `${item.name} ×${qty}` : item.name;
-        lines.push(`<span>${label}</span> — ${subtotal} €`);
-      }
-    });
+  $('offres').addEventListener('click', e => {
+    const b = e.target.closest('[data-add]'); if (!b) return;
+    const i = +b.dataset.add, ex = cart.find(c => c.i === i);
+    if (ex) ex.q++; else cart.push({ i, q: 1 });
+    renderCart();
   });
+  $('cartItems').addEventListener('click', e => {
+    const q = e.target.dataset.q, rm = e.target.dataset.rm;
+    if (q != null) { cart[q].q += +e.target.dataset.d; if (cart[q].q < 1) cart.splice(q, 1); }
+    else if (rm != null) cart.splice(rm, 1);
+    else return;
+    renderCart();
+  });
+  $('dedTest').addEventListener('change', renderCart);
 
-  const totalEl = document.getElementById('total-amount');
-  const linesEl = document.getElementById('total-lines');
-
-  totalEl.innerHTML = total + ' <span class="currency">€</span>';
-
-  if (lines.length === 0) {
-    linesEl.innerHTML = '<span class="empty-state">Sélectionne des prestations</span>';
-  } else {
-    linesEl.innerHTML = lines.join('<br>');
+  // ── Montage seul ──
+  const MONTAGES = [
+    { nom: 'Reel basique', desc: 'Coupes, rythme, sous-titres', prix: 20, h: 0.5 },
+    { nom: 'Reel intermédiaire', desc: 'Plusieurs plans, habillage, musique', prix: 40, h: 1 },
+    { nom: 'Reel ads', desc: 'Motion design, format publicitaire', prix: 80, h: 2 },
+  ];
+  function renderMontages() {
+    const t = n('taux');
+    $('montages').innerHTML = MONTAGES.map((m, i) => {
+      const reel = m.prix / m.h;
+      return `<div class="card offre">
+        <div class="offre-head">
+          <div class="nom">${m.nom}<small>${m.desc}</small></div>
+          <div class="prix">${eur(m.prix)}</div>
+        </div>
+        <div class="stats" style="margin-top:12px; grid-template-columns: repeat(3, 1fr)">
+          <div>Temps<b>${m.h.toLocaleString('fr-FR')} h</b></div>
+          <div>Coût à ${t} €/h<b>${eur(m.h * t)}</b></div>
+          <div>Taux réel<b class="${reel < t ? 'low' : ''}">${reel.toFixed(1).replace('.', ',')} €/h</b></div>
+        </div>
+        <button class="add" data-montage="${i}">+ Ajouter au panier</button>
+      </div>`;
+    }).join('');
   }
-}
-
-function resetAll() {
-  Object.keys(state).forEach(id => {
-    state[id] = 0;
-    document.getElementById('row-' + id).classList.remove('selected');
-    document.getElementById('qty-' + id).textContent = '1';
-    const item = findItem(id);
-    document.getElementById('prix-' + id).textContent = item.prix + ' €';
+  $('montages').addEventListener('click', e => {
+    const b = e.target.closest('[data-montage]'); if (!b) return;
+    const m = MONTAGES[+b.dataset.montage];
+    const ex = cart.find(c => c.custom && c.custom.nom === m.nom && c.custom.sous === 'montage seul');
+    if (ex) ex.q++; else cart.push({ q: 1, custom: { nom: m.nom, sous: 'montage seul', prix: m.prix, h: m.h, videos: m.videos ?? 1 } });
+    renderCart();
   });
-  updateTotal();
-}
+  $('taux').addEventListener('input', renderMontages);
+
+  // Podcast : 30 min → 2 h, 1 h → 3,5 h, 1 h 30 → 5 h (synchro + 3 min de montage par minute), minimum 2 h
+  function calcPodcast() {
+    const min = n('pMin');
+    const hMontage = Math.max(2, 0.5 + min * 0.05);
+    const hSub = $('pSub').checked ? min / 60 : 0;
+    const h = hMontage + hSub;
+    return { min, h, prix: Math.round(h * n('taux')) };
+  }
+  function renderPodcast() {
+    const p = calcPodcast();
+    const hh = Math.floor(p.min / 60), mm = p.min % 60;
+    $('pDur').textContent = (hh ? hh + ' h ' : '') + (mm ? mm + ' min' : '');
+    $('pPrix').textContent = eur(p.prix);
+    $('pH').textContent = p.h.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' h';
+    $('pMinPrix').textContent = (p.prix / p.min).toFixed(2).replace('.', ',') + ' €';
+    $('pTx').textContent = n('taux') + ' €/h';
+  }
+  ['pMin', 'pSub', 'taux'].forEach(k => $(k).addEventListener('input', renderPodcast));
+  $('addPodcast').onclick = () => {
+    const p = calcPodcast();
+    cart.push({ q: 1, custom: { nom: 'Podcast', sous: `${$('pDur').textContent.trim()}${$('pSub').checked ? ' + sous-titres' : ''}`, prix: p.prix, h: p.h, videos: 1 } });
+    renderCart();
+  };
+  renderPodcast();
+
+  // Mariage : dérush 20 min / h de rushes, film 2 h + 20 min / min finale, teaser 60 s 2 h, cérémonie 2,5 h
+  const fmtMin = m => (m >= 60 ? Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + String(m % 60).padStart(2, '0') : '') : m + ' min');
+  const fmtH = h => h.toLocaleString('fr-FR', { maximumFractionDigits: 2 }) + ' h';
+  function calcMariage() {
+    const der = n('mRush') / 3;
+    const film = n('mFilm') ? 2 + n('mFilm') / 3 : 0;
+    const opt = ($('mTeaser').checked ? 2 : 0) + ($('mCeremonie').checked ? 2.5 : 0);
+    const h = der + film + opt;
+    return { der, film, opt, h, prix: Math.round(h * n('taux')) };
+  }
+  function renderMariage() {
+    const m = calcMariage();
+    $('mRushOut').textContent = fmtH(n('mRush'));
+    $('mFilmOut').textContent = n('mFilm') ? n('mFilm') + ' min' : 'pas de film';
+    $('mHDer').textContent = fmtH(Math.round(m.der * 100) / 100);
+    $('mHFilm').textContent = fmtH(m.film);
+    $('mHOpt').textContent = fmtH(m.opt);
+    $('mH').textContent = fmtH(Math.round(m.h * 100) / 100);
+    $('mPrix').textContent = eur(m.prix);
+    $('addMariage').disabled = !m.h;
+  }
+  ['mRush', 'mFilm', 'mTeaser', 'mCeremonie', 'taux'].forEach(k => $(k).addEventListener('input', renderMariage));
+  $('addMariage').onclick = () => {
+    const m = calcMariage();
+    const parts = [n('mFilm') ? `film ${n('mFilm')} min` : '', $('mTeaser').checked ? 'teaser 60 s' : '', $('mCeremonie').checked ? 'cérémonie' : ''].filter(Boolean);
+    cart.push({ q: 1, custom: { nom: 'Mariage', sous: parts.join(' + '), prix: m.prix, h: m.h, videos: (n('mFilm') ? 1 : 0) + ($('mTeaser').checked ? 1 : 0) + ($('mCeremonie').checked ? 1 : 0) } });
+    renderCart();
+  };
+  renderMariage();
+
+  // YouTube : 30 min de base + dérush 20 min / h de rushes + montage selon le style (min par minute finale)
+  const Y_STYLES = [
+    { nom: 'Face caméra', ratio: 10 },
+    { nom: 'Vlog / tuto', ratio: 20 },
+    { nom: 'Dynamique', ratio: 40 },
+  ];
+  let yStyle = 1;
+  function renderYStyles() {
+    $('yStyles').innerHTML = Y_STYLES.map((y, i) =>
+      `<button class="type${i === yStyle ? ' on' : ''}" data-ys="${i}" style="background:rgba(255,255,255,0.03);border:1px solid ${i === yStyle ? 'var(--orange)' : 'var(--glass-border)'};border-radius:9px;padding:8px;color:${i === yStyle ? 'var(--white)' : 'var(--text)'};font:600 12px Inter;cursor:pointer">${y.nom}<br><small style="font-weight:400;color:var(--muted);font-size:10.5px;line-height:1.3;display:block;margin-top:2px">${y.ratio} min de montage<br>par minute de vidéo</small></button>`).join('');
+  }
+  function calcYoutube() {
+    const dur = n('yDur');
+    const der = 0.5 + n('yRush') / 3;
+    const mont = dur * Y_STYLES[yStyle].ratio / 60;
+    const opt = ($('ySub').checked ? dur * 5 / 60 : 0) + ($('yMini').checked ? 1 : 0);
+    const h = der + mont + opt;
+    return { der, mont, opt, h, prix: Math.round(h * n('taux')) };
+  }
+  function renderYoutube() {
+    const y = calcYoutube();
+    const r2 = v => Math.round(v * 100) / 100;
+    $('yRushOut').textContent = fmtH(n('yRush'));
+    $('yDurOut').textContent = fmtMin(n('yDur'));
+    $('yHDer').textContent = fmtH(r2(y.der));
+    $('yHMont').textContent = fmtH(r2(y.mont));
+    $('yHOpt').textContent = fmtH(r2(y.opt));
+    $('yH').textContent = fmtH(r2(y.h));
+    $('yPrix').textContent = eur(y.prix);
+  }
+  $('yStyles').addEventListener('click', e => {
+    const b = e.target.closest('[data-ys]'); if (!b) return;
+    yStyle = +b.dataset.ys; renderYStyles(); renderYoutube();
+  });
+  ['yRush', 'yDur', 'ySub', 'yMini', 'taux'].forEach(k => $(k).addEventListener('input', renderYoutube));
+  $('addYoutube').onclick = () => {
+    const y = calcYoutube();
+    const parts = [Y_STYLES[yStyle].nom.toLowerCase(), fmtMin(n('yDur')), $('ySub').checked ? 'sous-titres' : '', $('yMini').checked ? 'miniature' : ''].filter(Boolean);
+    cart.push({ q: 1, custom: { nom: 'YouTube', sous: parts.join(' · '), prix: y.prix, h: y.h, videos: 1 } });
+    renderCart();
+  };
+  renderYStyles();
+  renderYoutube();
+  renderMontages();
+
+  // ── Tournage à la carte & déplacement ──
+  const T_FIELDS = ['tTour', 'tInst', 'tTaux', 'dKm', 'dSeuil', 'dPrixKm', 'dTemps'];
+  function calcTournage() {
+    const tx = n('tTaux') || n('taux');
+    const r = { tour: n('tTour') * tx, inst: n('tInst') * tx, h: n('tTour') + n('tInst'), tx };
+    r.tot = r.tour + r.inst;
+    return r;
+  }
+  function calcDeplacement() {
+    const kmFact = Math.max(0, n('dKm') - n('dSeuil')) * 2;
+    const km = kmFact * n('dPrixKm'), temps = n('dTemps') * n('taux');
+    return { kmFact, km, temps, h: n('dTemps'), tot: km + temps };
+  }
+  function renderTournage() {
+    const r = calcTournage();
+    $('tOutTour').textContent = eur(r.tour);
+    $('tOutInst').textContent = eur(r.inst);
+    $('tOutH').textContent = `${r.h.toLocaleString('fr-FR')} h à ${r.tx} €/h`;
+    $('tOutTot').textContent = eur(r.tot);
+
+    const d = calcDeplacement();
+    $('dOut').textContent = !n('dKm') ? 'Saisis la distance' : !d.tot ? 'Dans la zone : inclus'
+      : [d.kmFact ? `${d.kmFact} km facturés (${eur(d.km)})` : '', d.h ? `${d.h.toLocaleString('fr-FR')} h de route (${eur(d.temps)})` : ''].filter(Boolean).join(' + ');
+    $('dOutTot').textContent = eur(d.tot);
+    $('addDeplacement').disabled = !d.tot;
+    try { localStorage.setItem('mp-tournage-v2', JSON.stringify(Object.fromEntries(T_FIELDS.map(k => [k, $(k).value])))); } catch (e) {}
+  }
+  try {
+    const s = JSON.parse(localStorage.getItem('mp-tournage-v2') || 'null');
+    if (s) T_FIELDS.forEach(k => { if (s[k] != null) $(k).value = s[k]; });
+  } catch (e) {}
+  T_FIELDS.forEach(k => $(k).addEventListener('input', renderTournage));
+  $('taux').addEventListener('input', renderTournage);
+  $('addTournage').onclick = () => {
+    const r = calcTournage();
+    cart.push({ q: 1, custom: { nom: 'Tournage', sous: `${n('tTour')} h`, prix: Math.round(r.tot), h: r.h, videos: 0 } });
+    renderCart();
+  };
+  $('addDeplacement').onclick = () => {
+    const d = calcDeplacement(); if (!d.tot) return;
+    cart.push({ q: 1, custom: { nom: 'Déplacement', sous: `${n('dKm')} km de Lyon`, prix: Math.round(d.tot), h: d.h, videos: 0 } });
+    renderCart();
+  };
+  renderTournage();
+  $('clearCart').onclick = () => { cart = []; $('dedTest').checked = false; renderCart(); };
+
+  function update() {
+    const ca = (n('revenu') * 12 + n('frais')) / (1 - n('cotis') / 100);
+    const h = n('semaines') * n('heures');
+    const pl = h > 0 ? ca / h : 0, t = n('taux');
+    $('plancherOut').textContent = pl.toFixed(2).replace('.', ',') + ' €/h';
+    $('caOut').textContent = Math.round(ca).toLocaleString('fr-FR') + ' €';
+    $('tauxBadge').innerHTML = !t ? '' : t < pl
+      ? `<span class="badge bad">Sous ton plancher (${pl.toFixed(0)} €/h)</span>`
+      : `<span class="badge ok">Au-dessus de ton plancher (${pl.toFixed(0)} €/h)</span>`;
+    renderOffres(t);
+    renderCart();
+    try { localStorage.setItem(KEY, JSON.stringify(Object.fromEntries(FIELDS.map(k => [k, $(k).value])))); } catch (e) {}
+  }
+
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (s) FIELDS.forEach(k => { if (s[k] != null) $(k).value = s[k]; });
+  } catch (e) {}
+
+  $('togglePlancher').onclick = () => $('plancher').classList.toggle('hidden');
+  FIELDS.forEach(k => $(k).addEventListener('input', update));
+  update();
 </script>
 </body>
 </html>
