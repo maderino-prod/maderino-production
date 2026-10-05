@@ -329,7 +329,7 @@
       <div class="action-label" style="justify-content: center;">
         <h2>Télécharge l'installeur</h2>
       </div>
-      <a class="pkg-btn" href="https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v2.1.0/MaderinoPluginSetup_v2.1.0.pkg" rel="noopener">Installer le plugin (Mac) — Essai gratuit 24h</a>
+      <a class="pkg-btn" href="https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v3.0.0/MaderinoPluginSetup_v3.0.0.pkg" rel="noopener">Installer le plugin (Mac) — Essai gratuit 24h</a>
       <ol>
         <li><strong>Ferme Premiere Pro</strong>, puis ouvre le fichier <code>MaderinoPluginSetup_v2.1.0.pkg</code> téléchargé.</li>
         <li>Si macOS affiche « <strong>impossible de vérifier le développeur</strong> » : va dans <strong>Réglages Système → Confidentialité et sécurité</strong>, descends jusqu'au message sur l'installeur et clique sur <strong>« Ouvrir quand même »</strong>.</li>
@@ -352,7 +352,7 @@
       <div class="terminal">
         <div class="terminal-bar"><span></span><span></span><span></span><span class="title">terminal — zsh</span></div>
         <pre id="cmd-block"><span class="cmd">mkdir</span> -p ~/Library/<span class="str">"Application Support"</span>/Adobe/CEP/extensions/com.maderino.premiere.downloader <span class="cont">&amp;&amp; \</span>
-<span class="cmd">curl</span> -L -o /tmp/maderino-plugin.zip <span class="str">"https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v2.1.0/Maderino.Downloader.Plugin_v2.1.0.zip"</span> <span class="cont">&amp;&amp; \</span>
+<span class="cmd">curl</span> -L -o /tmp/maderino-plugin.zip <span class="str">"https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v3.0.0/Maderino.Downloader.Plugin_v3.0.0.zip"</span> <span class="cont">&amp;&amp; \</span>
 <span class="cmd">unzip</span> -oq /tmp/maderino-plugin.zip -d ~/Library/<span class="str">"Application Support"</span>/Adobe/CEP/extensions/com.maderino.premiere.downloader <span class="cont">&amp;&amp; \</span>
 <span class="cmd">rm</span> /tmp/maderino-plugin.zip <span class="cont">&amp;&amp; \</span>
 <span class="comment"># autorise Premiere a charger une extension non signee</span>
@@ -404,7 +404,7 @@
 
 <script>
 function copyCmd(btn) {
-  const raw = "mkdir -p ~/Library/\"Application Support\"/Adobe/CEP/extensions/com.maderino.premiere.downloader && \\\ncurl -L -o /tmp/maderino-plugin.zip \"https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v2.1.0/Maderino.Downloader.Plugin_v2.1.0.zip\" && \\\nunzip -oq /tmp/maderino-plugin.zip -d ~/Library/\"Application Support\"/Adobe/CEP/extensions/com.maderino.premiere.downloader && \\\nrm /tmp/maderino-plugin.zip && \\\nfor v in 9 10 11 12 13; do defaults write com.adobe.CSXS.$v PlayerDebugMode 1; done && \\\necho \"Installe. Ouvre (ou redemarre) Premiere Pro, puis Fenetre > Extensions > Maderino Downloader.\"";
+  const raw = "mkdir -p ~/Library/\"Application Support\"/Adobe/CEP/extensions/com.maderino.premiere.downloader && \\\ncurl -L -o /tmp/maderino-plugin.zip \"https://github.com/maderino-prod/maderino-downloader/releases/download/plugin-v3.0.0/Maderino.Downloader.Plugin_v3.0.0.zip\" && \\\nunzip -oq /tmp/maderino-plugin.zip -d ~/Library/\"Application Support\"/Adobe/CEP/extensions/com.maderino.premiere.downloader && \\\nrm /tmp/maderino-plugin.zip && \\\nfor v in 9 10 11 12 13; do defaults write com.adobe.CSXS.$v PlayerDebugMode 1; done && \\\necho \"Installe. Ouvre (ou redemarre) Premiere Pro, puis Fenetre > Extensions > Maderino Downloader.\"";
   navigator.clipboard.writeText(raw).then(() => {
     const label = btn.querySelector('.label');
     const prev = label.textContent;
