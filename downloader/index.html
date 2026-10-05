@@ -563,9 +563,14 @@ function showOS(os) {
   document.getElementById('panel-mac').hidden = !isMac;
   document.getElementById('tab-btn-windows').setAttribute('aria-selected', String(!isMac));
   document.getElementById('tab-btn-mac').setAttribute('aria-selected', String(isMac));
-  if (history.replaceState) history.replaceState(null, '', isMac ? '#mac' : '#windows');
 }
-if (window.location.hash === '#mac') showOS('mac');
+// Onglet Mac demande via ?mac (lien retour de plugin-mac.html) ou l'ancien
+// #mac, puis URL nettoyee : toujours /downloader/, sans # ni parametre.
+const params = new URLSearchParams(window.location.search);
+if (params.has('mac') || window.location.hash === '#mac') showOS('mac');
+if (history.replaceState && (window.location.search || window.location.hash || /index\.html$/.test(window.location.pathname))) {
+  history.replaceState(null, '', window.location.pathname.replace(/index\.html$/, ''));
+}
 </script>
 </body>
 </html>
