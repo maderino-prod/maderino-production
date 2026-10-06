@@ -385,3 +385,26 @@ html[data-theme="light"] .popup-media-item { background: #E9E1D5 !important; box
 /* Visionneuse photo/vidéo : voile clair autour, la vidéo reste sur fond sombre */
 html[data-theme="light"] .lightbox { background: rgba(243,237,228,0.9) !important; }
 html[data-theme="light"] .lightbox-close, html[data-theme="light"] .lightbox-nav { background: rgba(255,255,255,0.85) !important; color: #1C1814 !important; border: 1px solid rgba(28,24,20,0.12) !important; }
+
+/* Portfolio : finitions de la fenêtre de projet */
+html[data-theme="light"] .popup-name { line-height: 1.05 !important; margin-bottom: 4px; }
+html[data-theme="light"] .popup-header { margin-bottom: 14px !important; }
+html[data-theme="light"] .popup-tags { gap: 6px !important; margin-bottom: 22px !important; }
+html[data-theme="light"] .popup-tag { font-size: 10.5px !important; padding: 5px 11px !important; }
+html[data-theme="light"] .popup-tag.photo { color: #1C1814 !important; border-color: rgba(28,24,20,0.18) !important; background: rgba(255,255,255,0.7) !important; }
+html[data-theme="light"] .popup-desc { line-height: 1.65 !important; }
+html[data-theme="light"] .popup-media-label { font-size: 20px !important; letter-spacing: -0.03em !important; }
+html[data-theme="light"] .popup-media-item { border-radius: 16px !important; }
+html[data-theme="light"] .popup-media-title { font-size: 13.5px !important; letter-spacing: -0.02em !important; line-height: 1.2 !important; }
+html[data-theme="light"] .popup-media-type { font-size: 9.5px !important; letter-spacing: 0.08em !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 768px) {
+  html[data-theme="light"] .popup { border-radius: 24px !important; }
+  html[data-theme="light"] .popup-hero { border-radius: 24px 24px 0 0 !important; }
+  html[data-theme="light"] .popup-body { padding: 22px 18px 28px !important; }
+  html[data-theme="light"] .popup-name { font-size: 28px !important; }
+  html[data-theme="light"] .popup-desc { font-size: 14px !important; margin-bottom: 24px !important; }
+  html[data-theme="light"] .popup-media-grid { gap: 10px !important; }
+  html[data-theme="light"] .popup-media-overlay { padding: 10px !important; }
+  html[data-theme="light"] .popup-media-title { font-size: 12.5px !important; }
+  html[data-theme="light"] .popup-cta { width: 100%; justify-content: center; font-size: 13px !important; padding: 14px 20px !important; }
+}
