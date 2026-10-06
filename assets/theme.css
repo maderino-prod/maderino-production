@@ -358,3 +358,14 @@ html[data-theme="light"] .hero::after { background: linear-gradient(to bottom, r
 .portfolio-overlay .portfolio-title, .popup-media-overlay .popup-media-title {
   color: #fff !important; text-shadow: 0 1px 10px rgba(0,0,0,0.55);
 }
+
+/* Accueil, téléphone : boutons du haut plus petits (orange au-dessus, les deux autres côte à côte) */
+@media (max-width: 768px) {
+  .hero-btns { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 8px !important; width: 100%; max-width: 300px; margin: 0 auto; }
+  .hero-btns .btn-primary, .hero-btns .btn-outline {
+    width: auto !important; padding: 11px 12px !important; justify-content: center !important; text-align: center;
+    font-size: 13px !important; font-weight: 500 !important; letter-spacing: 0.01em !important; white-space: nowrap;
+  }
+  .hero-btns .btn-primary { grid-column: 1 / -1 !important; }
+  .hero-btns .btn-outline { background: rgba(255,255,255,0.12) !important; }
+}
