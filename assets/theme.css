@@ -305,3 +305,11 @@ html[data-theme="light"] img[src*="logo-contour-france-blanc"] { filter: brightn
 
 /* iPhone : empêche Safari d'agrandir le texte tout seul, pour un rendu identique à une fenêtre Chrome étroite */
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* Points sous les cartes défilantes (téléphone uniquement) */
+.carousel-dots { display: none; }
+@media (max-width: 768px) {
+  .carousel-dots { display: flex; justify-content: center; gap: 8px; margin-top: 6px; }
+  .carousel-dots button { width: 7px; height: 7px; padding: 0; border: none; border-radius: 100px; background: rgba(28,24,20,0.2); cursor: pointer; transition: width .3s ease, background .3s ease; }
+  .carousel-dots button.active { width: 22px; background: var(--orange); }
+}
