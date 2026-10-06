@@ -415,17 +415,16 @@ html[data-theme="light"] .popup-media-type { font-size: 9.5px !important; letter
   .hero .hero-mobile-bg { display: block !important; z-index: -1; }
 }
 
-/* Fond de tout le site : motif « timeline de montage » très discret, qui défile avec la page (voir theme.js) */
+/* Fond de tout le site : motif « timeline de montage » très discret, posé sur toute la hauteur de la page.
+   Il défile nativement avec le contenu (aucun calcul en JavaScript), donc parfaitement fluide. */
 html[data-theme="light"] body { position: relative; isolation: isolate; }
 html[data-theme="light"] body::before {
-  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  content: ''; position: absolute; left: 0; right: 0; top: 0; bottom: 0; z-index: -1; pointer-events: none;
   background-image: url('/assets/timeline-bg.svg');
-  background-size: 1200px 520px; background-repeat: repeat;
+  background-size: 1200px 520px; background-repeat: repeat; background-position: center top;
   opacity: 0.055;
-  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 40%, transparent 100%);
-          mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 40%, transparent 100%);
-  background-position: calc(var(--tl-x, 0px)) calc(var(--tl-y, 0px));
-  will-change: background-position;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 88%, transparent 100%);
 }
 @media (max-width: 768px) {
   html[data-theme="light"] body::before { background-size: 720px 312px; opacity: 0.05; }
