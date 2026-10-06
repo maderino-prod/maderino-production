@@ -330,3 +330,25 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .floating-cta { transition: opacity .3s ease, transform .3s ease !important; bottom: calc(14px + env(safe-area-inset-bottom)) !important; }
 .floating-cta:not(.visible) { transform: translate(-50%, 20px) !important; }
 .floating-cta.visible { transform: translate(-50%, 0) !important; }
+
+/* ── Fond : plus de bandes de couleur ni de lignes entre les sections, un seul dégradé doux ── */
+html[data-theme="light"] body {
+  background:
+    radial-gradient(1200px 900px at 12% 8%, rgba(255,250,242,0.9), transparent 60%),
+    radial-gradient(1000px 800px at 90% 35%, rgba(234,222,206,0.75), transparent 60%),
+    radial-gradient(1100px 900px at 15% 70%, rgba(250,240,228,0.85), transparent 60%),
+    radial-gradient(900px 700px at 85% 95%, rgba(236,224,208,0.7), transparent 60%),
+    linear-gradient(180deg, #F3EDE4 0%, #EFE7DC 35%, #F3ECE3 65%, #EEE5D9 100%) !important;
+  background-attachment: scroll !important;
+}
+html[data-theme="light"] section:not(.hero),
+html[data-theme="light"] section.alt,
+html[data-theme="light"] .portfolio, html[data-theme="light"] .contact, html[data-theme="light"] .booking,
+html[data-theme="light"] .services, html[data-theme="light"] .story, html[data-theme="light"] .reviews,
+html[data-theme="light"] .cta-section, html[data-theme="light"] .page-header, html[data-theme="light"] .stats {
+  background: transparent !important; border-top: none !important; border-bottom: none !important;
+}
+html[data-theme="light"] .timeline-bg { display: none !important; }
+html[data-theme="light"] footer { background: transparent !important; border-top: none !important; }
+/* Le haut de page photo de l'accueil se fond dans le dégradé */
+html[data-theme="light"] .hero::after { background: linear-gradient(to bottom, rgba(243,237,228,0) 0%, rgba(243,237,228,0.6) 55%, #F3EDE4 100%) !important; }
