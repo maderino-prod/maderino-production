@@ -414,3 +414,20 @@ html[data-theme="light"] .popup-media-type { font-size: 9.5px !important; letter
   .hero .hero-video { display: block !important; opacity: 0.4; z-index: 0; }
   .hero .hero-mobile-bg { display: block !important; z-index: -1; }
 }
+
+/* Fond de tout le site : motif « timeline de montage » très discret, qui glisse lentement */
+html[data-theme="light"] body { position: relative; isolation: isolate; }
+html[data-theme="light"] body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: url('/assets/timeline-bg.svg');
+  background-size: 1200px 520px; background-repeat: repeat;
+  opacity: 0.055;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 40%, transparent 100%);
+          mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 40%, transparent 100%);
+  animation: timeline-drift 90s linear infinite;
+}
+@keyframes timeline-drift { from { background-position: 0 0; } to { background-position: -1200px 0; } }
+@media (max-width: 768px) {
+  html[data-theme="light"] body::before { background-size: 720px 312px; opacity: 0.05; animation-duration: 70s; }
+  @keyframes timeline-drift { from { background-position: 0 0; } to { background-position: -720px 0; } }
+}

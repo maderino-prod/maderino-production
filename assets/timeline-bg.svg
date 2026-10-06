@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <!-- Motif de fond : timeline de montage (règle, pistes V/A, clips, coupes). Répété en mosaïque, très faible opacité. -->
+  <g fill="none" stroke="#1C1814" stroke-width="1">
+    <!-- règle temporelle -->
+    <line x1="0" y1="30" x2="1200" y2="30"/>
+    <g stroke-width="0.8">
+      <line x1="0" y1="30" x2="0" y2="18"/><line x1="60" y1="30" x2="60" y2="24"/><line x1="120" y1="30" x2="120" y2="24"/><line x1="180" y1="30" x2="180" y2="24"/>
+      <line x1="240" y1="30" x2="240" y2="18"/><line x1="300" y1="30" x2="300" y2="24"/><line x1="360" y1="30" x2="360" y2="24"/><line x1="420" y1="30" x2="420" y2="24"/>
+      <line x1="480" y1="30" x2="480" y2="18"/><line x1="540" y1="30" x2="540" y2="24"/><line x1="600" y1="30" x2="600" y2="24"/><line x1="660" y1="30" x2="660" y2="24"/>
+      <line x1="720" y1="30" x2="720" y2="18"/><line x1="780" y1="30" x2="780" y2="24"/><line x1="840" y1="30" x2="840" y2="24"/><line x1="900" y1="30" x2="900" y2="24"/>
+      <line x1="960" y1="30" x2="960" y2="18"/><line x1="1020" y1="30" x2="1020" y2="24"/><line x1="1080" y1="30" x2="1080" y2="24"/><line x1="1140" y1="30" x2="1140" y2="24"/>
+    </g>
+    <!-- séparations de pistes -->
+    <g stroke-width="0.6" opacity="0.7">
+      <line x1="0" y1="110" x2="1200" y2="110"/><line x1="0" y1="190" x2="1200" y2="190"/>
+      <line x1="0" y1="270" x2="1200" y2="270"/><line x1="0" y1="350" x2="1200" y2="350"/>
+    </g>
+  </g>
+  <!-- clips vidéo (V1, V2) -->
+  <g fill="#1C1814">
+    <rect x="20" y="50" width="210" height="48" rx="6"/><rect x="240" y="50" width="330" height="48" rx="6"/>
+    <rect x="580" y="50" width="160" height="48" rx="6"/><rect x="750" y="50" width="430" height="48" rx="6"/>
+    <rect x="120" y="128" width="180" height="48" rx="6" opacity="0.7"/><rect x="520" y="128" width="260" height="48" rx="6" opacity="0.7"/>
+    <rect x="900" y="128" width="200" height="48" rx="6" opacity="0.7"/>
+  </g>
+  <!-- clips audio avec forme d'onde -->
+  <g fill="#FF6B00" opacity="0.9">
+    <rect x="20" y="208" width="560" height="48" rx="6" opacity="0.55"/><rect x="590" y="208" width="590" height="48" rx="6" opacity="0.55"/>
+    <rect x="60" y="288" width="420" height="48" rx="6" opacity="0.35"/><rect x="700" y="288" width="380" height="48" rx="6" opacity="0.35"/>
+  </g>
+  <path d="M30 232 q15-14 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 M600 232 q15-12 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0"
+        fill="none" stroke="#1C1814" stroke-width="1.2" opacity="0.6"/>
+  <!-- coupes en pointillés -->
+  <g stroke="#1C1814" stroke-width="0.8" stroke-dasharray="3 5" opacity="0.7">
+    <line x1="235" y1="40" x2="235" y2="350"/><line x1="575" y1="40" x2="575" y2="350"/><line x1="745" y1="40" x2="745" y2="350"/>
+  </g>
+  <!-- tête de lecture -->
+  <g fill="#FF6B00" stroke="#FF6B00">
+    <polygon points="412,12 428,12 420,24"/>
+    <line x1="420" y1="24" x2="420" y2="380" stroke-width="1.6"/>
+  </g>
+</svg>
