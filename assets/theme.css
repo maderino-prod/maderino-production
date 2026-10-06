@@ -326,3 +326,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     font-weight: 500 !important;
   }
 }
+/* Barre flottante : glisse en douceur, et respecte la zone du bas de l'iPhone */
+.floating-cta { transition: opacity .3s ease, transform .3s ease !important; bottom: calc(14px + env(safe-area-inset-bottom)) !important; }
+.floating-cta:not(.visible) { transform: translate(-50%, 20px) !important; }
+.floating-cta.visible { transform: translate(-50%, 0) !important; }

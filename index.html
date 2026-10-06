@@ -653,7 +653,7 @@
   </style>
   <!-- Thème clair (beige) -->
   <script>document.documentElement.dataset.theme='light'</script>
-  <link rel="stylesheet" href="/assets/theme.css?v=25">
+  <link rel="stylesheet" href="/assets/theme.css?v=26">
   <!-- Section avis clients -->
   <style>
     .reviews { padding: 110px 40px; }
@@ -1523,31 +1523,21 @@
   </div>
 
   <script>
-    // Floating CTA
+    // Floating CTA : visible après le haut de page, cachée quand on arrive sur « on travaille ensemble ? »,
+    // le contact et le pied de page (les mêmes boutons y sont déjà). Plus de recalcul de position, qui faisait
+    // sauter la barre sur iPhone quand la barre de Safari apparaît ou disparaît.
     const floatingCta = document.getElementById('floating-cta');
     function checkFloating() {
       const heroBtns = document.getElementById('hero-btns');
       if (!heroBtns || !floatingCta) return;
-      const rect = heroBtns.getBoundingClientRect();
-      if (rect.bottom < 0) {
-        floatingCta.classList.add('visible');
-      } else {
-        floatingCta.classList.remove('visible');
-      }
-      // Remonter au dessus du footer sur mobile
-      const footer = document.querySelector('footer');
-      if (footer) {
-        const footerRect = footer.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        if (footerRect.top < windowHeight) {
-          const offset = windowHeight - footerRect.top + 12;
-          floatingCta.style.bottom = offset + 'px';
-        } else {
-          floatingCta.style.bottom = '';
-        }
-      }
+      const pastHero = heroBtns.getBoundingClientRect().bottom < 0;
+      const end = document.getElementById('booking');
+      const atEnd = end && end.getBoundingClientRect().top < window.innerHeight * 0.85;
+      floatingCta.classList.toggle('visible', pastHero && !atEnd);
     }
     window.addEventListener('scroll', checkFloating, { passive: true });
+    window.addEventListener('resize', checkFloating);
+    setInterval(checkFloating, 400);
     checkFloating();
   </script>
 
