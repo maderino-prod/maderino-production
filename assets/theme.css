@@ -408,3 +408,9 @@ html[data-theme="light"] .popup-media-type { font-size: 9.5px !important; letter
   html[data-theme="light"] .popup-media-title { font-size: 12.5px !important; }
   html[data-theme="light"] .popup-cta { width: 100%; justify-content: center; font-size: 13px !important; padding: 14px 20px !important; }
 }
+
+/* Accueil, téléphone : la vidéo de fond joue aussi (l'image reste dessous le temps qu'elle charge) */
+@media (max-width: 768px) {
+  .hero .hero-video { display: block !important; opacity: 0.4; z-index: 0; }
+  .hero .hero-mobile-bg { display: block !important; z-index: -1; }
+}
