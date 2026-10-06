@@ -369,3 +369,19 @@ html[data-theme="light"] .hero::after { background: linear-gradient(to bottom, r
   .hero-btns .btn-primary { grid-column: 1 / -1 !important; }
   .hero-btns .btn-outline { background: rgba(255,255,255,0.12) !important; }
 }
+
+/* Portfolio : fenêtre de projet en clair (beige), comme le reste du site */
+html[data-theme="light"] .popup-overlay { background: rgba(243,237,228,0.72) !important; }
+html[data-theme="light"] .popup {
+  background: #FAF6F0 !important; border: 1px solid rgba(28,24,20,0.10) !important;
+  box-shadow: 0 30px 80px rgba(60,40,20,0.22), inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+html[data-theme="light"] .popup-name, html[data-theme="light"] .popup-media-label { color: #1C1814 !important; }
+html[data-theme="light"] .popup-desc { color: rgba(28,24,20,0.68) !important; }
+html[data-theme="light"] .popup-tag { background: rgba(255,107,0,0.08) !important; }
+html[data-theme="light"] .popup-close { background: rgba(255,255,255,0.85) !important; border: 1px solid rgba(28,24,20,0.12) !important; color: #1C1814 !important; }
+html[data-theme="light"] .popup-close svg { stroke: #1C1814 !important; }
+html[data-theme="light"] .popup-media-item { background: #E9E1D5 !important; box-shadow: 0 6px 18px rgba(60,40,20,0.12); }
+/* Visionneuse photo/vidéo : voile clair autour, la vidéo reste sur fond sombre */
+html[data-theme="light"] .lightbox { background: rgba(243,237,228,0.9) !important; }
+html[data-theme="light"] .lightbox-close, html[data-theme="light"] .lightbox-nav { background: rgba(255,255,255,0.85) !important; color: #1C1814 !important; border: 1px solid rgba(28,24,20,0.12) !important; }
