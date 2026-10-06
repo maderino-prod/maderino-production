@@ -415,7 +415,7 @@ html[data-theme="light"] .popup-media-type { font-size: 9.5px !important; letter
   .hero .hero-mobile-bg { display: block !important; z-index: -1; }
 }
 
-/* Fond de tout le site : motif « timeline de montage » très discret, qui glisse lentement */
+/* Fond de tout le site : motif « timeline de montage » très discret, qui défile avec la page (voir theme.js) */
 html[data-theme="light"] body { position: relative; isolation: isolate; }
 html[data-theme="light"] body::before {
   content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
@@ -424,10 +424,9 @@ html[data-theme="light"] body::before {
   opacity: 0.055;
   -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 40%, transparent 100%);
           mask-image: radial-gradient(ellipse 90% 80% at 50% 50%, #000 40%, transparent 100%);
-  animation: timeline-drift 90s linear infinite;
+  background-position: calc(var(--tl-x, 0px)) calc(var(--tl-y, 0px));
+  will-change: background-position;
 }
-@keyframes timeline-drift { from { background-position: 0 0; } to { background-position: -1200px 0; } }
 @media (max-width: 768px) {
-  html[data-theme="light"] body::before { background-size: 720px 312px; opacity: 0.05; animation-duration: 70s; }
-  @keyframes timeline-drift { from { background-position: 0 0; } to { background-position: -720px 0; } }
+  html[data-theme="light"] body::before { background-size: 720px 312px; opacity: 0.05; }
 }

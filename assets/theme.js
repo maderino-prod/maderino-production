@@ -10,3 +10,17 @@
     img.classList.add('logo-icon');
   });
 })();
+
+/* Fond « timeline » : défile en même temps que la page (vers la gauche et un peu vers le haut) */
+(() => {
+  const root = document.documentElement;
+  let ticking = false;
+  const move = () => {
+    const y = window.scrollY;
+    root.style.setProperty('--tl-x', (-y * 0.35).toFixed(1) + 'px');
+    root.style.setProperty('--tl-y', (-y * 0.12).toFixed(1) + 'px');
+    ticking = false;
+  };
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(move); } }, { passive: true });
+  move();
+})();
