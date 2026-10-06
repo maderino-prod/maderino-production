@@ -283,3 +283,22 @@ html[data-theme="light"] img[src*="logo-contour-france-blanc"] { filter: brightn
   .zone-grid .zone-name { font-size: 22px !important; overflow-wrap: anywhere; }
   .zone-grid > .zone-item:nth-child(1) .zone-name { font-size: 40px !important; }
 }
+
+/* ── Mobile, 2e passe ── */
+@media (max-width: 768px) {
+  /* Titres de section : espace sous le titre pour que les cartes ne le recouvrent pas */
+  .section-header { margin-bottom: 40px !important; }
+  .section-header .section-title { padding-bottom: 6px; }
+
+  /* « Ce qu'on monte / ce qu'on tourne » : défilement au doigt, sans animation automatique */
+  .types-scroll-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;
+    scrollbar-width: none; -webkit-mask-image: none; mask-image: none; }
+  .types-scroll-wrap::-webkit-scrollbar { display: none; }
+  .types-track.marquee { animation: none !important; transform: none !important; padding: 0 20px 24px !important; }
+  .types-track.marquee > [aria-hidden="true"] { display: none !important; }
+  .types-track.marquee > * { scroll-snap-align: center; width: 82vw !important; min-width: 82vw !important; max-width: 82vw !important; }
+
+  /* Débordements de texte : les mots longs passent à la ligne au lieu de sortir des cartes */
+  .zone-name, .type-name, .service-name, .mm-title, .avantage-text strong, .portfolio-title, .client-name { overflow-wrap: anywhere; hyphens: auto; }
+  .zone-grid .zone-name { font-size: 20px !important; }
+}
