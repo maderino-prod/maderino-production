@@ -313,3 +313,8 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .carousel-dots button { width: 7px; height: 7px; padding: 0; border: none; border-radius: 100px; background: rgba(28,24,20,0.2); cursor: pointer; transition: width .3s ease, background .3s ease; }
   .carousel-dots button.active { width: 22px; background: var(--orange); }
 }
+/* Correctif : la 1re et la dernière carte peuvent elles aussi se centrer (marges latérales = (100 - 82) / 2) */
+@media (max-width: 768px) {
+  .types-track.marquee { padding-left: 9vw !important; padding-right: 9vw !important; gap: 14px !important; }
+  .types-scroll-wrap { scroll-padding: 0 9vw; overscroll-behavior-x: contain; }
+}
