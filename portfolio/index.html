@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio — Réalisations Vidéo & Photo | Maderino Production</title>
+  <title>Portfolio · Réalisations Vidéo & Photo | Maderino Production</title>
   <meta name="description" content="Découvrez les réalisations de Maderino Production : vidéos d'entreprise, reels, aftermovies, shootings photo pour Five Fruits, Kyo Sushi, The Headspa Concept, MB Média Group et plus.">
   <link rel="canonical" href="https://maderinoprod.com/portfolio/">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -193,18 +193,38 @@
       footer > div:nth-child(2) { position: static; transform: none; }
     }
   </style>
+  <!-- Typo « style méta instagram » : Inter Bold serré + Playfair Display italique -->
+  <style>
+    :root { --font-display: 'Inter', sans-serif; --font-body: 'Inter', sans-serif; --font-serif: 'Playfair Display', Georgia, serif; }
+    body { font-weight: 300; }
+    [class*="title"], [class*="name"], .hero h1, .stat-num, .stat-pill-num, .contact-label, .legal-block h2, .popup-media-label {
+      font-weight: 700; letter-spacing: -0.045em !important;
+    }
+    .hero h1, .page-title, .section-title, .cta-title { line-height: 1 !important; text-transform: lowercase; }
+    .hero h1 em, .page-title em, .section-title em, .cta-title em {
+      font-family: var(--font-serif); font-style: italic !important; font-weight: 400;
+      letter-spacing: -0.01em; padding-right: 0.06em;
+    }
+    .section-num { font-size: 36px !important; font-weight: 800 !important; letter-spacing: -0.04em !important; line-height: 1; margin-bottom: 14px !important; }
+    .section-label { font-size: 20px !important; font-weight: 800 !important; letter-spacing: -0.02em !important; margin-bottom: 14px !important; }
+    .hero h1 span:first-child { font-size: 6.6vw !important; }
+    .hero h1 span:last-child { font-size: 7.8vw !important; }
+  </style>
+  <!-- Thème clair (beige) -->
+  <script>document.documentElement.dataset.theme='light'</script>
+  <link rel="stylesheet" href="/assets/theme.css?v=19">
 </head>
 <body>
 
   <nav>
     <a href="/" class="nav-logo"><img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production"></a>
-    <ul class="nav-links"><li><a href="/">Accueil</a></li><li><a href="/montage-video-thonon/">Montage</a></li><li><a href="/tournage-video-thonon/">Tournage</a></li><li><a href="/portfolio/">Portfolio</a></li><li><a href="/#booking">Contact</a></li></ul>
+    <ul class="nav-links"><li><a href="/">Accueil</a></li><li><a href="/montage-video-lyon/">Montage</a></li><li><a href="/tournage-video-lyon/">Tournage</a></li><li><a href="/portfolio/">Portfolio</a></li><li><a href="/#booking">Contact</a></li></ul>
   </nav>
 
   <div class="page-header">
     <div class="page-tag">Portfolio · Maderino Production</div>
     <h1 class="page-title">Ce qu'on a fait parle<br>mieux que ce qu'on <em>dit.</em></h1>
-    <p class="page-sub">Vidéos d'entreprise, reels, aftermovies, shootings photo — voici quelques projets dont on est fiers.</p>
+    <p class="page-sub">Vidéos d'entreprise, reels, aftermovies, shootings photo. Voici quelques projets dont on est fiers.</p>
   </div>
 
   <div class="portfolio-section">
@@ -350,7 +370,7 @@
       <a href="/mentions-legales/">Mentions légales</a>
       <a href="/politique-confidentialite/">Confidentialité</a>
     </div>
-    <div class="footer-copy">© 2026 Maderino Production — Tous droits réservés</div>
+    <div class="footer-copy">© 2026 Maderino Production · Tous droits réservés</div>
   </footer>
 
   <script>
@@ -371,12 +391,12 @@
       media: [
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467454/Urgence_v3_1_fplqlu.jpg', title: 'Joe Coaching', type: 'Reels · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467454/Urgence_v3_1_fplqlu.mp4' },
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467455/Aftermovie_v4_1_nknjvn.jpg', title: 'Lunch Entrepreneur', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467455/Aftermovie_v4_1_nknjvn.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868670/Rushs_studio_SP_15_oig06o.jpg', title: 'David Padilla — Personal Branding', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868670/Rushs_studio_SP_15_oig06o.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868670/Rushs_studio_SP_15_oig06o.jpg', title: 'David Padilla · Personal Branding', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868670/Rushs_studio_SP_15_oig06o.mp4' },
         { thumb: 'https://img.youtube.com/vi/V-tDs3NrOAk/maxresdefault.jpg', title: 'Podcast MB Média Group', type: 'Montage', src: 'yt', url: 'V-tDs3NrOAk' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.jpg', title: 'Ads — Site Internet', type: 'Publicité · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.jpg', title: 'Ads · Site Internet', type: 'Publicité · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4' },
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868666/exp_1_-_12-01v2_vijgac.jpg', title: 'Rêvolistic', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868666/exp_1_-_12-01v2_vijgac.mp4' },
         { thumb: 'https://img.youtube.com/vi/mO7xz-BlHmE/maxresdefault.jpg', title: 'Alfaro Professionnel', type: 'Animation · Montage', src: 'yt', url: 'mO7xz-BlHmE' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1781453344/ads_v1-modifi%C3%A9e_sp8bwa.jpg', title: 'Ads — Nouveau', type: 'Publicité · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1781453344/ads_v1-modifi%C3%A9e_sp8bwa.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1781453344/ads_v1-modifi%C3%A9e_sp8bwa.jpg', title: 'Ads · Nouveau', type: 'Publicité · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1781453344/ads_v1-modifi%C3%A9e_sp8bwa.mp4' },
       ]
     },
     fivefruits: {
@@ -385,21 +405,21 @@
       tags: ['Tournage & Montage', 'Reel produit'],
       desc: 'Tournage et montage d\'un reel produit pour Five Fruits. Mise en valeur des jus de fruits avec des angles dynamiques et une colorimétrie soignée pour les réseaux sociaux.',
       media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg', title: 'Reel — Five Fruits', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg', title: 'Reel · Five Fruits', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4' },
       ]
     },
     headspa: {
       name: 'The Headspa Concept',
       hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1781452502/17052026-P5170199_gl8of0.jpg',
       tags: ['Tournage & Montage', 'Reels', 'ADS', 'Shooting photo'],
-      desc: 'Tournage, montage de reels et shooting photo pour The Headspa Concept à Évian. On a aussi produit des ads pour convertir leur audience locale — mise en scène soignée de l\'ambiance unique de leur institut.',
+      desc: 'Tournage, montage de reels et shooting photo pour The Headspa Concept à Évian. On a aussi produit des ads pour convertir leur audience locale, mise en scène soignée de l\'ambiance unique de leur institut.',
       media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg', title: 'Reels — The Headspa Concept', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1781452688/REEL_1_v2_LABO_CALEBASSE_zfyqb1.jpg', title: 'Reel — Labo Calebasse', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1781452688/REEL_1_v2_LABO_CALEBASSE_zfyqb1.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg', title: 'Shooting — Institut', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170202_ilclcg.jpg', title: 'Shooting — Ambiance', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170202_ilclcg.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452503/17052026-P5170228_qbzin4.jpg', title: 'Shooting — Détail', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452503/17052026-P5170228_qbzin4.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170223_yiwz9j.jpg', title: 'Shooting — Portrait', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170223_yiwz9j.jpg' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg', title: 'Reels · The Headspa Concept', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1781452688/REEL_1_v2_LABO_CALEBASSE_zfyqb1.jpg', title: 'Reel · Labo Calebasse', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1781452688/REEL_1_v2_LABO_CALEBASSE_zfyqb1.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg', title: 'Shooting · Institut', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170202_ilclcg.jpg', title: 'Shooting · Ambiance', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170202_ilclcg.jpg' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452503/17052026-P5170228_qbzin4.jpg', title: 'Shooting · Détail', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452503/17052026-P5170228_qbzin4.jpg' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170223_yiwz9j.jpg', title: 'Shooting · Portrait', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170223_yiwz9j.jpg' },
       ]
     },
     kyosushi: {
@@ -408,7 +428,7 @@
       tags: ['Tournage & Montage', 'Reels', 'Lancement réseaux'],
       desc: 'Tournage et montage de reels pour Kyo Sushi, pour lancer leur présence sur les réseaux sociaux. Mise en valeur des plats et de l\'ambiance du restaurant pour Instagram et TikTok.',
       media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg', title: 'Reels — Kyo Sushi', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg', title: 'Reels · Kyo Sushi', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4' },
       ]
     },
     nico: {
@@ -417,16 +437,16 @@
       tags: ['Montage', 'Reel'],
       desc: 'Montage de contenu pour le créateur Nicowithdog. Reel dynamique avec une identité visuelle forte, pensé pour maximiser l\'engagement sur les réseaux.',
       media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_3/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg', title: 'Reel — Nicowithdog', type: 'Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_3/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg', title: 'Reel · Nicowithdog', type: 'Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4' },
       ]
     },
     independant: {
       name: 'Indépendant.com',
       hero: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg',
       tags: ['Montage', 'Podcast', 'Interview'],
-      desc: 'Montage d\'extraits podcast pour Indépendant.com — formats courts pensés pour les réseaux sociaux, à partir d\'interviews longue durée.',
+      desc: 'Montage d\'extraits podcast pour Indépendant.com, formats courts pensés pour les réseaux sociaux, à partir d\'interviews longue durée.',
       media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg', title: 'Extrait podcast — Indépendant.com', type: 'Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868668/itv-james-r10_s4yfr8.mp4' },
+        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg', title: 'Extrait podcast · Indépendant.com', type: 'Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868668/itv-james-r10_s4yfr8.mp4' },
       ]
     },
     getdrone: {
@@ -442,7 +462,7 @@
       name: 'Le Brunch du Léman',
       hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1778482783/P8075179_weanlt.jpg',
       tags: ['Shooting photo', 'Produit', 'Food'],
-      desc: 'Shooting photo produit pour Le Brunch du Léman — mise en scène des plats et de l\'ambiance du restaurant pour les réseaux sociaux et supports de communication.',
+      desc: 'Shooting photo produit pour Le Brunch du Léman, mise en scène des plats et de l\'ambiance du restaurant pour les réseaux sociaux et supports de communication.',
       media: [
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg', title: 'Shooting produit', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg' },
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg', title: 'Shooting ambiance', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg' },
@@ -452,7 +472,7 @@
       name: 'K Pâtisserie',
       hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1778482782/P1114369-1_akwo94.jpg',
       tags: ['Shooting photo', 'Produit', 'Pâtisserie'],
-      desc: 'Shooting photo pour K Pâtisserie — valorisation des créations gourmandes avec une lumière soignée et des mises en scène appétissantes.',
+      desc: 'Shooting photo pour K Pâtisserie, valorisation des créations gourmandes avec une lumière soignée et des mises en scène appétissantes.',
       media: [
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg', title: 'Shooting K Pâtisserie', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg' },
       ]
@@ -461,7 +481,7 @@
       name: 'Pozaclub',
       hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1778482784/P8202845_e7ueiw.jpg',
       tags: ['Shooting photo', 'Ateliers créatifs'],
-      desc: 'Shooting photo lors des ateliers créatifs de Pozaclub — captation de l\'ambiance et des participants en action à travers plusieurs sessions.',
+      desc: 'Shooting photo lors des ateliers créatifs de Pozaclub, captation de l\'ambiance et des participants en action à travers plusieurs sessions.',
       media: [
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg', title: 'Atelier créatif', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg' },
       ]
@@ -470,7 +490,7 @@
       name: 'Skiness',
       hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1781453083/_1010065_stlend.jpg',
       tags: ['Shooting photo', 'Tournage & Montage', 'Reels'],
-      desc: 'Shooting photo et tournage de reels pour Skiness — valorisation de la marque et de ses produits à travers des visuels soignés pour les réseaux sociaux.',
+      desc: 'Shooting photo et tournage de reels pour Skiness, valorisation de la marque et de ses produits à travers des visuels soignés pour les réseaux sociaux.',
       media: [
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010065_stlend.jpg', title: 'Shooting Skiness', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010065_stlend.jpg' },
         { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010377_m8r1fc.jpg', title: 'Shooting produit', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010377_m8r1fc.jpg' },
@@ -625,5 +645,6 @@
     setTimeout(() => { el.style.opacity = ''; el.style.transform = ''; }, 100);
   });
   </script>
+  <script src="/assets/theme.js?v=2"></script>
 </body>
 </html>

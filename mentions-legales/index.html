@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mentions Légales — Maderino Production</title>
-  <meta name="description" content="Mentions légales de Maderino Production, agence vidéo à Thonon-les-Bains.">
+  <title>Mentions Légales · Maderino Production</title>
+  <meta name="description" content="Mentions légales de Maderino Production, agence vidéo à Lyon.">
   <link rel="canonical" href="https://maderinoprod.com/mentions-legales/">
   <meta name="robots" content="noindex, follow">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -123,6 +123,26 @@
       footer > div:nth-child(2) { position: static; transform: none; }
     }
   </style>
+  <!-- Typo « style méta instagram » : Inter Bold serré + Playfair Display italique -->
+  <style>
+    :root { --font-display: 'Inter', sans-serif; --font-body: 'Inter', sans-serif; --font-serif: 'Playfair Display', Georgia, serif; }
+    body { font-weight: 300; }
+    [class*="title"], [class*="name"], .hero h1, .stat-num, .stat-pill-num, .contact-label, .legal-block h2, .popup-media-label {
+      font-weight: 700; letter-spacing: -0.045em !important;
+    }
+    .hero h1, .page-title, .section-title, .cta-title { line-height: 1 !important; text-transform: lowercase; }
+    .hero h1 em, .page-title em, .section-title em, .cta-title em {
+      font-family: var(--font-serif); font-style: italic !important; font-weight: 400;
+      letter-spacing: -0.01em; padding-right: 0.06em;
+    }
+    .section-num { font-size: 36px !important; font-weight: 800 !important; letter-spacing: -0.04em !important; line-height: 1; margin-bottom: 14px !important; }
+    .section-label { font-size: 20px !important; font-weight: 800 !important; letter-spacing: -0.02em !important; margin-bottom: 14px !important; }
+    .hero h1 span:first-child { font-size: 6.6vw !important; }
+    .hero h1 span:last-child { font-size: 7.8vw !important; }
+  </style>
+  <!-- Thème clair (beige) -->
+  <script>document.documentElement.dataset.theme='light'</script>
+  <link rel="stylesheet" href="/assets/theme.css?v=19">
 </head>
 <body>
 
@@ -130,7 +150,7 @@
     <div class="nav-logo">
       <a href="/"><img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production"></a>
     </div>
-    <ul class="nav-links"><li><a href="/">Accueil</a></li><li><a href="/montage-video-thonon/">Montage</a></li><li><a href="/tournage-video-thonon/">Tournage</a></li><li><a href="/portfolio/">Portfolio</a></li><li><a href="/#booking">Contact</a></li></ul>
+    <ul class="nav-links"><li><a href="/">Accueil</a></li><li><a href="/montage-video-lyon/">Montage</a></li><li><a href="/tournage-video-lyon/">Tournage</a></li><li><a href="/portfolio/">Portfolio</a></li><li><a href="/#booking">Contact</a></li></ul>
   </nav>
 
   <div class="page-header">
@@ -161,10 +181,10 @@
 
     <div class="legal-block">
       <h2><span class="num">03</span> Hébergement</h2>
-      <p><strong>Hébergeur :</strong> GitHub Pages (GitHub, Inc. — filiale de Microsoft)</p>
+      <p><strong>Hébergeur :</strong> GitHub Pages (GitHub, Inc., filiale de Microsoft)</p>
       <p><strong>Adresse :</strong> 88 Colin P. Kelly Jr. St, San Francisco, CA 94107, États-Unis</p>
       <p><strong>Site :</strong> <a href="https://pages.github.com" target="_blank">pages.github.com</a></p>
-      <p style="margin-top:12px;"><strong>Registrar (nom de domaine) :</strong> OVH SAS — 2 rue Kellermann, 59100 Roubaix, France</p>
+      <p style="margin-top:12px;"><strong>Registrar (nom de domaine) :</strong> OVH SAS, 2 rue Kellermann, 59100 Roubaix, France</p>
     </div>
 
     <div class="legal-block">
@@ -197,5 +217,6 @@
     <div class="footer-copy">© 2026 Maderino Production</div>
   </footer>
 
+  <script src="/assets/theme.js?v=2"></script>
 </body>
 </html>
