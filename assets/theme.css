@@ -253,3 +253,33 @@ html[data-theme="light"] img[src*="logo-contour-france-blanc"] { filter: brightn
 @media (max-width: 899px) {
   .sommaire a.active .sommaire-label { position: absolute; right: calc(100% + 14px); top: 50%; transform: translateY(-50%); }
 }
+
+/* ── Optimisations mobile (retours captures iPhone) ── */
+/* Bouton du haut de l'accueil : la version courte « Rendez-vous » ne sert que dans la barre flottante */
+.cta-short { display: none; }
+@media (max-width: 768px) {
+  /* Menu : tout doit tenir sans défiler. « Accueil » est retiré (le logo y ramène déjà) */
+  nav .nav-links li:first-child { display: none; }
+  nav .nav-links a { font-size: 10px !important; padding: 5px 7px !important; letter-spacing: 0.04em !important; }
+  nav { gap: 4px !important; }
+
+  /* Grands titres : plus petits et plus aérés, sans mot isolé, et jamais cachés sous le menu */
+  .page-header { padding-top: 130px !important; }
+  .page-title { font-size: clamp(32px, 9vw, 44px) !important; letter-spacing: -0.035em !important; }
+  .page-sub { font-size: 15px !important; }
+  .hero h1 span { letter-spacing: -0.025em !important; }
+
+  /* Boutons d'appel : une seule ligne */
+  .page-header .btn-primary, .cta-section .btn-primary, .btn-primary { white-space: nowrap; font-size: 12.5px !important; letter-spacing: 0.01em !important; padding-left: 18px !important; padding-right: 18px !important; }
+
+  /* Avis : la note passe sous le titre, sans chevauchement */
+  .reviews-score { margin: 0 0 32px !important; gap: 10px; }
+  .reviews-note { font-size: 40px !important; }
+  .reviews-stars { font-size: 18px; }
+  .reviews-btns .btn-primary, .reviews-btns .btn-outline { flex: 1 1 auto; justify-content: center; }
+
+  /* Zones de déplacement : les noms tiennent dans leur carte */
+  .zone-grid .zone-item { padding-left: 14px !important; padding-right: 14px !important; }
+  .zone-grid .zone-name { font-size: 22px !important; overflow-wrap: anywhere; }
+  .zone-grid > .zone-item:nth-child(1) .zone-name { font-size: 40px !important; }
+}
