@@ -302,3 +302,6 @@ html[data-theme="light"] img[src*="logo-contour-france-blanc"] { filter: brightn
   .zone-name, .type-name, .service-name, .mm-title, .avantage-text strong, .portfolio-title, .client-name { overflow-wrap: anywhere; hyphens: auto; }
   .zone-grid .zone-name { font-size: 20px !important; }
 }
+
+/* iPhone : empêche Safari d'agrandir le texte tout seul, pour un rendu identique à une fenêtre Chrome étroite */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
