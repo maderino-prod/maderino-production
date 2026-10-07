@@ -429,3 +429,11 @@ html[data-theme="light"] body::before {
 @media (max-width: 768px) {
   html[data-theme="light"] body::before { background-size: 1440px 720px; opacity: 0.0163; filter: blur(1px); }
 }
+
+/* Menu du haut (ordinateur) : barre ajustée à son contenu, centrée, sans grand espace vide */
+@media (min-width: 769px) {
+  nav#navbar, body > nav:not(.sommaire) {
+    width: auto !important; max-width: calc(100% - 48px) !important;
+    justify-content: center !important; gap: 28px !important; padding-left: 18px !important; padding-right: 10px !important;
+  }
+}
