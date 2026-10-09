@@ -143,6 +143,76 @@
     .item .ctrl button { width: 34px; }
     input[type=range] { height: 34px; }
   }
+
+  /* ── Générateur de devis ── */
+  .devis-btn { margin-top: 10px; width: 100%; background: var(--orange); border: 0; color: #fff; border-radius: 9px; padding: 11px; font: 600 13px 'Inter'; cursor: pointer; }
+  .devis-btn:hover { filter: brightness(1.08); }
+  .devis-btn:disabled { opacity: .4; cursor: default; }
+  #devisForm textarea, #devisForm select { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--white); font: 500 13px 'Inter', sans-serif; padding: 8px 9px; }
+  #devisForm textarea { min-height: 70px; resize: vertical; }
+  #devisForm select option { background: #12121a; }
+  #devisForm textarea:focus, #devisForm select:focus { outline: none; border-color: var(--orange); }
+  #devisForm .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  #devisForm .full { grid-column: 1 / -1; }
+  #devisForm h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); margin: 18px 0 10px; font-weight: 600; }
+  .seg { display: flex; gap: 6px; }
+  .seg button { flex: 1; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 9px; padding: 9px; color: var(--text); font: 600 12px 'Inter'; cursor: pointer; }
+  .seg button.on { border-color: var(--orange); color: var(--white); }
+  .lignes { display: grid; gap: 6px; }
+  .ligne { display: grid; grid-template-columns: 1fr 60px 90px 28px; gap: 6px; align-items: center; }
+  .ligne .del { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 16px; }
+  .ligne .del:hover { color: var(--red); }
+  .lignes-head { display: grid; grid-template-columns: 1fr 60px 90px 28px; gap: 6px; font-size: 10px; color: var(--muted); }
+  @media (max-width: 560px) { #devisForm .grid3 { grid-template-columns: 1fr; } .ligne, .lignes-head { grid-template-columns: 1fr 46px 72px 24px; } }
+
+  /* Document imprimé */
+  #devisDoc { display: none; }
+  @media print {
+    @page { size: A4; margin: 16mm 15mm 18mm; }
+    body { background: #fff !important; padding: 0 !important; color: #1C1814; }
+    body > *:not(#devisDoc) { display: none !important; }
+    #devisDoc { display: block; }
+  }
+  #devisDoc { --o: #FF6B00; --ink: #1C1814; --mu: #6b625a; --be: #F3EDE4; --li: #E4DACB; font: 400 9.6pt/1.5 Inter, sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  #devisDoc .d-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 2px solid var(--o); margin-bottom: 18px; }
+  #devisDoc .d-brand { display: flex; align-items: center; gap: 9px; }
+  #devisDoc .d-brand img { height: 26px; }
+  #devisDoc .wm { font-weight: 700; font-size: 17pt; letter-spacing: -0.045em; line-height: 1; }
+  #devisDoc .wm em { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -0.01em; color: var(--o); }
+  #devisDoc .d-meta { text-align: right; font-size: 8.5pt; color: var(--mu); }
+  #devisDoc .d-meta b { color: var(--ink); font-size: 15pt; display: block; letter-spacing: -0.02em; }
+  #devisDoc .d-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; margin-bottom: 14px; }
+  #devisDoc .d-box { background: var(--be); border-left: 3px solid var(--o); border-radius: 4px; padding: 9px 12px; font-size: 8.8pt; }
+  #devisDoc .d-box small { display: block; text-transform: uppercase; letter-spacing: 1.2px; font-size: 7pt; color: var(--mu); margin-bottom: 3px; font-weight: 600; }
+  #devisDoc .d-obj { margin: 4px 0 10px; font-size: 10pt; }
+  #devisDoc table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+  #devisDoc th { text-align: left; font-size: 7.6pt; text-transform: uppercase; letter-spacing: 1px; color: var(--mu); border-bottom: 1.5px solid var(--ink); padding: 6px 4px; }
+  #devisDoc td { padding: 7px 4px; border-bottom: 1px solid var(--li); vertical-align: top; }
+  #devisDoc td.n, #devisDoc th.n { text-align: right; white-space: nowrap; }
+  #devisDoc .d-tot { margin-left: auto; width: 62%; font-size: 9.4pt; }
+  #devisDoc .d-tot div { display: flex; justify-content: space-between; padding: 3px 0; }
+  #devisDoc .d-tot .g { font-size: 13pt; font-weight: 700; border-top: 1.5px solid var(--ink); margin-top: 4px; padding-top: 6px; }
+  #devisDoc .d-tot .g span:last-child { color: var(--o); }
+  #devisDoc .d-tot .s { color: var(--mu); font-size: 8.4pt; }
+  #devisDoc h4 { font-size: 9.6pt; margin: 14px 0 4px; }
+  #devisDoc p { margin: 0 0 5px; }
+  #devisDoc .d-check { border: 1px dashed var(--o); border-radius: 4px; padding: 8px 10px; margin: 10px 0; display: flex; gap: 9px; break-inside: avoid; font-size: 8.8pt; }
+  #devisDoc .d-check .bx { flex: 0 0 13px; height: 13px; border: 1.5px solid var(--ink); border-radius: 2px; margin-top: 2px; }
+  #devisDoc .d-sign { display: flex; gap: 8mm; margin-top: 12px; break-inside: avoid; }
+  #devisDoc .d-sign div { flex: 1; border: 1px solid var(--li); border-radius: 4px; padding: 8px 10px; height: 34mm; font-size: 8.4pt; color: var(--mu); }
+  #devisDoc .d-sign b { color: var(--ink); display: block; margin-bottom: 2px; }
+  #devisDoc .d-foot { margin-top: 14px; padding-top: 8px; border-top: 1px solid var(--li); font-size: 7.4pt; color: var(--mu); display: flex; justify-content: space-between; }
+  #devisDoc .d-cgv { break-before: page; }
+  #devisDoc .d-cgv h1 { font-size: 18pt; color: var(--ink); text-transform: none; letter-spacing: -0.01em; margin: 0 0 2px; }
+  #devisDoc .d-cgv .sub { font-family: 'Playfair Display', serif; font-style: italic; color: var(--o); margin: 0 0 12px; font-size: 11pt; }
+  #devisDoc .d-cgv h2 { font-size: 10pt; margin: 12px 0 4px; break-after: avoid; }
+  #devisDoc .d-cgv h2 .n { color: var(--o); margin-right: 6px; }
+  #devisDoc .d-cgv ul { margin: 0 0 6px; padding-left: 14px; }
+  #devisDoc .d-cgv p { text-align: justify; }
+  #devisDoc .d-cgv .form { border: 1px dashed var(--o); border-radius: 4px; padding: 8px 10px; margin: 6px 0 8px; break-inside: avoid; font-size: 8.8pt; }
+  #devisDoc .d-cgv .form .t { font-weight: 600; margin-bottom: 4px; }
+  #devisDoc .d-cgv .form .l { border-bottom: 1px solid var(--li); height: 17px; margin-top: 2px; }
+  #devisDoc .d-cgv .card { background: var(--be); border: 0; border-left: 3px solid var(--o); box-shadow: none; padding: 9px 12px; border-radius: 4px; margin-bottom: 12px; font-size: 8.8pt; }
 </style>
 </head>
 <body>
@@ -289,13 +359,60 @@
       <div id="cartItems"></div>
       <label class="opt-ded"><input type="checkbox" id="dedTest"> Le client a déjà fait la vidéo découverte (−290 €)</label>
       <div class="cart-tot" id="cartTot"></div>
+      <button class="devis-btn" id="openDevis">Créer le devis →</button>
       <button class="clear" id="clearCart">Vider le panier</button>
     </div>
   </aside>
   </div>
+
+  <!-- ── GÉNÉRATEUR DE DEVIS ── -->
+  <h2 class="section" id="devisSection">Devis</h2>
+  <div class="card" id="devisForm">
+    <div class="grid3">
+      <div><label>N° de devis</label><input id="dvNum"></div>
+      <div><label>Date du devis</label><input type="date" id="dvDate"></div>
+      <div><label>Validité (jours)</label><input type="number" id="dvValid" value="30" min="1"></div>
+      <div class="full"><label>Objet</label><input id="dvObjet" placeholder="Ex. : Production de 5 vidéos réseaux sociaux"></div>
+      <div><label>Date(s) de prestation</label><input id="dvPresta" placeholder="Ex. : tournage le 14/11/2026"></div>
+      <div><label>Délai de livraison</label><input id="dvDelai" placeholder="Ex. : 10 jours ouvrés après tournage"></div>
+      <div><label>Allers-retours inclus</label><input type="number" id="dvAR" value="2" min="0"></div>
+    </div>
+
+    <h3>Client</h3>
+    <div class="seg" id="dvType"><button data-t="pro" class="on">Professionnel</button><button data-t="part">Particulier</button></div>
+    <div class="grid" style="margin-top:10px">
+      <div><label id="dvNomLbl">Société</label><input id="dvNom"></div>
+      <div><label>Contact (nom, prénom)</label><input id="dvContact"></div>
+      <div class="full" style="grid-column:1/-1"><label>Adresse</label><input id="dvAdr" placeholder="N°, rue"></div>
+      <div><label>Code postal et ville</label><input id="dvVille"></div>
+      <div><label>Email</label><input id="dvEmail" type="email"></div>
+      <div><label>Téléphone</label><input id="dvTel"></div>
+      <div class="pro-only"><label>SIRET client (facultatif)</label><input id="dvSiret"></div>
+    </div>
+
+    <h3>Lignes du devis</h3>
+    <div class="lignes-head"><span>Désignation</span><span>Qté</span><span>Prix unit. (€)</span><span></span></div>
+    <div class="lignes" id="dvLignes"></div>
+    <button class="add" id="dvAddLigne">+ Ligne libre</button>
+    <button class="add" id="dvReload" style="margin-top:6px">↻ Reprendre le panier</button>
+
+    <h3>Infos complémentaires</h3>
+    <textarea id="dvNotes" placeholder="Ce qui est inclus, conditions particulières, droits étendus, projet confidentiel…"></textarea>
+    <label class="opt-ded"><input type="checkbox" id="dvCgv" checked> Joindre les CGV à la suite du devis</label>
+    <p class="hint" id="dvRetractHint" style="display:none">Client particulier : la case de démarrage anticipé et de renonciation au délai de rétractation sera ajoutée au devis, <b>vide</b>, à cocher par le client.</p>
+
+    <div class="offre-head" style="margin-top:16px">
+      <div class="nom">Total du devis<small id="dvAcompteOut">–</small></div>
+      <div class="prix" id="dvTotOut">–</div>
+    </div>
+    <button class="devis-btn" id="dvPrint" style="margin-top:14px">Générer le PDF du devis</button>
+    <p class="hint">Dans la fenêtre d'impression, choisis « Enregistrer au format PDF ». Pense à cocher « Graphiques d'arrière-plan » pour garder les couleurs.</p>
+  </div>
 </div>
 
 <a class="mbar" href="#panier"><span>Panier · <span id="mbarN">0</span> article(s)</span><b id="mbarTot">0 €</b><span class="go">Voir</span></a>
+
+<div id="devisDoc"></div>
 
 <script>
   const $ = id => document.getElementById(id);
@@ -593,6 +710,160 @@
   $('togglePlancher').onclick = () => $('plancher').classList.toggle('hidden');
   FIELDS.forEach(k => $(k).addEventListener('input', update));
   update();
+
+  // ── Générateur de devis ──
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const eur2 = v => v.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
+  const frDate = iso => iso ? new Date(iso + 'T12:00').toLocaleDateString('fr-FR') : '';
+  const NUM_KEY = 'mp-devis-num';
+  let dvType = 'pro';
+  let lignes = [];
+
+  function nextNum(iso) {
+    const y = (iso || new Date().toISOString()).slice(0, 4);
+    let last = null;
+    try { last = JSON.parse(localStorage.getItem(NUM_KEY) || 'null'); } catch (e) {}
+    const k = last && last.y === y ? last.n + 1 : 1;
+    return `D-${y}-${String(k).padStart(3, '0')}`;
+  }
+  function saveNum(num) {
+    const m = /^D-(\d{4})-(\d+)$/.exec(num.trim());
+    if (m) try { localStorage.setItem(NUM_KEY, JSON.stringify({ y: m[1], n: +m[2] })); } catch (e) {}
+  }
+
+  function lignesFromCart() {
+    const items = cart.map(c => ({ ...c, o: c.custom || OFFRES[c.i] })).filter(c => c.o);
+    const out = items.map(c => {
+      const inc = !c.custom && c.o.inclus ? ` (${c.o.inclus.join(', ')})` : '';
+      return { desc: `${c.o.nom}${c.o.sous ? ' : ' + c.o.sous : ''}${inc}`, q: c.q, pu: c.o.prix };
+    });
+    if ($('dedTest').checked) out.push({ desc: 'Déduction vidéo découverte déjà réalisée', q: 1, pu: -290 });
+    return out;
+  }
+
+  function renderLignes() {
+    $('dvLignes').innerHTML = lignes.map((l, i) => `
+      <div class="ligne">
+        <input data-l="${i}" data-f="desc" value="${esc(l.desc)}">
+        <input data-l="${i}" data-f="q" type="number" min="0" step="0.5" value="${l.q}">
+        <input data-l="${i}" data-f="pu" type="number" step="0.01" value="${l.pu}">
+        <button class="del" data-del="${i}" title="Supprimer">×</button>
+      </div>`).join('') || '<div class="cart-empty">Aucune ligne : remplis le panier ou ajoute une ligne libre</div>';
+    renderDevisTot();
+  }
+  const devisTotal = () => lignes.reduce((s, l) => s + (parseFloat(l.q) || 0) * (parseFloat(l.pu) || 0), 0);
+  function renderDevisTot() {
+    const t = devisTotal();
+    $('dvTotOut').textContent = eur2(t);
+    $('dvAcompteOut').textContent = `Acompte 50 % : ${eur2(t / 2)} · solde : ${eur2(t - t / 2)}`;
+    $('dvPrint').disabled = !lignes.length || t <= 0;
+  }
+  $('dvLignes').addEventListener('input', e => {
+    const i = e.target.dataset.l; if (i == null) return;
+    lignes[i][e.target.dataset.f] = e.target.dataset.f === 'desc' ? e.target.value : e.target.value;
+    renderDevisTot();
+  });
+  $('dvLignes').addEventListener('click', e => {
+    const i = e.target.dataset.del; if (i == null) return;
+    lignes.splice(i, 1); renderLignes();
+  });
+  $('dvAddLigne').onclick = () => { lignes.push({ desc: '', q: 1, pu: 0 }); renderLignes(); };
+  $('dvReload').onclick = () => { lignes = lignesFromCart(); renderLignes(); };
+
+  $('dvType').addEventListener('click', e => {
+    const b = e.target.closest('[data-t]'); if (!b) return;
+    dvType = b.dataset.t;
+    [...$('dvType').children].forEach(x => x.classList.toggle('on', x === b));
+    $('dvNomLbl').textContent = dvType === 'pro' ? 'Société' : 'Nom, prénom';
+    document.querySelectorAll('.pro-only').forEach(x => x.style.display = dvType === 'pro' ? '' : 'none');
+    $('dvRetractHint').style.display = dvType === 'part' ? '' : 'none';
+  });
+
+  $('openDevis').onclick = () => {
+    lignes = lignesFromCart(); renderLignes();
+    $('devisSection').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const today = new Date().toISOString().slice(0, 10);
+  $('dvDate').value = today;
+  $('dvNum').value = nextNum(today);
+  lignes = lignesFromCart(); renderLignes();
+
+  async function cgvHtml() {
+    try {
+      const r = await fetch('/outils/cgv.html', { cache: 'no-store' });
+      if (!r.ok) throw 0;
+      const doc = new DOMParser().parseFromString(await r.text(), 'text/html');
+      const pick = s => doc.querySelector(s)?.outerHTML || '';
+      return `<div class="d-cgv">${pick('h1')}${pick('.sub')}${pick('.card')}${pick('.cols')}</div>`;
+    } catch (e) {
+      alert("Les CGV n'ont pas pu être chargées : le devis sera généré sans elles. Joins le PDF des CGV à part.");
+      return '';
+    }
+  }
+
+  $('dvPrint').onclick = async () => {
+    const v = id => $(id).value.trim();
+    const t = devisTotal(), ac = Math.round(t * 50) / 100;
+    const date = v('dvDate');
+    const fin = date ? new Date(new Date(date + 'T12:00').getTime() + n('dvValid') * 864e5).toISOString().slice(0, 10) : '';
+    const part = dvType === 'part';
+    const client = [
+      `<b>${esc(v('dvNom'))}</b>`, v('dvContact') && !part ? esc(v('dvContact')) : (part ? '' : ''),
+      esc(v('dvAdr')), esc(v('dvVille')), esc(v('dvEmail')), esc(v('dvTel')),
+      !part && v('dvSiret') ? 'SIRET ' + esc(v('dvSiret')) : ''
+    ].filter(Boolean).join('<br>');
+
+    const rows = lignes.filter(l => l.desc || +l.pu).map(l => {
+      const q = parseFloat(l.q) || 0, pu = parseFloat(l.pu) || 0;
+      return `<tr><td>${esc(l.desc)}</td><td class="n">${q.toLocaleString('fr-FR')}</td><td class="n">${eur2(pu)}</td><td class="n">${eur2(q * pu)}</td></tr>`;
+    }).join('');
+
+    const cgv = $('dvCgv').checked ? await cgvHtml() : '';
+    $('devisDoc').innerHTML = `
+      <div class="d-head">
+        <div class="d-brand"><img src="/assets/logo-maderino.png" alt=""><span class="wm">maderino <em>production.</em></span></div>
+        <div class="d-meta"><b>Devis ${esc(v('dvNum'))}</b>Émis le ${frDate(date)} · valable jusqu'au ${frDate(fin)}</div>
+      </div>
+      <div class="d-parties">
+        <div class="d-box"><small>Prestataire</small><b>Mickael Martino EI</b><br>Maderino Production<br>107 Cours Émile Zola, 69100 Villeurbanne<br>SIRET 892 115 338 00014<br>contact@maderinoprod.com</div>
+        <div class="d-box"><small>Client${part ? ' (particulier)' : ''}</small>${client}</div>
+      </div>
+      ${v('dvObjet') ? `<p class="d-obj"><b>Objet :</b> ${esc(v('dvObjet'))}</p>` : ''}
+      ${v('dvPresta') || v('dvDelai') ? `<p>${v('dvPresta') ? `<b>Prestation :</b> ${esc(v('dvPresta'))}` : ''}${v('dvPresta') && v('dvDelai') ? ' · ' : ''}${v('dvDelai') ? `<b>Livraison :</b> ${esc(v('dvDelai'))}` : ''}</p>` : ''}
+      <table>
+        <thead><tr><th>Désignation</th><th class="n">Qté</th><th class="n">Prix unitaire</th><th class="n">Total</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="d-tot">
+        <div class="g"><span>Total net</span><span>${eur2(t)}</span></div>
+        <div class="s"><span>TVA non applicable, art. 293 B du CGI</span><span></span></div>
+        <div><span>Acompte 50 % à la signature</span><span>${eur2(ac)}</span></div>
+        <div><span>Solde à la livraison</span><span>${eur2(t - ac)}</span></div>
+      </div>
+      ${v('dvNotes') ? `<h4>Informations complémentaires</h4><p>${esc(v('dvNotes')).replace(/\n/g, '<br>')}</p>` : ''}
+      <h4>Conditions</h4>
+      <p>Acompte de 50 % exigible à la signature : le devis n'est validé et la date réservée qu'à réception de l'acompte. Solde à la livraison des fichiers finaux, payable sous 30 jours par virement bancaire. ${+v('dvAR') || 0} aller(s)-retour(s) de modifications inclus ; au-delà, ${n('taux')} € de l'heure.${part ? '' : ' En cas de retard de paiement : pénalités au taux de 3 fois le taux d\'intérêt légal et indemnité forfaitaire de 40 € pour frais de recouvrement.'}</p>
+      <p>Le client reconnaît avoir pris connaissance et accepté les Conditions Générales de Vente${cgv ? ' jointes' : ''}.</p>
+      ${part ? `
+      <p>Le client dispose d'un délai de rétractation de 14 jours à compter de la signature (art. L221-18 du Code de la consommation, voir CGV art. 08 et formulaire de rétractation).</p>
+      <div class="d-check"><span class="bx"></span><span>Je demande que la prestation commence avant la fin du délai de rétractation de 14 jours. Je reconnais que si la prestation est entièrement réalisée avant la fin de ce délai, je perds mon droit de rétractation.</span></div>` : ''}
+      <div class="d-sign">
+        <div><b>Le client</b>Date, signature et mention manuscrite « Bon pour accord »</div>
+        <div><b>Mickael Martino EI</b>Maderino Production</div>
+      </div>
+      <div class="d-foot"><span>Maderino Production · Mickael Martino EI · SIRET 892 115 338 00014</span><span>Devis ${esc(v('dvNum'))}</span></div>
+      ${cgv}`;
+
+    const prevTitle = document.title;
+    document.title = `Devis ${v('dvNum')}${v('dvNom') ? ' ' + v('dvNom') : ''}`;
+    await document.fonts.ready;
+    await Promise.all([...$('devisDoc').querySelectorAll('img')].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+    window.print();
+    document.title = prevTitle;
+    saveNum(v('dvNum'));
+    $('dvNum').value = nextNum(v('dvDate'));
+  };
 </script>
 </body>
 </html>
