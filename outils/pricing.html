@@ -411,6 +411,14 @@
       <div class="nom">Total du devis<small id="dvAcompteOut">–</small></div>
       <div class="prix" id="dvTotOut">–</div>
     </div>
+    <details style="margin-top:14px">
+      <summary class="hint" style="cursor:pointer;margin:0">Compteur partagé (Google Sheet) : <b id="dvSyncState">non configuré</b></summary>
+      <div class="grid" style="margin-top:10px">
+        <div style="grid-column:1/-1"><label>Adresse du script Google (…/exec)</label><input id="dvSyncUrl" placeholder="https://script.google.com/macros/s/…/exec"></div>
+        <div style="grid-column:1/-1"><label>Clé secrète (la même que dans le script)</label><input id="dvSyncKey" type="password" autocomplete="off"></div>
+      </div>
+      <p class="hint">À remplir une fois sur chaque appareil. Le numéro est alors attribué par la feuille Google : il se suit entre ton téléphone et ton ordinateur, et chaque devis y est listé.</p>
+    </details>
     <button class="devis-btn" id="dvPrint" style="margin-top:14px">Télécharger le PDF du devis</button>
     <button class="devis-btn" id="dvShare" style="display:none;background:#fff;color:#060608"></button>
   </div>
@@ -792,8 +800,39 @@
 
   const today = new Date().toISOString().slice(0, 10);
   $('dvDate').value = today;
-  $('dvDate').addEventListener('change', () => { $('dvNum').value = nextNum($('dvDate').value); });
-  $('dvNum').value = nextNum(today);
+  // Compteur partagé : un script Google Apps Script attribue les numéros depuis une feuille Google.
+  // Corps en text/plain pour éviter la requête CORS préalable, que Apps Script ne sait pas traiter.
+  const SYNC_KEY = 'mp-devis-sync';
+  const sync = () => { try { return JSON.parse(localStorage.getItem(SYNC_KEY) || 'null'); } catch (e) { return null; } };
+  async function syncCall(body) {
+    const c = sync();
+    const r = await fetch(c.url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...body, token: c.key }) });
+    const j = await r.json();
+    if (j.error) throw new Error(j.error === 'token' ? 'clé secrète incorrecte' : j.error);
+    return j;
+  }
+  async function refreshNum() {
+    const c = sync();
+    if (!c) { $('dvNum').value = nextNum($('dvDate').value); $('dvSyncState').textContent = 'non configuré (compteur de cet appareil)'; return; }
+    $('dvSyncState').textContent = 'connexion…';
+    try {
+      const j = await syncCall({ action: 'peek', date: $('dvDate').value });
+      $('dvNum').value = j.next;
+      $('dvSyncState').textContent = 'actif';
+    } catch (e) {
+      $('dvNum').value = '';
+      $('dvSyncState').textContent = 'erreur : ' + e.message;
+    }
+  }
+  const c0 = sync();
+  if (c0) { $('dvSyncUrl').value = c0.url; $('dvSyncKey').value = c0.key; }
+  ['dvSyncUrl', 'dvSyncKey'].forEach(k => $(k).addEventListener('change', () => {
+    const url = $('dvSyncUrl').value.trim(), key = $('dvSyncKey').value.trim();
+    try { url && key ? localStorage.setItem(SYNC_KEY, JSON.stringify({ url, key })) : localStorage.removeItem(SYNC_KEY); } catch (e) {}
+    refreshNum();
+  }));
+  $('dvDate').addEventListener('change', refreshNum);
+  refreshNum();
   lignes = lignesFromCart(); renderLignes();
 
   async function cgvHtml() {
@@ -812,6 +851,16 @@
   $('dvPrint').onclick = async () => {
     const v = id => $(id).value.trim();
     const t = devisTotal(), ac = Math.round(t * 50) / 100;
+    if (sync()) {
+      // Le numéro est réservé dans la feuille avant de fabriquer le PDF : deux appareils ne peuvent pas obtenir le même
+      try {
+        const j = await syncCall({ action: 'reserve', date: v('dvDate'), client: v('dvNom'), objet: v('dvObjet'), montant: t });
+        $('dvNum').value = j.num;
+      } catch (e) {
+        alert('Impossible de réserver un numéro dans la feuille Google : ' + e.message + '. Le devis n’a pas été généré.');
+        return;
+      }
+    }
     const date = v('dvDate');
     const fin = date ? new Date(new Date(date + 'T12:00').getTime() + n('dvValid') * 864e5).toISOString().slice(0, 10) : '';
     const part = dvType === 'part';
@@ -906,8 +955,8 @@
         setTimeout(() => URL.revokeObjectURL(a.href), 10000);
       }
       // Le numéro n'avance qu'après un PDF réellement généré
-      saveNum(v('dvNum'));
-      $('dvNum').value = nextNum(v('dvDate'));
+      if (sync()) refreshNum();
+      else { saveNum(v('dvNum')); $('dvNum').value = nextNum(v('dvDate')); }
     } catch (e) {
       alert('La génération du PDF a échoué : ' + e);
     } finally {
