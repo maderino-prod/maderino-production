@@ -412,6 +412,7 @@
       <div class="prix" id="dvTotOut">–</div>
     </div>
     <button class="devis-btn" id="dvPrint" style="margin-top:14px">Télécharger le PDF du devis</button>
+    <button class="devis-btn" id="dvShare" style="display:none;background:#fff;color:#060608"></button>
   </div>
 </div>
 
@@ -866,6 +867,7 @@
     await document.fonts.ready;
     await Promise.all([...el.querySelectorAll('img')].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
     const btn = $('dvPrint'), label = btn.textContent;
+    $('dvShare').style.display = 'none';
     btn.disabled = true; btn.textContent = 'Génération du PDF…';
     // Le contenu est passé sous forme de texte : html2pdf le place lui-même dans sa page de rendu,
     // sans les décalages (défilement, marges de la page) qu'on a en lui passant l'élément affiché.
@@ -886,7 +888,23 @@
       // html2pdf centre sa zone de rendu dans la fenêtre, et html2canvas coupe alors le bord droit : on la cale à gauche
       const zone = await worker.get('container');
       zone.style.margin = '0';
-      await worker.save();
+      const pdf = new File([await worker.outputPdf('blob')], fichier, { type: 'application/pdf' });
+      // Sur téléphone, on passe par la feuille de partage : seul le fichier est envoyé. Le téléchargement classique
+      // ouvre le PDF depuis une adresse temporaire « blob:https://maderinoprod.com/… » que iOS ajoute au partage.
+      const mobile = matchMedia('(pointer: coarse)').matches;
+      if (mobile && navigator.canShare && navigator.canShare({ files: [pdf] })) {
+        const share = $('dvShare');
+        share.textContent = `Partager / enregistrer ${fichier}`;
+        share.style.display = '';
+        share.onclick = () => navigator.share({ files: [pdf] }).catch(() => {});
+        share.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(pdf);
+        a.download = fichier;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+      }
       // Le numéro n'avance qu'après un PDF réellement généré
       saveNum(v('dvNum'));
       $('dvNum').value = nextNum(v('dvDate'));
