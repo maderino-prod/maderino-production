@@ -482,3 +482,6 @@ html[data-theme="light"] body::before {
 .floating-cta .btn-wa { background: transparent; color: var(--light) !important; border: 1px solid var(--glass-border-strong); font-weight: 400; }
 .floating-cta .btn-wa svg { fill: #25D366; }
 @media (max-width: 768px) { .hero-btns .btn-outline { grid-column: 1 / -1 !important; } }
+.hero-cible { margin: 26px auto 0; font-size: clamp(15px, 1.6vw, 19px); color: rgba(245,240,235,0.9); font-weight: 400; }
+.hero-cible + .hero-tag.hero-tag-bas { margin-top: 14px !important; }
+@media (max-width: 600px) { .hero-cible { font-size: 15px; margin-top: 20px; padding: 0 10px; } }
