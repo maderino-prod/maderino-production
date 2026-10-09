@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /outils/
 
 Sitemap: https://maderinoprod.com/sitemap.xml
-Disallow: /outils/
