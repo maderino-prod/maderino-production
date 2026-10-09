@@ -6,6 +6,19 @@
   <title>Portfolio vidéo · Tournage &amp; montage à Lyon | Maderino Production</title>
   <meta name="description" content="Nos réalisations vidéo à Lyon : tournages pour instituts, spas et marques (The Headspa Concept, Skiness…) et montages de reels, pubs, podcasts et mariages.">
   <link rel="canonical" href="https://maderinoprod.com/portfolio/">
+  <meta property="og:title" content="Portfolio vidéo · Tournage &amp; montage à Lyon | Maderino Production">
+  <meta property="og:description" content="Nos réalisations vidéo à Lyon : tournages pour instituts, spas et marques (The Headspa Concept, Skiness…) et montages de reels, pubs, podcasts et mariages.">
+  <meta property="og:image" content="https://maderinoprod.com/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://maderinoprod.com/portfolio/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Maderino Production">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Portfolio vidéo · Tournage &amp; montage à Lyon | Maderino Production">
+  <meta name="twitter:description" content="Nos réalisations vidéo à Lyon : tournages pour instituts, spas et marques (The Headspa Concept, Skiness…) et montages de reels, pubs, podcasts et mariages.">
+  <meta name="twitter:image" content="https://maderinoprod.com/assets/og-image.jpg">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -213,7 +226,7 @@
   </style>
   <!-- Thème clair (beige) -->
   <script>document.documentElement.dataset.theme='light'</script>
-  <link rel="stylesheet" href="/assets/theme.css?v=43">
+  <link rel="stylesheet" href="/assets/theme.css?v=60">
   <!-- Nouveau portfolio -->
   <style>
     .pf { padding: 20px 40px 100px; }
@@ -316,6 +329,44 @@
       .pf-prev { left: calc(50% - 60px); } .pf-next { right: calc(50% - 60px); }
     }
   </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Portfolio vidéo Maderino Production",
+  "description": "Nos réalisations vidéo à Lyon : tournages pour instituts, spas et marques (The Headspa Concept, Skiness…) et montages de reels, pubs, podcasts et mariages.",
+  "url": "https://maderinoprod.com/portfolio/",
+  "inLanguage": "fr-FR",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Maderino Production",
+    "url": "https://maderinoprod.com/"
+  },
+  "about": {
+    "@id": "https://maderinoprod.com/#entreprise"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Accueil",
+      "item": "https://maderinoprod.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Portfolio",
+      "item": "https://maderinoprod.com/portfolio/"
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -327,7 +378,7 @@
   <div class="page-header">
     <div class="page-tag">portfolio · tournage &amp; montage vidéo · lyon</div>
     <h1 class="page-title"><span class="sr-only">Portfolio vidéo à Lyon : </span>Ce qu'on a fait parle<br>mieux que ce qu'on <em>dit.</em></h1>
-    <p class="page-sub">Tournage pour les instituts, spas et marques. Montage pour tout le monde.</p>
+    <p class="page-sub">On filme les instituts, les spas et les marques.<br>Et on monte les vidéos de tous ceux qui ont une histoire à raconter.</p>
   </div>
 
   <section class="pf">
@@ -537,6 +588,6 @@
   const askProject = new URLSearchParams(location.search).get('projet');
   if (askProject && PROJECTS.some(p => p.id === askProject)) openSheet(askProject);
   </script>
-  <script src="/assets/theme.js?v=9"></script>
+  <script src="/assets/theme.js?v=11"></script>
 </body>
 </html>

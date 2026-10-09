@@ -14,13 +14,15 @@
   <meta property="og:image" content="https://maderinoprod.com/assets/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:url" content="https://maderinoprod.com">
+  <meta property="og:url" content="https://maderinoprod.com/">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Maderino Production">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Vidéaste & production vidéo à Lyon · Maderino Production">
   <meta name="twitter:description" content="Tournage, montage vidéo et reels à Lyon et Villeurbanne. On s'occupe de tout.">
   <meta name="twitter:image" content="https://maderinoprod.com/assets/og-image.jpg">
-  <link rel="canonical" href="https://maderinoprod.com">
+  <link rel="canonical" href="https://maderinoprod.com/">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -39,7 +41,6 @@
   "logo": "https://maderinoprod.com/assets/icon-512.png",
   "image": "https://maderinoprod.com/assets/og-image.jpg",
   "email": "contact@maderinoprod.com",
-  "telephone": "+33767135639",
   "priceRange": "€€",
   "address": {
     "@type": "PostalAddress",
@@ -465,7 +466,7 @@
     .booking { position: relative; padding: 100px 40px; overflow: hidden; }
     .booking-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
     .booking-sub { color: var(--muted); font-size: 16px; max-width: 760px; line-height: 1.7; margin-top: 12px; text-align: center; margin-left: auto; margin-right: auto; }
-    .booking-cta-wrap { margin-top: 48px; display: flex; justify-content: center; }
+    .booking-cta-wrap { margin-top: 48px; display: flex; justify-content: center; align-items: center; gap: 14px; flex-wrap: wrap; }
     .btn-booking {
       display: inline-flex; align-items: center; gap: 12px;
       background: var(--orange); color: #fff;
@@ -646,7 +647,7 @@
   </style>
   <!-- Thème clair (beige) -->
   <script>document.documentElement.dataset.theme='light'</script>
-  <link rel="stylesheet" href="/assets/theme.css?v=43">
+  <link rel="stylesheet" href="/assets/theme.css?v=60">
   <!-- Section avis clients -->
   <style>
     .reviews { padding: 110px 40px; }
@@ -680,6 +681,9 @@
       scroll-snap-align: start; box-shadow: 0 14px 40px rgba(60,40,20,0.14); transition: transform .35s cubic-bezier(.22,1,.36,1); text-decoration: none; }
     .hpf-card:hover { transform: translateY(-6px); }
     .hpf-card img, .hpf-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hpf-card .hpf-bg { filter: blur(22px) brightness(0.7); transform: scale(1.2); }
+    .hpf-card.hz .hpf-cover, .hpf-card.hv video, .hpf-card.hv .hpf-alt { object-fit: contain; }
+    .hpf-card.hv.playing .hpf-cover, .hpf-card.hv.alt .hpf-cover { opacity: 0; }
     .hpf-card video { opacity: 0; transition: opacity .4s; }
     .hpf-card.playing video { opacity: 1; }
     .hpf-card .hpf-alt { opacity: 0; transition: opacity .4s; }
@@ -699,6 +703,15 @@
       .home-pf .pf-tab { padding: 11px 24px; font-size: 14px; }
     }
   </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Maderino Production",
+  "url": "https://maderinoprod.com/",
+  "inLanguage": "fr-FR"
+}
+</script>
 </head>
 <body>
 
@@ -723,16 +736,15 @@
     <img class="hero-mobile-bg" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/w_768,f_auto,q_auto/v1777468910/DJI_20260429133911_0031_D.00_00_03_01.Still001_tsld3b.png" alt="Maderino Production · Agence vidéo Lyon">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <div class="hero-tag">vidéaste &amp; production vidéo · lyon · villeurbanne</div>
+      <img class="hero-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" width="1039" height="120">
       <h1 style="display:flex;flex-direction:column;align-items:center;width:100%;padding:0 24px;gap:0;"><span class="sr-only">Vidéaste et production vidéo à Lyon et Villeurbanne : </span>
         <span style="display:block;font-size:6.15vw;white-space:nowrap;line-height:0.92;">Ta vision mérite d'<em>exister.</em></span>
         <span style="display:block;font-size:7.38vw;white-space:nowrap;line-height:0.92;">Ensemble, on la <em>crée.</em></span>
       </h1>
-      <p class="hero-sub">On s'occupe de tout.</p>
+      <div class="hero-tag hero-tag-bas">vidéaste &amp; production vidéo · lyon · villeurbanne</div>
       <div class="hero-btns" id="hero-btns">
-        <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary"><span class="cta-long">Prendre rendez-vous</span><span class="cta-short">Rendez-vous</span></a>
-        <a href="/portfolio/" class="btn-outline">Nos réalisations</a>
-        <a href="#services" class="btn-outline">Nos offres</a>
+        <a href="#portfolio" class="btn-primary">Voir nos réalisations</a>
+        <a href="#services" class="btn-outline">Ce qu'on fait</a>
       </div>
     </div>
   </section>
@@ -819,13 +831,15 @@
           <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M15 10l4.553-2.274A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg></div>
           <div class="service-name">Montage vidéo</div>
           <p class="service-desc">Tu as des vidéos brutes&nbsp;?<br>Confie-les nous pour créer la vidéo que tu imagines.</p>
-          <a href="/montage-video-lyon/" class="btn-outline" style="margin-top:24px;font-size:12px;padding:10px 20px;">En savoir plus →</a>
+          <div class="service-prix">100&nbsp;% à distance</div>
+          <a href="/montage-video-lyon/" class="btn-outline" style="margin-top:18px;font-size:12px;padding:10px 20px;">En savoir plus →</a>
         </div>
         <div class="service-item">
           <div class="service-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
           <div class="service-name">Tournage</div>
           <p class="service-desc">Tu as un projet à filmer&nbsp;? On se déplace, on filme et on donne vie à la vidéo que tu as en tête.</p>
-          <a href="/tournage-video-lyon/" class="btn-outline" style="margin-top:24px;font-size:12px;padding:10px 20px;">En savoir plus →</a>
+          <div class="service-prix">Pack 2 vidéos à partir de <strong>379&nbsp;€</strong></div>
+          <a href="/tournage-video-lyon/" class="btn-outline" style="margin-top:18px;font-size:12px;padding:10px 20px;">En savoir plus →</a>
         </div>
       </div>
     </div>
@@ -945,12 +959,13 @@
         <span class="section-num">05</span>
         <span class="section-title">On travaille ensemble&nbsp;?</span>
       </div>
-      <p class="booking-sub">Réserve un appel gratuit de 15 minutes pour parler de ton projet, sans engagement.</p>
+      <p class="booking-sub">Réserve un appel gratuit de 15 minutes, ou écris-nous directement sur WhatsApp. Sans engagement.</p>
       <div class="booking-cta-wrap">
         <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-booking">
           <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           Prendre rendez-vous
         </a>
+        <a href="https://wa.me/message/4LD73JX22IIYP1" target="_blank" rel="noopener" class="btn-wa btn-wa-grand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm4.53 13.4c-.19.54-1.13 1.04-1.56 1.08-.4.04-.9.06-1.45-.09-.33-.1-.76-.24-1.31-.48-2.3-.99-3.8-3.31-3.92-3.46-.11-.15-.93-1.24-.93-2.37s.59-1.68.8-1.91c.21-.23.46-.29.61-.29h.44c.14 0 .33-.05.52.4.19.46.65 1.59.71 1.71.06.11.1.25.02.4-.08.15-.11.25-.23.38-.11.13-.24.3-.34.4-.11.11-.23.24-.1.46.13.23.59.97 1.27 1.57.87.78 1.61 1.02 1.84 1.13.23.11.36.1.49-.06.13-.15.57-.66.72-.89.15-.23.3-.19.51-.11.21.08 1.33.63 1.56.74.23.11.38.17.44.27.06.09.06.55-.13 1.09z"/></svg>Écris-nous sur WhatsApp</a>
       </div>
     </div>
   </section>
@@ -1361,7 +1376,7 @@
   <div class="floating-cta" id="floating-cta">
     <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary"><span class="cta-long">Prendre rendez-vous</span><span class="cta-short">Rendez-vous</span></a>
     <a href="#portfolio" class="btn-outline">Réalisations</a>
-    <a href="#services" class="btn-outline">Offres</a>
+    <a href="https://wa.me/message/4LD73JX22IIYP1" target="_blank" rel="noopener" class="btn-wa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm4.53 13.4c-.19.54-1.13 1.04-1.56 1.08-.4.04-.9.06-1.45-.09-.33-.1-.76-.24-1.31-.48-2.3-.99-3.8-3.31-3.92-3.46-.11-.15-.93-1.24-.93-2.37s.59-1.68.8-1.91c.21-.23.46-.29.61-.29h.44c.14 0 .33-.05.52.4.19.46.65 1.59.71 1.71.06.11.1.25.02.4-.08.15-.11.25-.23.38-.11.13-.24.3-.34.4-.11.11-.23.24-.1.46.13.23.59.97 1.27 1.57.87.78 1.61 1.02 1.84 1.13.23.11.36.1.49-.06.13-.15.57-.66.72-.89.15-.23.3-.19.51-.11.21.08 1.33.63 1.56.74.23.11.38.17.44.27.06.09.06.55-.13 1.09z"/></svg>WhatsApp</a>
   </div>
 
   <script>
@@ -1383,7 +1398,7 @@
     checkFloating();
   </script>
 
-  <script src="/assets/theme.js?v=9"></script>
+  <script src="/assets/theme.js?v=11"></script>
   <script src="/assets/sommaire.js?v=7"></script>
   <script src="/assets/projets.js?v=2"></script>
   <script>
@@ -1393,14 +1408,17 @@
     const touch = matchMedia('(hover: none)').matches;
     const cover = p => { if (p.cover) return p.cover; const f = p.items.find(i => i.k === 'video') || p.items[0];
       return f.k === 'video' ? f.poster : f.k === 'photo' ? f.src : 'https://img.youtube.com/vi/' + f.id + '/maxresdefault.jpg'; };
+    /* Les visuels horizontaux sont affichés en entier sur un fond flouté, au lieu d'être recadrés et agrandis (pixelisés) */
+    const horiz = p => { if (p.cover) return false; const f = p.items.find(i => i.k === 'video') || p.items[0]; return f.k === 'yt' || f.fmt === 'h'; };
     let pos = 0;
     const show = tab => {
       document.querySelectorAll('[data-hpf]').forEach(b => b.classList.toggle('on', b.dataset.hpf === tab));
       document.getElementById('hpf-more').href = '/portfolio/' + (tab === 'montage' ? '?onglet=montage' : '');
       track.innerHTML = PROJECTS.filter(p => p.tab === tab).map(p => {
         const n = p.items.length;
-        return `<a class="hpf-card" href="/portfolio/?onglet=${tab}&projet=${p.id}" data-id="${p.id}">
-          <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
+        return `<a class="hpf-card${horiz(p) ? ' hz' : ''}" href="/portfolio/?onglet=${tab}&projet=${p.id}" data-id="${p.id}">
+          <img class="hpf-bg" src="${cover(p)}" alt="" aria-hidden="true" loading="lazy" draggable="false">
+          <img class="hpf-cover" src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
           ${!touch ? '<img class="hpf-alt" alt="" draggable="false"><video muted playsinline preload="none"></video>' : ''}
           ${p.sector === 'beaute' ? '<span class="hpf-badge">Beauté</span>' : ''}
           ${n > 1 && !touch ? '<div class="hpf-dots">' + p.items.map(() => '<i></i>').join('') + '</div>' : ''}
@@ -1415,6 +1433,7 @@
         const step = () => {
           if (!on) return; const it = p.items[i % p.items.length]; dots.forEach((d, k) => d.classList.toggle('on', k === i % p.items.length));
           clearTimeout(timer); const next = ms => { timer = setTimeout(() => { i++; step(); }, ms); };
+          c.classList.toggle('hv', it.fmt === 'h' || it.k === 'yt');
           if (it.k === 'video') {
             vid.src = it.src; vid.currentTime = 0;
             vid.play().then(() => { c.classList.add('playing'); c.classList.remove('alt'); }).catch(() => {});
@@ -1425,7 +1444,7 @@
           }
         };
         c.addEventListener('mouseenter', () => { on = true; step(); });
-        c.addEventListener('mouseleave', () => { on = false; clearTimeout(timer); vid.pause(); c.classList.remove('playing', 'alt'); i = 0; dots.forEach(d => d.classList.remove('on')); });
+        c.addEventListener('mouseleave', () => { on = false; clearTimeout(timer); vid.pause(); c.classList.remove('playing', 'alt', 'hv'); i = 0; dots.forEach(d => d.classList.remove('on')); });
       });
     };
     /* Défilement automatique fluide et sans fin (ordinateur), en pause au survol ; la molette fait défiler la rangée */
