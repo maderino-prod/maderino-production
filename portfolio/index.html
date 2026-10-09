@@ -501,7 +501,7 @@
     const card = (it, i) => {
       const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
       return `<div class="pf-item${it.k === 'photo' ? ' photo' : ''}" data-i="${i}"><img src="${img}" alt="${current.client}" loading="lazy" draggable="false">
-        ${it.k !== 'photo' ? '<div class="pf-item-play"><span>▶</span></div><div class="pf-item-title">' + it.title + '</div>' : ''}</div>`;
+        ${it.k !== 'photo' ? '<div class="pf-item-play"><span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></span></div><div class="pf-item-title">' + it.title + '</div>' : ''}</div>`;
     };
     const groups = [
       ['h', current.items.map((it, i) => [it, i]).filter(([it]) => it.k !== 'photo' && it.fmt === 'h')],
@@ -533,7 +533,7 @@
     const cmd = (func, args = []) => ifr.contentWindow && ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
     const fmt = x => Math.floor(x / 60) + ':' + String(Math.floor(x % 60)).padStart(2, '0');
     const paint = () => {
-      bar.querySelector('[data-yt=play]').textContent = st.playing ? '❚❚' : '▶';
+      bar.querySelector('[data-yt=play]').textContent = st.playing ? '❚❚︎' : '▶︎';
       bar.querySelector('[data-yt=mute]').textContent = st.muted ? '🔇' : '🔊';
       bar.querySelector('.yt-seek i').style.width = (st.d ? st.t / st.d * 100 : 0) + '%';
       bar.querySelector('.yt-time').textContent = fmt(st.t) + ' / ' + fmt(st.d);
