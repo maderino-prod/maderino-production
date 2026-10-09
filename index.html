@@ -123,55 +123,6 @@
     ]
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "name": "Réalisations vidéo · Maderino Production",
-    "description": "Sélection de productions vidéo réalisées par Maderino Production à Lyon et dans sa région.",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "item": {
-          "@type": "VideoObject",
-          "name": "Reel · Five Fruits",
-          "description": "Tournage et montage de reels pour Five Fruits par Maderino Production.",
-          "thumbnailUrl": "https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg",
-          "contentUrl": "https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4",
-          "uploadDate": "2025-01-01T10:00:00+01:00",
-          "publisher": { "@type": "Organization", "name": "Maderino Production", "url": "https://maderinoprod.com" }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "item": {
-          "@type": "VideoObject",
-          "name": "Reels · The Headspa Concept, Evian",
-          "description": "Tournage et montage de reels pour The Headspa Concept à Evian par Maderino Production.",
-          "thumbnailUrl": "https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg",
-          "contentUrl": "https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4",
-          "uploadDate": "2026-01-01T10:00:00+01:00",
-          "publisher": { "@type": "Organization", "name": "Maderino Production", "url": "https://maderinoprod.com" }
-        }
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "item": {
-          "@type": "VideoObject",
-          "name": "Reels · Kyo Sushi",
-          "description": "Tournage et montage de reels pour Kyo Sushi par Maderino Production.",
-          "thumbnailUrl": "https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg",
-          "contentUrl": "https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4",
-          "uploadDate": "2025-06-01T10:00:00+02:00",
-          "publisher": { "@type": "Organization", "name": "Maderino Production", "url": "https://maderinoprod.com" }
-        }
-      }
-    ]
-  }
-  </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -715,6 +666,39 @@
     .reviews-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
     @media (max-width: 768px) { .reviews { padding: 80px 24px; } .reviews-note { font-size: 44px; } .review-card blockquote { font-size: 20px; } }
   </style>
+  <!-- Accueil : « nos réalisations » branché sur le nouveau portfolio -->
+  <style>
+    .home-pf .pf-tabs { display: flex; justify-content: center; gap: 6px; padding: 6px; margin: 40px auto 34px; width: max-content;
+      border-radius: 100px; background: rgba(255,255,255,0.6); border: 1px solid rgba(28,24,20,0.08); }
+    .home-pf .pf-tab { border: none; background: none; cursor: pointer; padding: 12px 30px; border-radius: 100px;
+      font: 600 15px 'Inter', sans-serif; letter-spacing: -0.01em; color: rgba(28,24,20,0.6); transition: all .25s; }
+    .home-pf .pf-tab.on { background: #1C1814; color: #fff; }
+    .hpf-track { display: grid; grid-auto-flow: column; grid-auto-columns: 280px; gap: 20px; overflow-x: auto;
+      padding: 6px 40px 24px; scrollbar-width: none; width: 100%; }
+    .hpf-track::-webkit-scrollbar { display: none; }
+    .hpf-card { position: relative; display: block; border-radius: 24px; overflow: hidden; aspect-ratio: 4 / 5; background: #1C1814;
+      scroll-snap-align: start; box-shadow: 0 14px 40px rgba(60,40,20,0.14); transition: transform .35s cubic-bezier(.22,1,.36,1); text-decoration: none; }
+    .hpf-card:hover { transform: translateY(-6px); }
+    .hpf-card img, .hpf-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hpf-card video { opacity: 0; transition: opacity .4s; }
+    .hpf-card.playing video { opacity: 1; }
+    .hpf-card .hpf-alt { opacity: 0; transition: opacity .4s; }
+    .hpf-card.alt .hpf-alt { opacity: 1; }
+    .hpf-dots { position: absolute; top: 16px; right: 14px; z-index: 2; display: flex; gap: 4px; opacity: 0; transition: opacity .3s; }
+    .hpf-card:hover .hpf-dots { opacity: 1; }
+    .hpf-dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.45); }
+    .hpf-dots i.on { background: #FF8A3D; }
+    .hpf-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.78), rgba(0,0,0,.15) 50%, transparent 75%); }
+    .hpf-txt { position: absolute; left: 20px; right: 20px; bottom: 18px; z-index: 2; color: #fff; }
+    .hpf-where { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #FF8A3D; margin-bottom: 6px; }
+    .hpf-name { font-size: 22px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
+    .hpf-badge { position: absolute; top: 14px; left: 14px; z-index: 2; padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 600; background: rgba(255,255,255,.92); color: #1C1814; }
+    .hpf-more { text-align: center; margin-top: 14px; }
+    @media (max-width: 768px) {
+      .hpf-track { grid-auto-columns: 74vw; padding: 6px 20px 20px; gap: 14px; scroll-snap-type: x mandatory; }
+      .home-pf .pf-tab { padding: 11px 24px; font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -860,204 +844,19 @@
   </div>
 
   <!-- PORTFOLIO -->
-  <section class="portfolio" id="portfolio">
+  <section class="portfolio home-pf" id="portfolio">
     <div class="portfolio-header">
       <div class="section-header">
         <span class="section-num">03</span>
         <span class="section-title">Nos réalisations</span>
       </div>
     </div>
-    <div class="portfolio-tabs">
-      <button class="tab-btn active" onclick="switchTab('tournage', this)">Tournage & Montage</button>
-      <button class="tab-btn" onclick="switchTab('montage', this)">Montage</button>
-      <button class="tab-btn" onclick="switchTab('photos', this)">Photos</button>
+    <div class="pf-tabs" role="tablist">
+      <button class="pf-tab on" data-hpf="tournage" role="tab">Tournage</button>
+      <button class="pf-tab" data-hpf="montage" role="tab">Montage</button>
     </div>
-
-    <!-- Timeline ruler -->
-    <div class="timeline-scroll-wrap">
-      <div class="timeline-ruler">
-        <div class="timeline-ruler-inner" id="ruler">
-          <div class="playhead" id="playhead" style="left: 0;"></div>
-        </div>
-      </div>
-
-      <!-- TOURNAGE track -->
-      <div class="portfolio-track" id="tab-tournage" onscroll="syncPlayhead(this)">
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg" alt="Five Fruits" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel · Five Fruits</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg" alt="The Headspa Concept Evian" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reels · The Headspa Concept, Evian</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg" alt="Kyo Sushi" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reels · Kyo Sushi</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/YyJslPOvU2M/maxresdefault.jpg" alt="Shorts Lyon" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage & Montage Shorts · Lyon</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/G3OOPRQHD-c/maxresdefault.jpg" alt="Spectacle Pyrotechnique Annecy 2025" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Spectacle Pyrotechnique · Annecy 2025</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/KhrfKw5BFUI/maxresdefault.jpg" alt="Tournage marque e-commerce" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Tournage · Présentation marque e-commerce</div><div class="portfolio-type">Tournage & Montage</div></div>
-        </div>
-      </div>
-
-      <!-- MONTAGE track -->
-      <div class="portfolio-track" id="tab-montage" style="display:none;" onscroll="syncPlayhead(this)">
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467454/Urgence_v3_1_fplqlu.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467454/Urgence_v3_1_fplqlu.jpg" alt="Joe Coaching" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reels · Joe Coaching × MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467455/Aftermovie_v4_1_nknjvn.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467455/Aftermovie_v4_1_nknjvn.jpg" alt="Lunch Entrepreneur" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel · Lunch Entrepreneur MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777499065/TOP_1_SNIPER_FR_warzone_callofduty_warzone2_cod_gaming_bo7_oppyod.jpg" alt="Reel Gaming 3D" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel Gaming · 3D & Montage</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg" alt="Nicowithdog" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Reel · Nicowithdog</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778879883/Invitation_virtuelle_v2_Youtube_shorts_50_-_60_ips_dt8xxo.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778879883/Invitation_virtuelle_v2_Youtube_shorts_50_-_60_ips_dt8xxo.jpg" alt="Faire part de mariage virtuel" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Faire part de mariage virtuel</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868670/Rushs_studio_SP_15_oig06o.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868670/Rushs_studio_SP_15_oig06o.jpg" alt="Réel personal branding David Padilla" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Réel Personal Branding · David Padilla × MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868668/itv-james-r10_s4yfr8.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg" alt="Réel podcast Indépendant.com" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Réel extrait podcast · Indépendant.com</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868666/exp_1_-_12-01v2_vijgac.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868666/exp_1_-_12-01v2_vijgac.jpg" alt="Réel Rêvolistic MB Média Group" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Réel · Rêvolistic × MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/mO7xz-BlHmE/maxresdefault.jpg" alt="Loop animation Alfaro" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Loop d'animation · Projection show Alfaro Professionnel</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/V-tDs3NrOAk/maxresdefault.jpg" alt="Podcast MB Média Group" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Montage Podcast · MB Média Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://img.youtube.com/vi/qSWMWv1pwks/maxresdefault.jpg" alt="Montage" loading="lazy">
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Montage film de Mariage · Get Drone Production</div><div class="portfolio-type">Montage</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'" data-video="https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.jpg" alt="Ads MB Media Group" loading="lazy">
-          <video class="portfolio-preview" muted loop playsinline preload="none"></video>
-          <div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="portfolio-overlay"><div class="portfolio-title">Montage Ads · MB Media Group</div><div class="portfolio-type">Montage</div></div>
-        </div>
-      </div>
-
-      <!-- PHOTOS track -->
-      <div class="portfolio-track" id="tab-photos" style="display:none;" onscroll="syncPlayhead(this)">
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482786/PC250877_sito2b.jpg" alt="Shooting produit Air Force 1" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit · Air Force 1</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC270955_gzukwh.jpg" alt="Shooting produit tarte aux pralines" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit · Tarte aux pralines</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PC230658_qmdgke.jpg" alt="Shooting produit Sneakers" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit · Sneakers</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg" alt="Shooting produit Le brunch du Leman" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit · Le Brunch du Léman</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/PB070485_nwg5ue.jpg" alt="Shooting paysage Aiguille du midi" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting paysage · Aiguille du Midi</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg" alt="Atelier Jesmonite Pozaclub" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Atelier Jesmonite · Pozaclub</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8303159_d6pmc2.jpg" alt="Shooting Car" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting Car</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P6201489_au3rb0.jpg" alt="Photo de la plage Nice" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Photo de plage · Nice</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P1114442_ioerjz.jpg" alt="Shooting téléphérique Aiguille du Midi" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting téléphérique · Aiguille du Midi</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075220_ifklaw.jpg" alt="Shooting paysage sud de la France" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting paysage · Sud de la France</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg" alt="Shooting produit Brunch du Léman" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit · Brunch du Léman</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg" alt="Portrait Skiness" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Portrait · Skiness</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1013945_dkgxfd.jpg" alt="Shooting produit" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting produit</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/IMG_2714_w41aei.jpg" alt="Shooting Quad" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting Quad</div><div class="portfolio-type">Photo</div></div>
-        </div>
-        <div class="portfolio-item" onclick="window.location.href='/portfolio/'">
-          <img class="portfolio-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg" alt="Shooting K Patisserie" loading="lazy">
-          <div class="portfolio-overlay"><div class="portfolio-title">Shooting · K Pâtisserie</div><div class="portfolio-type">Photo</div></div>
-        </div>
-      </div>
-    </div>
-    <div style="text-align:center;padding:48px 40px 0;">
-      <a href="/portfolio/" class="btn-outline">Voir tout le portfolio →</a>
-    </div>
+    <div class="hpf-track" id="hpf-track"></div>
+    <div class="hpf-more"><a class="btn-outline" id="hpf-more" href="/portfolio/">Voir tout le portfolio →</a></div>
   </section>
 
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
@@ -1324,7 +1123,7 @@
     const ruler = document.getElementById('ruler');
     let dragging = false;
 
-    ph.addEventListener('mousedown', e => {
+    if (ph) ph.addEventListener('mousedown', e => {
       dragging = true;
       ph.style.transition = 'none';
       e.preventDefault();
@@ -1344,7 +1143,7 @@
       if (dragging) { dragging = false; ph.style.transition = 'left 0.1s linear'; }
     });
 
-    ph.addEventListener('touchstart', e => { dragging = true; e.preventDefault(); }, { passive: false });
+    if (ph) ph.addEventListener('touchstart', e => { dragging = true; e.preventDefault(); }, { passive: false });
 
     document.addEventListener('touchmove', e => {
       if (!dragging) return;
@@ -1390,10 +1189,10 @@
       t.addEventListener('touchstart', pauseAutoScroll, { passive: true });
       t.addEventListener('wheel', pauseAutoScroll, { passive: true });
     });
-    document.getElementById('playhead').addEventListener('mousedown', pauseAutoScroll);
+    document.getElementById('playhead')?.addEventListener('mousedown', pauseAutoScroll);
 
     // setInterval toutes les 30ms ≈ 33fps, 2px/tick
-    setInterval(autoScrollTick, 30);
+    if (document.querySelector('.portfolio-track')) setInterval(autoScrollTick, 30);
 
     // Hover video preview (desktop)
     document.querySelectorAll('.portfolio-item[data-video]').forEach(item => {
@@ -1584,7 +1383,71 @@
     checkFloating();
   </script>
 
-  <script src="/assets/theme.js?v=8"></script>
+  <script src="/assets/theme.js?v=9"></script>
   <script src="/assets/sommaire.js?v=7"></script>
+  <script src="/assets/projets.js?v=2"></script>
+  <script>
+  /* Accueil : « nos réalisations » affiche les projets du portfolio (mêmes données), un clic ouvre la fiche */
+  (() => {
+    const track = document.getElementById('hpf-track'); if (!track || !window.PROJECTS) return;
+    const touch = matchMedia('(hover: none)').matches;
+    const cover = p => { if (p.cover) return p.cover; const f = p.items.find(i => i.k === 'video') || p.items[0];
+      return f.k === 'video' ? f.poster : f.k === 'photo' ? f.src : 'https://img.youtube.com/vi/' + f.id + '/maxresdefault.jpg'; };
+    let pos = 0;
+    const show = tab => {
+      document.querySelectorAll('[data-hpf]').forEach(b => b.classList.toggle('on', b.dataset.hpf === tab));
+      document.getElementById('hpf-more').href = '/portfolio/' + (tab === 'montage' ? '?onglet=montage' : '');
+      track.innerHTML = PROJECTS.filter(p => p.tab === tab).map(p => {
+        const n = p.items.length;
+        return `<a class="hpf-card" href="/portfolio/?onglet=${tab}&projet=${p.id}" data-id="${p.id}">
+          <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
+          ${!touch ? '<img class="hpf-alt" alt="" draggable="false"><video muted playsinline preload="none"></video>' : ''}
+          ${p.sector === 'beaute' ? '<span class="hpf-badge">Beauté</span>' : ''}
+          ${n > 1 && !touch ? '<div class="hpf-dots">' + p.items.map(() => '<i></i>').join('') + '</div>' : ''}
+          <div class="hpf-txt"><div class="hpf-where">${p.where}</div><div class="hpf-name">${p.client}</div></div></a>`;
+      }).join('');
+      if (!touch) { track.innerHTML += track.innerHTML; track.dataset.loop = '1'; }
+      track.scrollLeft = 0; pos = 0;
+      /* Survol : fait défiler les aperçus de toutes les réalisations du client (une nouvelle toutes les secondes) */
+      if (!touch) track.querySelectorAll('.hpf-card').forEach(c => {
+        const p = PROJECTS.find(x => x.id === c.dataset.id), vid = c.querySelector('video'), alt = c.querySelector('.hpf-alt');
+        const dots = c.querySelectorAll('.hpf-dots i'); let i = 0, timer = null, on = false;
+        const step = () => {
+          if (!on) return; const it = p.items[i % p.items.length]; dots.forEach((d, k) => d.classList.toggle('on', k === i % p.items.length));
+          clearTimeout(timer); const next = ms => { timer = setTimeout(() => { i++; step(); }, ms); };
+          if (it.k === 'video') {
+            vid.src = it.src; vid.currentTime = 0;
+            vid.play().then(() => { c.classList.add('playing'); c.classList.remove('alt'); }).catch(() => {});
+            next(p.items.length > 1 ? 1000 : 60000);
+          } else {
+            alt.src = it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
+            vid.pause(); c.classList.remove('playing'); c.classList.add('alt'); next(1000);
+          }
+        };
+        c.addEventListener('mouseenter', () => { on = true; step(); });
+        c.addEventListener('mouseleave', () => { on = false; clearTimeout(timer); vid.pause(); c.classList.remove('playing', 'alt'); i = 0; dots.forEach(d => d.classList.remove('on')); });
+      });
+    };
+    /* Défilement automatique fluide et sans fin (ordinateur), en pause au survol ; la molette fait défiler la rangée */
+    let paused = false, last = 0;
+    track.addEventListener('mouseenter', () => paused = true);
+    track.addEventListener('mouseleave', () => { paused = false; pos = track.scrollLeft; });
+    track.addEventListener('wheel', e => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.preventDefault(); track.scrollLeft += e.deltaY; pos = track.scrollLeft; } }, { passive: false });
+    const loop = t => {
+      const dt = last ? Math.min(t - last, 50) : 0; last = t;
+      const cs = track.children, n = cs.length / 2;
+      const half = n >= 1 ? cs[n].offsetLeft - cs[0].offsetLeft : 1e9;
+      if (!touch && !paused && track.dataset.loop) {
+        pos += dt * 0.035;                      /* ≈ 35 px par seconde */
+        if (pos >= half) pos -= half;
+        track.scrollLeft = pos;
+      } else if (track.dataset.loop && track.scrollLeft >= half) { track.scrollLeft -= half; pos = track.scrollLeft; }
+      requestAnimationFrame(loop);
+    };
+    requestAnimationFrame(loop);
+    document.querySelectorAll('[data-hpf]').forEach(b => b.addEventListener('click', () => show(b.dataset.hpf)));
+    show('tournage');
+  })();
+  </script>
 </body>
 </html>

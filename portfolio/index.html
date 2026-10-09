@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio · Réalisations Vidéo & Photo | Maderino Production</title>
-  <meta name="description" content="Découvrez les réalisations de Maderino Production : vidéos d'entreprise, reels, aftermovies, shootings photo pour Five Fruits, Kyo Sushi, The Headspa Concept, MB Média Group et plus.">
+  <title>Portfolio vidéo · Tournage &amp; montage à Lyon | Maderino Production</title>
+  <meta name="description" content="Nos réalisations vidéo à Lyon : tournages pour instituts, spas et marques (The Headspa Concept, Skiness…) et montages de reels, pubs, podcasts et mariages.">
   <link rel="canonical" href="https://maderinoprod.com/portfolio/">
   <meta name="robots" content="index, follow">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -214,6 +214,108 @@
   <!-- Thème clair (beige) -->
   <script>document.documentElement.dataset.theme='light'</script>
   <link rel="stylesheet" href="/assets/theme.css?v=43">
+  <!-- Nouveau portfolio -->
+  <style>
+    .pf { padding: 20px 40px 100px; }
+    .pf-inner { max-width: 1200px; margin: 0 auto; }
+    .pf-tabs { display: flex; justify-content: center; gap: 6px; padding: 6px; margin: 0 auto 18px; width: max-content;
+      border-radius: 100px; background: rgba(255,255,255,0.6); border: 1px solid rgba(28,24,20,0.08); }
+    .pf-tab { border: none; background: none; cursor: pointer; padding: 12px 30px; border-radius: 100px;
+      font: 600 15px 'Inter', sans-serif; letter-spacing: -0.01em; color: rgba(28,24,20,0.6); transition: all .25s; }
+    .pf-tab.on { background: #1C1814; color: #fff; }
+    .pf-intro { text-align: center; color: var(--muted); font-size: 15px; margin-bottom: 18px; }
+    .pf-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-bottom: 34px; }
+    .pf-chip { border: 1px solid rgba(28,24,20,0.14); background: rgba(255,255,255,0.5); cursor: pointer;
+      padding: 8px 16px; border-radius: 100px; font: 500 13px 'Inter', sans-serif; color: #1C1814; transition: all .2s; }
+    .pf-chip.on { border-color: var(--orange); background: rgba(255,107,0,0.1); color: var(--orange); }
+    .pf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .pf-card { position: relative; cursor: pointer; border-radius: 24px; overflow: hidden; background: #1C1814;
+      aspect-ratio: 4 / 5; box-shadow: 0 14px 40px rgba(60,40,20,0.14); transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s; }
+    .pf-card:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(60,40,20,0.22); }
+    .pf-card.big { grid-column: span 2; aspect-ratio: auto; }
+    .pf-card img, .pf-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .pf-card video { opacity: 0; transition: opacity .4s; }
+    .pf-card.playing video { opacity: 1; }
+    .pf-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.78) 0%, rgba(0,0,0,.2) 45%, transparent 70%); }
+    .pf-card-txt { position: absolute; left: 22px; right: 22px; bottom: 20px; z-index: 2; color: #fff; }
+    .pf-card-where { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #FF8A3D; margin-bottom: 6px; }
+    .pf-card-name { font-size: 24px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
+    .pf-card-count { font-size: 13px; opacity: .8; margin-top: 6px; }
+    .pf-badge { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 600;
+      background: rgba(255,255,255,.92); color: #1C1814; }
+    .pf-empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px; }
+
+    .pf-sheet, .pf-viewer { position: fixed; inset: 0; z-index: 400; display: none; }
+    .pf-sheet.open, .pf-viewer.open { display: flex; }
+    .pf-sheet { background: rgba(243,237,228,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      align-items: flex-start; justify-content: center; overflow-y: auto; padding: 60px 20px; }
+    .pf-sheet-box { position: relative; width: 100%; max-width: 980px; background: #FAF6F0; border-radius: 28px; padding: 40px;
+      border: 1px solid rgba(28,24,20,.08); box-shadow: 0 30px 80px rgba(60,40,20,.2); animation: pfIn .35s cubic-bezier(.22,1,.36,1); }
+    @keyframes pfIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+    .pf-close { position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 5;
+      border: 1px solid rgba(28,24,20,.12); background: rgba(255,255,255,.9); color: #1C1814; font-size: 15px; }
+    .pf-sheet-where { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--orange); margin-bottom: 8px; }
+    .pf-sheet-name { font-size: 40px; font-weight: 700; letter-spacing: -0.045em; line-height: 1.05; color: #1C1814; margin-bottom: 12px; }
+    .pf-sheet-desc { color: rgba(28,24,20,.68); font-size: 16px; line-height: 1.6; max-width: 640px; margin-bottom: 28px; }
+    .pf-sheet-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+    .pf-group { display: grid; gap: 12px; }
+    .pf-group-h { grid-template-columns: repeat(2, 1fr); }
+    .pf-group-h .pf-item { aspect-ratio: 16 / 9; }
+    .pf-group-v { grid-template-columns: repeat(5, 1fr); }
+    .pf-group-p { grid-template-columns: repeat(4, 1fr); }
+    .pf-item { position: relative; cursor: pointer; border-radius: 16px; overflow: hidden; background: #E9E1D5; aspect-ratio: 9 / 16; }
+    .pf-item.photo { aspect-ratio: 4 / 5; }
+    .pf-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .pf-item:hover img { transform: scale(1.04); }
+    .pf-item-play { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(to top, rgba(0,0,0,.55), transparent 55%); }
+    .pf-item-play span { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.92); color: #1C1814; font-size: 15px; padding-left: 3px; }
+    .pf-item-title { position: absolute; left: 10px; right: 10px; bottom: 10px; color: #fff; font-size: 12.5px; font-weight: 600; text-shadow: 0 1px 8px rgba(0,0,0,.5); }
+    .pf-sheet-cta { display: inline-flex; }
+
+    .pf-viewer { background: rgba(14,12,10,.92); align-items: center; justify-content: center; padding: 60px 70px; }
+    .pf-stage { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+    .pf-stage video, .pf-stage img { max-width: 100%; max-height: 100%; border-radius: 16px; background: #000; }
+    .pf-yt { position: relative; width: min(100%, 1100px); aspect-ratio: 16 / 9; }
+    .pf-yt iframe { width: 100%; height: 100%; border: 0; border-radius: 16px; display: block; }
+    /* Caches : le titre / partager (en haut) et le logo YouTube (en bas à droite) ne sont plus cliquables */
+    /* Lecteur YouTube entièrement recouvert : aucun clic n'atteint YouTube. Nos propres commandes en dessous. */
+    .pf-yt { background: #000; border-radius: 16px; overflow: hidden; }
+    .pf-yt .yt-shield { position: absolute; inset: 0; z-index: 3; cursor: pointer; }
+    .pf-yt .yt-bar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; background: linear-gradient(to top, rgba(0,0,0,.75), transparent); color: #fff; transition: opacity .3s; }
+    .pf-yt.idle .yt-bar { opacity: 0; }
+    .pf-yt .yt-btn { background: none; border: none; color: #fff; cursor: pointer; font-size: 18px; width: 32px; height: 32px; display: grid; place-items: center; }
+    .pf-yt .yt-time { font: 500 12px 'Inter', sans-serif; opacity: .9; white-space: nowrap; min-width: 84px; }
+    .pf-yt .yt-seek { flex: 1; height: 5px; border-radius: 5px; background: rgba(255,255,255,.3); position: relative; cursor: pointer; }
+    .pf-yt .yt-seek i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 5px; background: var(--orange); }
+    .pf-yt:fullscreen { border-radius: 0; width: 100%; height: 100%; }
+    .pf-viewer .pf-close { position: fixed; top: 20px; right: 20px; }
+    .pf-nav { position: fixed; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; border-radius: 50%; border: none; cursor: pointer;
+      background: rgba(255,255,255,.9); color: #1C1814; font-size: 26px; line-height: 1; z-index: 5; }
+    .pf-prev { left: 14px; } .pf-next { right: 14px; }
+
+    @media (max-width: 900px) {
+      .pf-group-v { grid-template-columns: repeat(3, 1fr); }
+      .pf-group-p { grid-template-columns: repeat(3, 1fr); }
+      .pf-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .pf-card.big { grid-column: span 2; aspect-ratio: 16 / 10; }
+    }
+    @media (max-width: 600px) {
+      .pf { padding: 10px 16px 70px; }
+      .pf-tab { padding: 11px 24px; font-size: 14px; }
+      .pf-grid { grid-template-columns: 1fr; }
+      .pf-card, .pf-card.big { grid-column: auto; aspect-ratio: 4 / 5; }
+      .pf-card-name { font-size: 22px; }
+      .pf-sheet { padding: 0; }
+      .pf-sheet-box { border-radius: 0; min-height: 100%; padding: 70px 18px 30px; }
+      .pf-sheet-name { font-size: 30px; }
+      .pf-group-h { grid-template-columns: 1fr; }
+      .pf-group-v, .pf-group-p { grid-template-columns: 1fr 1fr; }
+      .pf-viewer { padding: 60px 10px; }
+      .pf-nav { top: auto; bottom: 18px; transform: none; }
+      .pf-prev { left: calc(50% - 60px); } .pf-next { right: calc(50% - 60px); }
+    }
+  </style>
 </head>
 <body>
 
@@ -223,146 +325,49 @@
   </nav>
 
   <div class="page-header">
-    <div class="page-tag">Portfolio · Maderino Production</div>
-    <h1 class="page-title">Ce qu'on a fait parle<br>mieux que ce qu'on <em>dit.</em></h1>
-    <p class="page-sub">Vidéos d'entreprise, reels, aftermovies, shootings photo. Voici quelques projets dont on est fiers.</p>
+    <div class="page-tag">portfolio · tournage &amp; montage vidéo · lyon</div>
+    <h1 class="page-title"><span class="sr-only">Portfolio vidéo à Lyon : </span>Ce qu'on a fait parle<br>mieux que ce qu'on <em>dit.</em></h1>
+    <p class="page-sub">Tournage pour les instituts, spas et marques. Montage pour tout le monde.</p>
   </div>
 
-  <div class="portfolio-section">
-    <div class="portfolio-inner">
-      <div class="clients-grid">
-
-        <div class="client-card fade-up" onclick="openPopup('mb')">
-          <img class="client-thumb" src="https://img.youtube.com/vi/V-tDs3NrOAk/maxresdefault.jpg" alt="MB Média Group">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">MB Média Group</div>
-            <div class="client-tags"><span class="client-tag">Montage</span><span class="client-tag">Reels</span><span class="client-tag">Podcast</span><span class="client-tag">Aftermovie</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('fivefruits')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg" alt="Five Fruits">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">Five Fruits</div>
-            <div class="client-tags"><span class="client-tag">Tournage & Montage</span><span class="client-tag">Reel produit</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('headspa')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg" alt="The Headspa Concept">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">The Headspa Concept</div>
-            <div class="client-tags"><span class="client-tag">Tournage & Montage</span><span class="client-tag">Reels</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('kyosushi')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg" alt="Kyo Sushi">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">Kyo Sushi</div>
-            <div class="client-tags"><span class="client-tag">Tournage & Montage</span><span class="client-tag">Reels</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('nico')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg" alt="Nicowithdog">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">Nicowithdog</div>
-            <div class="client-tags"><span class="client-tag">Montage</span><span class="client-tag">Reel</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('independant')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg" alt="Indépendant.com">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">Indépendant.com</div>
-            <div class="client-tags"><span class="client-tag">Montage</span><span class="client-tag">Podcast</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('getdrone')">
-          <img class="client-thumb" src="https://img.youtube.com/vi/qSWMWv1pwks/maxresdefault.jpg" alt="Get Drone Production">
-          <div class="client-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="client-overlay">
-            <div class="client-name">Get Drone Production</div>
-            <div class="client-tags"><span class="client-tag">Montage</span><span class="client-tag">Film de mariage</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('brunch')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg" alt="Le Brunch du Léman">
-          <div class="client-overlay">
-            <div class="client-name">Le Brunch du Léman</div>
-            <div class="client-tags"><span class="client-tag photo">Shooting photo</span><span class="client-tag photo">Produit</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('kpatisserie')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg" alt="K Pâtisserie">
-          <div class="client-overlay">
-            <div class="client-name">K Pâtisserie</div>
-            <div class="client-tags"><span class="client-tag photo">Shooting photo</span><span class="client-tag photo">Produit</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('pozaclub')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg" alt="Pozaclub">
-          <div class="client-overlay">
-            <div class="client-name">Pozaclub</div>
-            <div class="client-tags"><span class="client-tag photo">Shooting photo</span><span class="client-tag photo">Événement</span></div>
-          </div>
-        </div>
-
-        <div class="client-card fade-up" onclick="openPopup('skiness')">
-          <img class="client-thumb" src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010065_stlend.jpg" alt="Skiness">
-          <div class="client-overlay">
-            <div class="client-name">Skiness</div>
-            <div class="client-tags"><span class="client-tag photo">Shooting photo</span><span class="client-tag photo">Portrait</span></div>
-          </div>
-        </div>
-
+  <section class="pf">
+    <div class="pf-inner">
+      <div class="pf-tabs" role="tablist">
+        <button class="pf-tab" data-tab="tournage" role="tab">Tournage</button>
+        <button class="pf-tab" data-tab="montage" role="tab">Montage</button>
       </div>
+      <p class="pf-intro" id="pf-intro"></p>
+      <div class="pf-filters" id="pf-filters"></div>
+      <div class="pf-grid" id="pf-grid"></div>
     </div>
-  </div>
+  </section>
 
   <div class="cta-section fade-up">
-    <div class="cta-title">Ton projet sera<br>le <em style="font-style:normal;color:var(--orange);">prochain.</em></div>
-    <p class="cta-sub">Un appel de 15 minutes suffit pour tout cadrer. Gratuit, sans engagement.</p>
+    <div class="cta-title" id="pf-cta-title">Ton projet sera<br>le <em>prochain.</em></div>
+    <p class="cta-sub" id="pf-cta-sub">Autour d'un café ou en visio, c'est gratuit.</p>
     <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary">Prendre rendez-vous</a>
   </div>
 
-  <!-- POPUP FICHE CLIENT -->
-  <div class="popup-overlay" id="popup-overlay" onclick="closePopupOutside(event)">
-    <div class="popup" id="popup">
-      <button class="popup-close" onclick="closePopup()">✕</button>
-      <img class="popup-hero" id="popup-hero" src="" alt="">
-      <div class="popup-body">
-        <div class="popup-name" id="popup-name"></div>
-        <div class="popup-tags" id="popup-tags"></div>
-        <p class="popup-desc" id="popup-desc"></p>
-        <div class="popup-media-label">Réalisations</div>
-        <div class="popup-media-grid" id="popup-media-grid"></div>
-        <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="popup-cta">Démarrer un projet similaire</a>
+  <!-- FICHE PROJET -->
+  <div class="pf-sheet" id="pf-sheet" aria-hidden="true">
+    <div class="pf-sheet-box" role="dialog" aria-modal="true">
+      <button class="pf-close" data-close aria-label="Fermer">✕</button>
+      <div class="pf-sheet-head">
+        <div class="pf-sheet-where" id="pf-sheet-where"></div>
+        <h2 class="pf-sheet-name" id="pf-sheet-name"></h2>
+        <p class="pf-sheet-desc" id="pf-sheet-desc"></p>
       </div>
+      <div class="pf-sheet-grid" id="pf-sheet-grid"></div>
+      <a href="https://cal.com/maderinoprod/appel-decouverte?user=maderinoprod&overlayCalendar=true" target="_blank" class="btn-primary pf-sheet-cta">Démarrer un projet similaire</a>
     </div>
   </div>
 
-  <!-- LIGHTBOX -->
-  <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
-    <div class="lightbox-inner" id="lightbox-inner">
-      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-      <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">‹</button>
-      <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">›</button>
-      <iframe id="lb-iframe" allowfullscreen style="display:none;"></iframe>
-      <video id="lb-video" controls style="display:none;border-radius:16px;max-width:100%;max-height:85vh;"></video>
-      <img id="lb-photo" style="display:none;max-width:100%;max-height:85vh;object-fit:contain;border-radius:16px;">
-    </div>
+  <!-- VISIONNEUSE -->
+  <div class="pf-viewer" id="pf-viewer" aria-hidden="true">
+    <button class="pf-close pf-viewer-close" data-vclose aria-label="Fermer">✕</button>
+    <button class="pf-nav pf-prev" data-dir="-1" aria-label="Précédent">‹</button>
+    <div class="pf-stage" id="pf-stage"></div>
+    <button class="pf-nav pf-next" data-dir="1" aria-label="Suivant">›</button>
   </div>
 
   <footer>
@@ -374,278 +379,164 @@
     <div class="footer-copy">© 2026 Maderino Production · Tous droits réservés</div>
   </footer>
 
+  <script src="/assets/projets.js?v=2"></script>
   <script>
-  // ── PROTECTION CONTENU ──
-  document.addEventListener('contextmenu', e => e.preventDefault());
-  document.addEventListener('dragstart', e => e.preventDefault());
-  document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && ['s','u','c'].includes(e.key.toLowerCase())) e.preventDefault();
-  });
-
-  // ── DONNÉES CLIENTS ──
-  const clients = {
-    mb: {
-      name: 'MB Média Group',
-      hero: 'https://img.youtube.com/vi/V-tDs3NrOAk/maxresdefault.jpg',
-      tags: ['Montage', 'Reels', 'Podcast', 'ADS'],
-      desc: 'MB Média Group est une agence de marketing digital basée en Suisse. On s\'occupe d\'une partie de leur production vidéo : montage de podcasts, reels et ads pour leurs clients.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467454/Urgence_v3_1_fplqlu.jpg', title: 'Joe Coaching', type: 'Reels · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467454/Urgence_v3_1_fplqlu.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467455/Aftermovie_v4_1_nknjvn.jpg', title: 'Lunch Entrepreneur', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467455/Aftermovie_v4_1_nknjvn.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868670/Rushs_studio_SP_15_oig06o.jpg', title: 'David Padilla · Personal Branding', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868670/Rushs_studio_SP_15_oig06o.mp4' },
-        { thumb: 'https://img.youtube.com/vi/V-tDs3NrOAk/maxresdefault.jpg', title: 'Podcast MB Média Group', type: 'Montage', src: 'yt', url: 'V-tDs3NrOAk' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.jpg', title: 'Ads · Site Internet', type: 'Publicité · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777496858/Ads-site-internet-1080x1920-v2_1_w5vzo1.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868666/exp_1_-_12-01v2_vijgac.jpg', title: 'Rêvolistic', type: 'Reel · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868666/exp_1_-_12-01v2_vijgac.mp4' },
-        { thumb: 'https://img.youtube.com/vi/mO7xz-BlHmE/maxresdefault.jpg', title: 'Alfaro Professionnel', type: 'Animation · Montage', src: 'yt', url: 'mO7xz-BlHmE' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1781453344/ads_v1-modifi%C3%A9e_sp8bwa.jpg', title: 'Ads · Nouveau', type: 'Publicité · Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1781453344/ads_v1-modifi%C3%A9e_sp8bwa.mp4' },
-      ]
-    },
-    fivefruits: {
-      name: 'Five Fruits',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg',
-      tags: ['Tournage & Montage', 'Reel produit'],
-      desc: 'Tournage et montage d\'un reel produit pour Five Fruits. Mise en valeur des jus de fruits avec des angles dynamiques et une colorimétrie soignée pour les réseaux sociaux.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777497005/rendu-tri-povs-jus-orange_1_stggns.jpg', title: 'Reel · Five Fruits', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777497005/rendu-tri-povs-jus-orange_1_stggns.mp4' },
-      ]
-    },
-    headspa: {
-      name: 'The Headspa Concept',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1781452502/17052026-P5170199_gl8of0.jpg',
-      tags: ['Tournage & Montage', 'Reels', 'ADS', 'Shooting photo'],
-      desc: 'Tournage, montage de reels et shooting photo pour The Headspa Concept à Évian. On a aussi produit des ads pour convertir leur audience locale, mise en scène soignée de l\'ambiance unique de leur institut.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467453/Reels_1_-_2026-_1_gl0ggb.jpg', title: 'Reels · The Headspa Concept', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467453/Reels_1_-_2026-_1_gl0ggb.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1781452688/REEL_1_v2_LABO_CALEBASSE_zfyqb1.jpg', title: 'Reel · Labo Calebasse', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1781452688/REEL_1_v2_LABO_CALEBASSE_zfyqb1.mp4' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg', title: 'Shooting · Institut', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170199_gl8of0.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170202_ilclcg.jpg', title: 'Shooting · Ambiance', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170202_ilclcg.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452503/17052026-P5170228_qbzin4.jpg', title: 'Shooting · Détail', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452503/17052026-P5170228_qbzin4.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170223_yiwz9j.jpg', title: 'Shooting · Portrait', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781452502/17052026-P5170223_yiwz9j.jpg' },
-      ]
-    },
-    kyosushi: {
-      name: 'Kyo Sushi',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg',
-      tags: ['Tournage & Montage', 'Reels', 'Lancement réseaux'],
-      desc: 'Tournage et montage de reels pour Kyo Sushi, pour lancer leur présence sur les réseaux sociaux. Mise en valeur des plats et de l\'ambiance du restaurant pour Instagram et TikTok.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1777467451/r1_1_heshpw.jpg', title: 'Reels · Kyo Sushi', type: 'Tournage & Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467451/r1_1_heshpw.mp4' },
-      ]
-    },
-    nico: {
-      name: 'Nicowithdog',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_3/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg',
-      tags: ['Montage', 'Reel'],
-      desc: 'Montage de contenu pour le créateur Nicowithdog. Reel dynamique avec une identité visuelle forte, pensé pour maximiser l\'engagement sur les réseaux.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_3/v1777467463/rendu-nico-v6_1_1_kuidwf.jpg', title: 'Reel · Nicowithdog', type: 'Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1777467463/rendu-nico-v6_1_1_kuidwf.mp4' },
-      ]
-    },
-    independant: {
-      name: 'Indépendant.com',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg',
-      tags: ['Montage', 'Podcast', 'Interview'],
-      desc: 'Montage d\'extraits podcast pour Indépendant.com, formats courts pensés pour les réseaux sociaux, à partir d\'interviews longue durée.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/so_1/v1778868668/itv-james-r10_s4yfr8.jpg', title: 'Extrait podcast · Indépendant.com', type: 'Montage', src: 'cloudinary', url: 'https://res.cloudinary.com/dpvw9gv0y/video/upload/v1778868668/itv-james-r10_s4yfr8.mp4' },
-      ]
-    },
-    getdrone: {
-      name: 'Get Drone Production',
-      hero: 'https://img.youtube.com/vi/qSWMWv1pwks/maxresdefault.jpg',
-      tags: ['Montage', 'Film de mariage'],
-      desc: 'Montage d\'un film de mariage pour Get Drone Production. On respecte leur style de rendu et leur direction artistique pour livrer un résultat fidèle aux attentes de leurs clients.',
-      media: [
-        { thumb: 'https://img.youtube.com/vi/qSWMWv1pwks/maxresdefault.jpg', title: 'Film de mariage', type: 'Montage', src: 'yt', url: 'qSWMWv1pwks' },
-      ]
-    },
-    brunch: {
-      name: 'Le Brunch du Léman',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1778482783/P8075179_weanlt.jpg',
-      tags: ['Shooting photo', 'Produit', 'Food'],
-      desc: 'Shooting photo produit pour Le Brunch du Léman, mise en scène des plats et de l\'ambiance du restaurant pour les réseaux sociaux et supports de communication.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg', title: 'Shooting produit', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P8075179_weanlt.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg', title: 'Shooting ambiance', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482783/P5084735-2_zzia9x.jpg' },
-      ]
-    },
-    kpatisserie: {
-      name: 'K Pâtisserie',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1778482782/P1114369-1_akwo94.jpg',
-      tags: ['Shooting photo', 'Produit', 'Pâtisserie'],
-      desc: 'Shooting photo pour K Pâtisserie, valorisation des créations gourmandes avec une lumière soignée et des mises en scène appétissantes.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg', title: 'Shooting K Pâtisserie', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114369-1_akwo94.jpg' },
-      ]
-    },
-    pozaclub: {
-      name: 'Pozaclub',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1778482784/P8202845_e7ueiw.jpg',
-      tags: ['Shooting photo', 'Ateliers créatifs'],
-      desc: 'Shooting photo lors des ateliers créatifs de Pozaclub, captation de l\'ambiance et des participants en action à travers plusieurs sessions.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg', title: 'Atelier créatif', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482784/P8202845_e7ueiw.jpg' },
-      ]
-    },
-    skiness: {
-      name: 'Skiness',
-      hero: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/f_auto,q_auto,w_1200/v1781453083/_1010065_stlend.jpg',
-      tags: ['Shooting photo', 'Tournage & Montage', 'Reels'],
-      desc: 'Shooting photo et tournage de reels pour Skiness, valorisation de la marque et de ses produits à travers des visuels soignés pour les réseaux sociaux.',
-      media: [
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010065_stlend.jpg', title: 'Shooting Skiness', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010065_stlend.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010377_m8r1fc.jpg', title: 'Shooting produit', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1781453083/_1010377_m8r1fc.jpg' },
-        { thumb: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg', title: 'Portrait', type: 'Photo', src: 'photo', url: 'https://res.cloudinary.com/dpvw9gv0y/image/upload/v1778482782/P1114403_bs18bm.jpg' },
-      ]
-    },
+  /* Nouveau portfolio : les projets sont décrits ici. Médias dans /assets/m/ (noms illisibles volontairement). */
+  const PROJECTS = window.PROJECTS;
+  const SECTORS = {"tournage": [["tout", "Tout"], ["beaute", "Beauté & bien-être"], ["resto", "Restauration"], ["sport", "Sport"], ["autres", "Autres"]], "montage": [["tout", "Tout"], ["reels", "Reels & pubs"], ["evenement", "Événements & mariage"], ["createurs", "Créateurs"]]};
+  const TEXTS = {
+    tournage: { intro: "On vient filmer chez toi. Instituts, spas et soins en priorité, et tous les autres projets.",
+                cta: "Tu as un institut ou un spa&nbsp;?<br>On vient <em>filmer.</em>", sub: "Autour d'un café ou en visio, c'est gratuit." },
+    montage:  { intro: "Tu nous envoies tes vidéos, on te rend un montage pro. Pour tout le monde.",
+                cta: "Tu as des vidéos&nbsp;?<br>On les <em>monte.</em>", sub: "Devis gratuit, tout se fait à distance." }
   };
+  let tab = new URLSearchParams(location.search).get('onglet') === 'montage' ? 'montage' : 'tournage';
+  let sector = 'tout';
+  const $ = id => document.getElementById(id);
 
-  // ── POPUP ──
-  let currentMedia = [];
-  let lbIndex = 0;
+  function cover(p) {
+    if (p.cover) return p.cover; // image de couverture choisie à la main
+    const first = p.items.find(i => i.k === 'video') || p.items[0];
+    return first.k === 'video' ? first.poster : first.k === 'photo' ? first.src : 'https://img.youtube.com/vi/' + first.id + '/maxresdefault.jpg';
+  }
+  function count(p) {
+    const n = p.items.filter(i => i.k !== 'photo').length, f = p.items.filter(i => i.k === 'photo').length;
+    return [n ? n + (n > 1 ? ' vidéos' : ' vidéo') : '', f ? f + (f > 1 ? ' photos' : ' photo') : ''].filter(Boolean).join(' · ');
+  }
 
-  function openPopup(id) {
-    const c = clients[id];
-    if (!c) return;
-    document.getElementById('popup-hero').src = c.hero;
-    document.getElementById('popup-hero').alt = c.name;
-    document.getElementById('popup-name').textContent = c.name;
-    document.getElementById('popup-desc').textContent = c.desc;
-    const tagsEl = document.getElementById('popup-tags');
-    tagsEl.innerHTML = c.tags.map(t => `<span class="popup-tag ${t.toLowerCase().includes('photo') ? 'photo' : ''}">${t}</span>`).join('');
-    const grid = document.getElementById('popup-media-grid');
-    grid.innerHTML = c.media.map((m, i) => `
-      <div class="popup-media-item" onclick="openLightboxAt(${i})">
-        <img src="${m.thumb}" alt="${m.title}" loading="lazy" draggable="false">
-        ${m.src !== 'photo' ? `<div class="popup-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>` : ''}
-        <div class="popup-media-overlay">
-          <div class="popup-media-title">${m.title}</div>
-          <div class="popup-media-type">${m.type}</div>
-        </div>
-      </div>
-    `).join('');
-    currentMedia = c.media;
-    document.getElementById('popup-overlay').classList.add('active');
+  function render() {
+    document.querySelectorAll('.pf-tab').forEach(b => b.classList.toggle('on', b.dataset.tab === tab));
+    $('pf-intro').textContent = TEXTS[tab].intro;
+    $('pf-cta-title').innerHTML = TEXTS[tab].cta;
+    $('pf-cta-sub').textContent = TEXTS[tab].sub;
+    $('pf-filters').innerHTML = SECTORS[tab].map(([k, l]) => `<button class="pf-chip${k === sector ? ' on' : ''}" data-s="${k}">${l}</button>`).join('');
+    const list = PROJECTS.filter(p => p.tab === tab && (sector === 'tout' || p.sector === sector));
+    $('pf-grid').innerHTML = list.length ? list.map((p, i) => {
+      const prev = p.items.find(x => x.k === 'video');
+      return `<article class="pf-card${i === 0 && sector === 'tout' ? ' big' : ''}" data-id="${p.id}">
+        <img src="${cover(p)}" alt="${p.client}" loading="lazy">
+        ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
+        ${p.sector === 'beaute' ? '<span class="pf-badge">Beauté</span>' : ''}
+        <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
+      </article>`;
+    }).join('') : '<p class="pf-empty">Bientôt des projets ici.</p>';
+    observe();
+  }
+
+  /* Aperçu vidéo au survol, sur ordinateur uniquement. Sur téléphone, on garde l'image : les vidéos sont en 1080p
+     et lourdes, on ne les charge que si la personne ouvre la fiche. */
+  const touch = matchMedia('(hover: none)').matches;
+  function play(card, on) {
+    const vid = card.querySelector('video'); if (!vid) return;
+    if (on) { if (!vid.src) vid.src = vid.dataset.src; vid.play().then(() => card.classList.add('playing')).catch(() => {}); }
+    else { vid.pause(); card.classList.remove('playing'); }
+  }
+  let io;
+  function observe() {
+    document.querySelectorAll('.pf-card').forEach(c => {
+      c.addEventListener('mouseenter', () => !touch && play(c, true));
+      c.addEventListener('mouseleave', () => !touch && play(c, false));
+    });
+  }
+
+  /* Fiche projet */
+  let current = null;
+  function openSheet(id) {
+    current = PROJECTS.find(p => p.id === id);
+    $('pf-sheet-where').textContent = current.where;
+    $('pf-sheet-name').textContent = current.client;
+    $('pf-sheet-desc').textContent = current.desc;
+    // Rangement propre : vidéos horizontales ensemble, puis verticales, puis photos (chaque groupe a sa grille)
+    const card = (it, i) => {
+      const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
+      return `<div class="pf-item${it.k === 'photo' ? ' photo' : ''}" data-i="${i}"><img src="${img}" alt="${current.client}" loading="lazy" draggable="false">
+        ${it.k !== 'photo' ? '<div class="pf-item-play"><span>▶</span></div><div class="pf-item-title">' + it.title + '</div>' : ''}</div>`;
+    };
+    const groups = [
+      ['h', current.items.map((it, i) => [it, i]).filter(([it]) => it.k !== 'photo' && it.fmt === 'h')],
+      ['v', current.items.map((it, i) => [it, i]).filter(([it]) => it.k !== 'photo' && it.fmt !== 'h')],
+      ['p', current.items.map((it, i) => [it, i]).filter(([it]) => it.k === 'photo')],
+    ].filter(([, list]) => list.length);
+    $('pf-sheet-grid').innerHTML = groups.map(([g, list]) =>
+      `<div class="pf-group pf-group-${g}">${list.map(([it, i]) => card(it, i)).join('')}</div>`).join('');
+    $('pf-sheet').classList.add('open'); $('pf-sheet').setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
-    document.getElementById('popup').scrollTop = 0;
+  }
+  function closeSheet() { $('pf-sheet').classList.remove('open'); $('pf-sheet').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+
+  /* Visionneuse (vidéo 1080p, photo, YouTube protégé) */
+  let vi = 0;
+  function show(i) {
+    const items = current.items; vi = (i + items.length) % items.length; const it = items[vi];
+    const st = $('pf-stage');
+    if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
+    else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
+    else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
+    document.querySelectorAll('.pf-nav').forEach(b => b.style.display = items.length > 1 ? '' : 'none');
   }
 
-  function closePopup() {
-    document.getElementById('popup-overlay').classList.remove('active');
-    document.body.style.overflow = '';
+  /* Lecteur YouTube maison : on pilote YouTube par messages, sans jamais laisser cliquer dans son lecteur */
+  function ytInit(box) {
+    const ifr = box.querySelector('iframe'), bar = box.querySelector('.yt-bar');
+    const st = { playing: true, muted: false, t: 0, d: 0 };
+    const cmd = (func, args = []) => ifr.contentWindow && ifr.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
+    const fmt = x => Math.floor(x / 60) + ':' + String(Math.floor(x % 60)).padStart(2, '0');
+    const paint = () => {
+      bar.querySelector('[data-yt=play]').textContent = st.playing ? '❚❚' : '▶';
+      bar.querySelector('[data-yt=mute]').textContent = st.muted ? '🔇' : '🔊';
+      bar.querySelector('.yt-seek i').style.width = (st.d ? st.t / st.d * 100 : 0) + '%';
+      bar.querySelector('.yt-time').textContent = fmt(st.t) + ' / ' + fmt(st.d);
+    };
+    ifr.addEventListener('load', () => ifr.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*'));
+    const onMsg = e => {
+      if (e.source !== ifr.contentWindow) return;
+      let m; try { m = JSON.parse(e.data); } catch { return; }
+      const i = m.info || {};
+      if (typeof i.currentTime === 'number') st.t = i.currentTime;
+      if (typeof i.duration === 'number') st.d = i.duration;
+      if (typeof i.playerState === 'number') st.playing = i.playerState === 1 || i.playerState === 3;
+      if (typeof i.muted === 'boolean') st.muted = i.muted;
+      paint();
+    };
+    addEventListener('message', onMsg);
+    const toggle = () => { st.playing ? cmd('pauseVideo') : cmd('playVideo'); st.playing = !st.playing; paint(); };
+    box.querySelector('.yt-shield').addEventListener('click', toggle);
+    bar.addEventListener('click', e => {
+      e.stopPropagation();
+      const b = e.target.closest('[data-yt]'); if (!b) return;
+      const k = b.dataset.yt;
+      if (k === 'play') toggle();
+      if (k === 'mute') { st.muted ? cmd('unMute') : cmd('mute'); st.muted = !st.muted; paint(); }
+      if (k === 'full') { document.fullscreenElement ? document.exitFullscreen() : (box.requestFullscreen || box.webkitRequestFullscreen).call(box); }
+      if (k === 'seek' && st.d) { const r = b.getBoundingClientRect(); const t = (e.clientX - r.left) / r.width * st.d; cmd('seekTo', [t, true]); st.t = t; paint(); }
+    });
+    let idle; const wake = () => { box.classList.remove('idle'); clearTimeout(idle); idle = setTimeout(() => st.playing && box.classList.add('idle'), 2500); };
+    box.addEventListener('mousemove', wake); box.addEventListener('touchstart', wake, { passive: true }); wake();
   }
+  function openViewer(i) { $('pf-viewer').classList.add('open'); show(i); }
+  function closeViewer() { $('pf-stage').innerHTML = ''; $('pf-viewer').classList.remove('open'); }
 
-  function closePopupOutside(e) {
-    if (e.target === document.getElementById('popup-overlay')) closePopup();
-  }
-
-  // ── LIGHTBOX ──
-  function openLightboxAt(index) {
-    lbIndex = index;
-    renderLb();
-  }
-
-  function renderLb() {
-    const item = currentMedia[lbIndex];
-    if (!item) return;
-    const inner = document.getElementById('lightbox-inner');
-    const iframe = document.getElementById('lb-iframe');
-    const video = document.getElementById('lb-video');
-    const photo = document.getElementById('lb-photo');
-    iframe.style.display = 'none'; iframe.src = '';
-    video.style.display = 'none'; video.pause(); video.src = '';
-    photo.style.display = 'none'; photo.src = '';
-    inner.classList.remove('photo-mode', 'yt-mode');
-
-    if (item.src === 'yt') {
-      inner.classList.add('yt-mode');
-      inner.innerHTML = `
-        <button class="lightbox-close" id="lb-close-btn">✕</button>
-        <button class="lightbox-nav lightbox-prev" id="lb-prev">‹</button>
-        <button class="lightbox-nav lightbox-next" id="lb-next">›</button>
-        <div class="yt-facade" id="yt-facade">
-          <img src="https://img.youtube.com/vi/${item.url}/maxresdefault.jpg" alt="${item.title}" draggable="false">
-          <div class="yt-play-btn">
-            <svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.8 0 34 0 34 0S12.2 0 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C0 12.5 0 24 0 24s0 11.5 1.5 16.3c.8 2.9 3 5.2 5.9 6C12.2 48 34 48 34 48s21.8 0 26.6-1.7c2.9-.8 5.1-3.1 5.9-6C68 35.5 68 24 68 24s0-11.5-1.5-16.3z" fill="#ff0000"/><path d="M45 24 27 14v20" fill="#fff"/></svg>
-          </div>
-        </div>`;
-      document.getElementById('lb-close-btn').addEventListener('click', closeLightbox);
-      document.getElementById('lb-prev').addEventListener('click', () => lightboxNav(-1));
-      document.getElementById('lb-next').addEventListener('click', () => lightboxNav(1));
-      document.getElementById('yt-facade').addEventListener('click', () => loadYT(item.url, document.getElementById('yt-facade')));
-    } else if (item.src === 'cloudinary') {
-      video.style.display = 'block';
-      video.setAttribute('controlsList', 'nodownload noremoteplayback');
-      video.setAttribute('disablePictureInPicture', '');
-      video.src = item.url;
-      video.play();
-    } else if (item.src === 'photo') {
-      photo.style.display = 'block';
-      photo.src = item.url;
-      photo.setAttribute('draggable', 'false');
-      inner.classList.add('photo-mode');
-    }
-    document.getElementById('lightbox').classList.add('active');
-  }
-
-  function lightboxNav(dir) {
-    lbIndex = (lbIndex + dir + currentMedia.length) % currentMedia.length;
-    renderLb();
-  }
-
-  function loadYT(id, facade) {
-    const inner = document.getElementById('lightbox-inner');
-    const wrap = document.createElement('div');
-    wrap.style.cssText = 'position:relative;width:100%;height:100%;';
-    const iframe = document.createElement('iframe');
-    iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&showinfo=0&controls=1&playsinline=1';
-    iframe.allowFullscreen = true;
-    iframe.allow = 'autoplay; encrypted-media';
-    iframe.style.cssText = 'width:100%;height:100%;border:none;border-radius:16px;display:block;';
-    // Overlay transparent sur le bouton partage (bas droite de l'iframe)
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:absolute;bottom:0;right:0;width:120px;height:48px;z-index:10;cursor:default;';
-    wrap.appendChild(iframe);
-    wrap.appendChild(overlay);
-    facade.replaceWith(wrap);
-  }
-
-  function closeLightbox(e) {
-    if (!e || e.target === document.getElementById('lightbox') || (e.target.classList && e.target.classList.contains('lightbox-close'))) {
-      document.getElementById('lb-iframe').src = '';
-      const v = document.getElementById('lb-video'); v.pause(); v.src = '';
-      const inner = document.getElementById('lightbox-inner');
-      inner.classList.remove('yt-mode', 'photo-mode');
-      inner.innerHTML = `
-        <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-        <button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">‹</button>
-        <button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">›</button>
-        <iframe id="lb-iframe" allowfullscreen style="display:none;"></iframe>
-        <video id="lb-video" controls controlsList="nodownload noremoteplayback" disablePictureInPicture style="display:none;border-radius:16px;max-width:100%;max-height:85vh;"></video>
-        <img id="lb-photo" style="display:none;max-width:100%;max-height:85vh;object-fit:contain;border-radius:16px;" draggable="false">`;
-      document.getElementById('lightbox').classList.remove('active');
-    }
-  }
-
+  document.addEventListener('click', e => {
+    const t = e.target;
+    if (t.closest('.pf-tab')) { tab = t.closest('.pf-tab').dataset.tab; sector = 'tout'; render();
+      history.replaceState(null, '', location.pathname + (tab === 'montage' ? '?onglet=montage' : '')); return; }
+    if (t.closest('.pf-chip')) { sector = t.closest('.pf-chip').dataset.s; render(); return; }
+    if (t.closest('.pf-card')) { openSheet(t.closest('.pf-card').dataset.id); return; }
+    if (t.closest('.pf-item')) { openViewer(+t.closest('.pf-item').dataset.i); return; }
+    if (t.closest('[data-vclose]') || t === $('pf-viewer')) { closeViewer(); return; }
+    if (t.closest('.pf-nav')) { show(vi + +t.closest('.pf-nav').dataset.dir); return; }
+    if (t.closest('[data-close]') || t === $('pf-sheet')) { closeSheet(); return; }
+  });
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      if (document.getElementById('lightbox').classList.contains('active')) closeLightbox();
-      else closePopup();
-    }
-    if (e.key === 'ArrowLeft') lightboxNav(-1);
-    if (e.key === 'ArrowRight') lightboxNav(1);
+    if ($('pf-viewer').classList.contains('open')) {
+      if (e.key === 'Escape') closeViewer(); if (e.key === 'ArrowRight') show(vi + 1); if (e.key === 'ArrowLeft') show(vi - 1);
+    } else if (e.key === 'Escape') closeSheet();
   });
-
-  // ── FADE UP ──
-  const obs = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }), { threshold: 0.1 });
-  document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-
-  document.querySelectorAll('.page-tag, .page-title, .page-sub').forEach((el, i) => {
-    el.style.opacity = '0'; el.style.transform = 'translateY(24px)';
-    el.style.transition = `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${i*0.12}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${i*0.12}s`;
-    setTimeout(() => { el.style.opacity = ''; el.style.transform = ''; }, 100);
-  });
+  document.addEventListener('contextmenu', e => { if (e.target.closest('.pf-viewer, .pf-sheet, .pf-card')) e.preventDefault(); });
+  render();
+  const askProject = new URLSearchParams(location.search).get('projet');
+  if (askProject && PROJECTS.some(p => p.id === askProject)) openSheet(askProject);
   </script>
-  <script src="/assets/theme.js?v=8"></script>
+  <script src="/assets/theme.js?v=9"></script>
 </body>
 </html>

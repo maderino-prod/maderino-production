@@ -40,3 +40,17 @@
   addEventListener('hashchange', () => fromHash(true));
   fromHash(false);
 })();
+
+/* Protection des médias : pas de clic droit ni de glisser-déposer sur le site (sauf dans les champs de saisie),
+   pas de téléchargement ni d'« image dans l'image » sur les vidéos. Dissuasif : rien n'empêche totalement une copie. */
+(() => {
+  const editable = el => el.closest('input, textarea, [contenteditable="true"]');
+  document.addEventListener('contextmenu', e => { if (!editable(e.target)) e.preventDefault(); });
+  document.addEventListener('dragstart', e => { if (e.target.closest('img, video')) e.preventDefault(); });
+  const lock = v => { v.setAttribute('controlslist', 'nodownload noplaybackrate'); v.disablePictureInPicture = true; };
+  document.querySelectorAll('video').forEach(lock);
+  new MutationObserver(ms => ms.forEach(m => m.addedNodes.forEach(n => {
+    if (n.nodeType !== 1) return;
+    if (n.tagName === 'VIDEO') lock(n); else n.querySelectorAll && n.querySelectorAll('video').forEach(lock);
+  }))).observe(document.documentElement, { childList: true, subtree: true });
+})();
