@@ -145,6 +145,9 @@
     input[type=range] { height: 34px; }
   }
 
+  /* iPhone : empêche Safari d'agrandir le texte des blocs larges (devis rendu en PDF) */
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
   /* ── Générateur de devis ── */
   .devis-btn { margin-top: 10px; width: 100%; background: var(--orange); border: 0; color: #fff; border-radius: 9px; padding: 11px; font: 600 13px 'Inter'; cursor: pointer; }
   .devis-btn:hover { filter: brightness(1.08); }
@@ -876,9 +879,9 @@
         margin: [12, 12, 14, 12],
         filename: fichier,
         image: { type: 'jpeg', quality: 0.96 },
-        html2canvas: { scale: 2, backgroundColor: '#ffffff' },
+        html2canvas: { scale: 2, backgroundColor: '#ffffff', windowWidth: 1100 }, // rendu « ordinateur » même depuis un téléphone
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', 'h2', 'h4', '.d-check', '.d-sign', '.d-tot', '.form', 'li'] },
+        pagebreak: { mode: ['css', 'legacy'], avoid: ['p', 'li', 'tr', 'h2', 'h4', '.d-head', '.d-parties', '.d-check', '.d-sign', '.d-tot', '.form', '.card'] },
       }).from(source).toContainer();
       // html2pdf centre sa zone de rendu dans la fenêtre, et html2canvas coupe alors le bord droit : on la cale à gauche
       const zone = await worker.get('container');
