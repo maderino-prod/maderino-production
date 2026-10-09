@@ -168,8 +168,10 @@
   /* Document imprimé */
   #devisDoc { display: none; }
   @media print {
-    @page { size: A4; margin: 16mm 15mm 18mm; }
+    /* Marges à 0 : le navigateur n'a plus de place pour imprimer l'URL et la date ; les marges sont recréées par le padding cloné à chaque page */
+    @page { size: A4; margin: 0; }
     body { background: #fff !important; padding: 0 !important; color: #1C1814; }
+    #devisDoc { padding: 16mm 15mm 18mm; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
     body > *:not(#devisDoc) { display: none !important; }
     #devisDoc { display: block; }
   }
