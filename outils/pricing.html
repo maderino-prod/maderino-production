@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Pricing — Maderino Production</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
   :root {
     --orange: #FF6B2B;
@@ -371,7 +372,7 @@
   <h2 class="section" id="devisSection">Devis</h2>
   <div class="card" id="devisForm">
     <div class="grid3">
-      <div><label>N° de devis</label><input id="dvNum"></div>
+      <div><label>N° de devis (automatique)</label><input id="dvNum" readonly tabindex="-1" style="opacity:.75;cursor:default"></div>
       <div><label>Date du devis</label><input type="date" id="dvDate"></div>
       <div><label>Validité (jours)</label><input type="number" id="dvValid" value="30" min="1"></div>
       <div class="full"><label>Objet</label><input id="dvObjet" placeholder="Ex. : Production de 5 vidéos réseaux sociaux"></div>
@@ -407,8 +408,7 @@
       <div class="nom">Total du devis<small id="dvAcompteOut">–</small></div>
       <div class="prix" id="dvTotOut">–</div>
     </div>
-    <button class="devis-btn" id="dvPrint" style="margin-top:14px">Générer le PDF du devis</button>
-    <p class="hint">Dans la fenêtre d'impression, choisis « Enregistrer au format PDF ». Pense à cocher « Graphiques d'arrière-plan » pour garder les couleurs.</p>
+    <button class="devis-btn" id="dvPrint" style="margin-top:14px">Télécharger le PDF du devis</button>
   </div>
 </div>
 
@@ -788,6 +788,7 @@
 
   const today = new Date().toISOString().slice(0, 10);
   $('dvDate').value = today;
+  $('dvDate').addEventListener('change', () => { $('dvNum').value = nextNum($('dvDate').value); });
   $('dvNum').value = nextNum(today);
   lignes = lignesFromCart(); renderLignes();
 
@@ -857,14 +858,42 @@
       <div class="d-foot"><span>Maderino Production · Mickael Martino EI · SIRET 892 115 338 00014</span><span>Devis ${esc(v('dvNum'))}</span></div>
       ${cgv}`;
 
-    const prevTitle = document.title;
-    document.title = `Devis ${v('dvNum')}${v('dvNom') ? ' ' + v('dvNom') : ''}`;
+    const fichier = `Devis ${v('dvNum')}${v('dvNom') ? ' ' + v('dvNom') : ''}.pdf`.replace(/[\\/:*?"<>|]/g, '-');
+    const el = $('devisDoc');
     await document.fonts.ready;
-    await Promise.all([...$('devisDoc').querySelectorAll('img')].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
-    window.print();
-    document.title = prevTitle;
-    saveNum(v('dvNum'));
-    $('dvNum').value = nextNum(v('dvDate'));
+    await Promise.all([...el.querySelectorAll('img')].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+    const btn = $('dvPrint'), label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Génération du PDF…';
+    // Le contenu est passé sous forme de texte : html2pdf le place lui-même dans sa page de rendu,
+    // sans les décalages (défilement, marges de la page) qu'on a en lui passant l'élément affiché.
+    const source = `<div id="devisDoc" style="display:block;background:#fff">${el.innerHTML}</div>`;
+    const scrollAvant = window.scrollY;
+    window.scrollTo(0, 0); // html2canvas décale le rendu de la hauteur défilée…
+    const padAvant = document.body.style.padding;
+    document.body.style.padding = '0'; // …et de la marge intérieure de la page
+    try {
+      const worker = html2pdf().set({
+        margin: [12, 12, 14, 12],
+        filename: fichier,
+        image: { type: 'jpeg', quality: 0.96 },
+        html2canvas: { scale: 2, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', 'h2', 'h4', '.d-check', '.d-sign', '.d-tot', '.form', 'li'] },
+      }).from(source).toContainer();
+      // html2pdf centre sa zone de rendu dans la fenêtre, et html2canvas coupe alors le bord droit : on la cale à gauche
+      const zone = await worker.get('container');
+      zone.style.margin = '0';
+      await worker.save();
+      // Le numéro n'avance qu'après un PDF réellement généré
+      saveNum(v('dvNum'));
+      $('dvNum').value = nextNum(v('dvDate'));
+    } catch (e) {
+      alert('La génération du PDF a échoué : ' + e);
+    } finally {
+      document.body.style.padding = padAvant;
+      window.scrollTo(0, scrollAvant);
+      btn.disabled = false; btn.textContent = label;
+    }
   };
 </script>
 </body>
