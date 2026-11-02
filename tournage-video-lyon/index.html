@@ -257,7 +257,13 @@
       footer { padding: 28px 24px; flex-direction: column; text-align: center; justify-content: center; gap: 16px; }
       footer > div:nth-child(2) { position: static; transform: none; }
     }
-  </style>
+      /* Cartes services : affichage fixe, sans animation */
+    .types-track > .type-card { animation: none !important; opacity: 1 !important; transform: none; }
+    @media (min-width: 769px) {
+      .types-scroll-wrap { -webkit-mask-image: none !important; mask-image: none !important; }
+      .types-track { display: grid !important; grid-template-columns: repeat(3, 1fr); max-width: 1100px; margin: 0 auto !important; overflow: visible !important; cursor: default !important; }
+    }
+</style>
   <!-- Typo « style méta instagram » : Inter Bold serré + Playfair Display italique -->
   <style>
     :root { --font-display: 'Inter', sans-serif; --font-body: 'Inter', sans-serif; --font-serif: 'Playfair Display', Georgia, serif; }
@@ -462,21 +468,21 @@
       <span class="section-label">01 · Services</span>
       <div class="section-title">Ce qu'on tourne</div>
       <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
           <div class="type-name">Vidéo d'entreprise</div>
           <p class="type-desc">Présentation, recrutement, événement&nbsp;: on met ton entreprise en valeur.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
           </div>
           <div class="type-name">Vidéo produit</div>
           <p class="type-desc">On met ton produit en valeur pour donner envie de l'acheter.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
           </div>
@@ -868,26 +874,6 @@
     })();
   </script>
 
-  <script>
-    /* Cartes services : on duplique la rangée pour une boucle infinie sans coupure */
-    (() => {
-      const track = document.getElementById('types-track');
-      if (!track || track.classList.contains('marquee')) return;
-      [...track.children].forEach(card => {
-        const c = card.cloneNode(true);
-        c.setAttribute('aria-hidden', 'true');
-        c.classList.remove('fade-up');
-        c.classList.add('visible');
-        c.style.opacity = ''; c.style.transform = '';
-        c.querySelectorAll('a, button').forEach(el => el.tabIndex = -1);
-        track.appendChild(c);
-      });
-      track.classList.add('marquee');
-      const setSpeed = () => track.style.setProperty('--marquee-dur', (track.scrollWidth / 2 / 45) + 's');
-      setSpeed();
-      addEventListener('resize', setSpeed);
-    })();
-  </script>
   <script src="/assets/theme.js?v=11"></script>
   <script src="/assets/sommaire.js?v=7"></script>
   <script src="/assets/carousel-dots.js?v=1"></script>

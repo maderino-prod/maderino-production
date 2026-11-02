@@ -384,7 +384,13 @@
       footer { padding: 28px 24px; flex-direction: column; text-align: center; justify-content: center; gap: 16px; }
       footer > div:nth-child(2) { position: static; transform: none; }
     }
-  </style>
+      /* Cartes services : affichage fixe, sans animation */
+    .types-track > .type-card { animation: none !important; opacity: 1 !important; transform: none; }
+    @media (min-width: 769px) {
+      .types-scroll-wrap { -webkit-mask-image: none !important; mask-image: none !important; }
+      .types-track { display: grid !important; grid-template-columns: repeat(3, 1fr); max-width: 1100px; margin: 0 auto !important; overflow: visible !important; cursor: default !important; }
+    }
+</style>
   <!-- Typo « style méta instagram » : Inter Bold serré + Playfair Display italique -->
   <style>
     :root { --font-display: 'Inter', sans-serif; --font-body: 'Inter', sans-serif; --font-serif: 'Playfair Display', Georgia, serif; }
@@ -591,42 +597,42 @@
     </div>
     <div class="types-scroll-wrap">
       <div class="types-track" id="types-track">
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
           </div>
           <div class="type-name">Reels & contenus réseaux</div>
           <p class="type-desc">Instagram, TikTok, YouTube Shorts. Montage dynamique, rythme et transitions calibrés pour maximiser l'engagement.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           </div>
           <div class="type-name">Podcasts & interviews</div>
           <p class="type-desc">Montage multi-caméras, nettoyage audio, habillage graphique. Un rendu pro qui donne envie d'écouter jusqu'au bout.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
           </div>
           <div class="type-name">Aftermovies & événements</div>
           <p class="type-desc">Captations d'événements, soirées, conférences. On raconte l'ambiance et les moments forts en images.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           </div>
           <div class="type-name">Mariages & cérémonies</div>
           <p class="type-desc">Montage émotionnel et soigné de tes plus beaux moments. Un film que vous regarderez encore dans 20 ans.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white" stroke="none"/></svg>
           </div>
           <div class="type-name">Vidéos YouTube</div>
           <p class="type-desc">Montage long format, intros, transitions, motion graphics simples. Tout pour garder ton audience accrochée.</p>
         </div>
-        <div class="type-card shimmer-card fade-up">
+        <div class="type-card shimmer-card">
           <div class="type-icon">
             <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
@@ -1001,26 +1007,6 @@
     })();
   </script>
 
-  <script>
-    /* Cartes services : on duplique la rangée pour une boucle infinie sans coupure */
-    (() => {
-      const track = document.getElementById('types-track');
-      if (!track || track.classList.contains('marquee')) return;
-      [...track.children].forEach(card => {
-        const c = card.cloneNode(true);
-        c.setAttribute('aria-hidden', 'true');
-        c.classList.remove('fade-up');
-        c.classList.add('visible');
-        c.style.opacity = ''; c.style.transform = '';
-        c.querySelectorAll('a, button').forEach(el => el.tabIndex = -1);
-        track.appendChild(c);
-      });
-      track.classList.add('marquee');
-      const setSpeed = () => track.style.setProperty('--marquee-dur', (track.scrollWidth / 2 / 45) + 's');
-      setSpeed();
-      addEventListener('resize', setSpeed);
-    })();
-  </script>
   <script src="/assets/theme.js?v=11"></script>
   <script src="/assets/sommaire.js?v=7"></script>
   <script src="/assets/carousel-dots.js?v=1"></script>
