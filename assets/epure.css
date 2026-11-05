@@ -1,0 +1,62 @@
+/* Version épurée : aplats, ombres légères, pas d'effets de verre ni de reflets */
+html[data-theme="light"] body::before, .timeline-bg { display: none !important; }
+
+/* Plus de reflets ni de pulsations */
+.stat::before, .contact-card::before, .btn-primary::before, .type-card::before, .type-card::after,
+.shimmer-card::after, .mm-card::before, .glass-card::before, .avantage-item::before, .faq-item::before { display: none !important; }
+.type-card, .shimmer-card, .mm-card, .avantage-item { animation: none !important; }
+
+/* Cartes : fond plein, bord fin, ombre discrète, pas de flou */
+.type-card, .mm-card, .glass-card, .avantage-item, .service-item, .zone-item, .faq-item, .client-card,
+.legal-block, .review-card, .tool-card, .pf-card {
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+}
+html[data-theme="light"] .type-card, html[data-theme="light"] .mm-card, html[data-theme="light"] .glass-card,
+html[data-theme="light"] .avantage-item, html[data-theme="light"] .service-item, html[data-theme="light"] .zone-item,
+html[data-theme="light"] .faq-item, html[data-theme="light"] .client-card, html[data-theme="light"] .legal-block,
+html[data-theme="light"] .review-card, html[data-theme="light"] .tool-card {
+  background: #FBF8F3 !important; border: 1px solid rgba(28,24,20,0.09) !important;
+  box-shadow: 0 1px 2px rgba(60,40,20,0.05) !important;
+}
+.type-card:hover, .mm-card:hover, .avantage-item:hover, .service-item:hover, .zone-item:hover {
+  transform: none !important; box-shadow: 0 1px 2px rgba(60,40,20,0.05) !important; border-color: rgba(255,107,0,0.35) !important;
+}
+
+/* Chiffres : une simple ligne, sans boîtes */
+.stats { gap: 0 !important; }
+.stat { background: none !important; border: 0 !important; box-shadow: none !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border-radius: 0 !important; }
+.stat + .stat { border-left: 1px solid rgba(28,24,20,0.12) !important; }
+.stat:hover { transform: none !important; }
+@media (max-width: 768px) { .stat + .stat { border-left: 0 !important; } }
+
+/* Contact : liens simples */
+.contact-card { background: none !important; border: 0 !important; box-shadow: none !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.contact-card:hover { transform: none !important; box-shadow: none !important; }
+.contact-card:hover .contact-label { color: var(--orange); }
+
+/* Boutons : couleur pleine */
+.btn-primary { background: #FF6B00 !important; box-shadow: none !important; }
+.btn-primary:hover { transform: none !important; box-shadow: none !important; background: #E86100 !important; opacity: 1 !important; }
+.btn-outline { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; box-shadow: none !important; }
+.btn-wa { box-shadow: none !important; }
+.btn-wa:hover { transform: none !important; }
+
+/* Apparitions : simple fondu, sans glissement ni décalage */
+.fade-up { transform: none !important; transition: opacity .5s ease !important; transition-delay: 0s !important; }
+
+/* Menu et sommaire : fond plein au lieu du verre */
+nav, .nav, .sommaire { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+html[data-theme="light"] .sommaire { background: #F3EDE4 !important; }
+.btn-booking { background: #FF6B00 !important; box-shadow: none !important; animation: none !important; }
+.btn-booking::before, .btn-booking::after { display: none !important; }
+.btn-booking:hover { transform: none !important; background: #E86100 !important; box-shadow: none !important; }
+/* Téléphone : Mail, Instagram et TikTok sur une seule ligne */
+@media (max-width: 768px) {
+  .contact-cards { flex-direction: row !important; flex-wrap: nowrap !important; align-items: flex-start !important; gap: 6px !important; }
+  .contact-card { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; padding: 8px 2px !important; gap: 8px !important; }
+  .contact-icon { width: 44px !important; height: 44px !important; border-radius: 12px !important; }
+  .contact-label { font-size: 17px !important; }
+  .contact-value { font-size: 10.5px !important; letter-spacing: 0 !important; overflow-wrap: normal; text-align: center; }
+}
