@@ -430,20 +430,6 @@
     .portfolio-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.03em; line-height: 1.2; }
     .portfolio-type { font-size: 10px; color: var(--orange); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; }
 
-    /* ── FLOATING CTA iOS 26 ── */
-    .floating-cta {
-      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-      z-index: 99; display: flex; gap: 8px;
-      background: var(--glass-bg-strong);
-      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
-      border: 0.5px solid var(--glass-border-strong);
-      border-radius: var(--radius-pill); padding: 8px 10px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.55), inset 0 1px 0 var(--glass-rim);
-      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    }
-    .floating-cta::before { content: ''; position: absolute; inset: 0; border-radius: inherit; background: var(--glass-shine); pointer-events: none; }
-    .floating-cta.visible { opacity: 1; pointer-events: all; }
-
     /* ── LIGHTBOX ── */
     .lightbox { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.88); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); align-items: center; justify-content: center; }
     .lightbox.active { display: flex; }
@@ -523,8 +509,6 @@
       .hero-btns .btn-primary, .hero-btns .btn-outline { text-align: center; justify-content: center; padding: 16px 28px; font-size: 14px; }
 
       /* FLOATING CTA */
-      .floating-cta { bottom: 12px; padding: 5px 6px; gap: 4px; width: calc(100% - 32px); }
-      .floating-cta .btn-primary, .floating-cta .btn-outline { font-size: 10px; padding: 9px 8px; flex: 1; justify-content: center; text-align: center; white-space: nowrap; letter-spacing: 0.02em; }
 
       /* STATS */
       .stats { gap: 16px; padding: 48px 24px; }
@@ -1375,31 +1359,6 @@
     }, { passive: true });
   </script>
 
-  <!-- FLOATING CTA -->
-  <div class="floating-cta" id="floating-cta">
-    <a href="https://client.maderinoprod.com/rdv/cmvygyx7f0000jn08plu1e9ka" target="_blank" class="btn-primary"><span class="cta-long">Prendre rendez-vous</span><span class="cta-short">Rendez-vous</span></a>
-    <a href="#portfolio" class="btn-outline">Réalisations</a>
-    <a href="https://wa.me/33767135639" target="_blank" rel="noopener" class="btn-wa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm4.53 13.4c-.19.54-1.13 1.04-1.56 1.08-.4.04-.9.06-1.45-.09-.33-.1-.76-.24-1.31-.48-2.3-.99-3.8-3.31-3.92-3.46-.11-.15-.93-1.24-.93-2.37s.59-1.68.8-1.91c.21-.23.46-.29.61-.29h.44c.14 0 .33-.05.52.4.19.46.65 1.59.71 1.71.06.11.1.25.02.4-.08.15-.11.25-.23.38-.11.13-.24.3-.34.4-.11.11-.23.24-.1.46.13.23.59.97 1.27 1.57.87.78 1.61 1.02 1.84 1.13.23.11.36.1.49-.06.13-.15.57-.66.72-.89.15-.23.3-.19.51-.11.21.08 1.33.63 1.56.74.23.11.38.17.44.27.06.09.06.55-.13 1.09z"/></svg>WhatsApp</a>
-  </div>
-
-  <script>
-    // Floating CTA : visible après le haut de page, cachée quand on arrive sur « on travaille ensemble ? »,
-    // le contact et le pied de page (les mêmes boutons y sont déjà). Plus de recalcul de position, qui faisait
-    // sauter la barre sur iPhone quand la barre de Safari apparaît ou disparaît.
-    const floatingCta = document.getElementById('floating-cta');
-    function checkFloating() {
-      const heroBtns = document.getElementById('hero-btns');
-      if (!heroBtns || !floatingCta) return;
-      const pastHero = heroBtns.getBoundingClientRect().bottom < 0;
-      const end = document.getElementById('booking');
-      const atEnd = end && end.getBoundingClientRect().top < window.innerHeight * 0.85;
-      floatingCta.classList.toggle('visible', pastHero && !atEnd);
-    }
-    window.addEventListener('scroll', checkFloating, { passive: true });
-    window.addEventListener('resize', checkFloating);
-    setInterval(checkFloating, 400);
-    checkFloating();
-  </script>
 
   <script src="/assets/theme.js?v=11"></script>
   <script src="/assets/sommaire.js?v=7"></script>
