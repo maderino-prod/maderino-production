@@ -607,6 +607,21 @@
     .section-label { font-size: 20px !important; font-weight: 800 !important; letter-spacing: -0.02em !important; margin-bottom: 14px !important; }
     .hero h1 span:first-child { font-size: 6.6vw !important; }
     .hero h1 span:last-child { font-size: 7.8vw !important; }
+    /* ── Timeline de montage : timecodes et portfolio façon piste ── */
+    .section-num.tc { font-size: 20px !important; font-weight: 600 !important; letter-spacing: 0.02em !important; font-variant-numeric: tabular-nums; }
+    .hpf-tl { position: relative; }
+    .hpf-ruler { height: 28px; margin-bottom: 12px; border-bottom: 1px solid rgba(128,128,128,.25);
+      background-image: repeating-linear-gradient(to right, rgba(128,128,128,.55) 0 1px, transparent 1px 100px),
+                        repeating-linear-gradient(to right, rgba(128,128,128,.3) 0 1px, transparent 1px 20px);
+      background-size: 100px 12px, 20px 6px; background-position: 0 100%, 0 100%; background-repeat: repeat-x; }
+    .hpf-wave { position: relative; height: 40px; margin: 12px 0 0; border-top: 1px solid rgba(128,128,128,.2); border-bottom: 1px solid rgba(128,128,128,.2);
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='40'%3E%3Cpath d='M0 20h240' stroke='%23FF6B00' stroke-opacity='.25'/%3E%3Cg fill='%23FF6B00' fill-opacity='.35'%3E%3Crect x='2' y='14' width='2' height='12'/%3E%3Crect x='8' y='9' width='2' height='22'/%3E%3Crect x='14' y='16' width='2' height='8'/%3E%3Crect x='20' y='6' width='2' height='28'/%3E%3Crect x='26' y='12' width='2' height='16'/%3E%3Crect x='32' y='17' width='2' height='6'/%3E%3Crect x='38' y='10' width='2' height='20'/%3E%3Crect x='44' y='4' width='2' height='32'/%3E%3Crect x='50' y='13' width='2' height='14'/%3E%3Crect x='56' y='16' width='2' height='8'/%3E%3Crect x='62' y='8' width='2' height='24'/%3E%3Crect x='68' y='14' width='2' height='12'/%3E%3Crect x='74' y='11' width='2' height='18'/%3E%3Crect x='80' y='17' width='2' height='6'/%3E%3Crect x='86' y='7' width='2' height='26'/%3E%3Crect x='92' y='12' width='2' height='16'/%3E%3Crect x='98' y='15' width='2' height='10'/%3E%3Crect x='104' y='9' width='2' height='22'/%3E%3Crect x='110' y='5' width='2' height='30'/%3E%3Crect x='116' y='13' width='2' height='14'/%3E%3Crect x='122' y='16' width='2' height='8'/%3E%3Crect x='128' y='10' width='2' height='20'/%3E%3Crect x='134' y='14' width='2' height='12'/%3E%3Crect x='140' y='8' width='2' height='24'/%3E%3Crect x='146' y='17' width='2' height='6'/%3E%3Crect x='152' y='11' width='2' height='18'/%3E%3Crect x='158' y='6' width='2' height='28'/%3E%3Crect x='164' y='13' width='2' height='14'/%3E%3Crect x='170' y='15' width='2' height='10'/%3E%3Crect x='176' y='9' width='2' height='22'/%3E%3Crect x='182' y='16' width='2' height='8'/%3E%3Crect x='188' y='12' width='2' height='16'/%3E%3Crect x='194' y='7' width='2' height='26'/%3E%3Crect x='200' y='14' width='2' height='12'/%3E%3Crect x='206' y='10' width='2' height='20'/%3E%3Crect x='212' y='17' width='2' height='6'/%3E%3Crect x='218' y='11' width='2' height='18'/%3E%3Crect x='224' y='5' width='2' height='30'/%3E%3Crect x='230' y='13' width='2' height='14'/%3E%3Crect x='236' y='16' width='2' height='8'/%3E%3C/g%3E%3C/svg%3E") repeat-x 0 0; }
+    .hpf-wave span { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 11px; color: var(--muted); background: var(--dark); padding: 2px 6px; border-radius: 4px; font-variant-numeric: tabular-nums; }
+    .hpf-head { position: absolute; top: 0; bottom: 0; left: 50%; width: 1px; background: #FF6B00; pointer-events: none; z-index: 3; }
+    .hpf-head::before { content: ''; position: absolute; top: 0; left: -6px; border: 6px solid transparent; border-top: 8px solid #FF6B00; }
+    .hpf-tc { position: absolute; top: -26px; left: 50%; transform: translateX(-50%); font-size: 12px; font-weight: 500; color: #FF6B00; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .home-pf .pf-tabs { margin-bottom: 56px !important; }
+    @media (max-width: 768px) { .hpf-head { left: 20px; } .hpf-tc { left: 0; transform: none; } .hpf-wave span { display: none; } }
   </style>
   <!-- Section Notre histoire -->
   <style>
@@ -743,7 +758,7 @@
         <img src="/assets/notre-histoire.jpg" alt="L'équipe Maderino Production" loading="lazy" width="1099" height="1466">
       </div>
       <div class="story-text">
-        <span class="section-num">01</span>
+        <span class="section-num tc" aria-hidden="true">00:00:00:00</span>
         <h2 class="section-title">notre <em>histoire.</em></h2>
         <p>Tout est parti d'une passion&nbsp;: filmer et raconter.</p>
         <p>Ton projet, ton style&nbsp;: une vidéo qui te ressemble et qui touche les gens. On s'occupe de tout.</p>
@@ -810,7 +825,7 @@
     </div>
     <div class="services-inner">
       <div class="section-header">
-        <span class="section-num">02</span>
+        <span class="section-num tc" aria-hidden="true">00:00:12:00</span>
         <span class="section-title">Ce qu'on fait</span>
       </div>
       <div class="services-grid">
@@ -848,7 +863,7 @@
   <section class="portfolio home-pf" id="portfolio">
     <div class="portfolio-header">
       <div class="section-header">
-        <span class="section-num">03</span>
+        <span class="section-num tc" aria-hidden="true">00:00:24:00</span>
         <span class="section-title">Nos réalisations</span>
       </div>
     </div>
@@ -856,7 +871,12 @@
       <button class="pf-tab on" data-hpf="tournage" role="tab">Tournage</button>
       <button class="pf-tab" data-hpf="montage" role="tab">Montage</button>
     </div>
-    <div class="hpf-track" id="hpf-track"></div>
+    <div class="hpf-tl">
+      <div class="hpf-ruler" aria-hidden="true"></div>
+      <div class="hpf-track" id="hpf-track"></div>
+      <div class="hpf-wave" aria-hidden="true"><span>A1</span></div>
+      <div class="hpf-head" aria-hidden="true"><span class="hpf-tc">00:00:00:00</span></div>
+    </div>
     <div class="hpf-more"><a class="btn-outline" id="hpf-more" href="/portfolio/">Voir tout le portfolio →</a></div>
   </section>
 
@@ -874,7 +894,7 @@
   <section class="reviews" id="avis">
     <div class="reviews-inner">
       <div class="section-header">
-        <span class="section-num">04</span>
+        <span class="section-num tc" aria-hidden="true">00:00:36:00</span>
         <span class="section-title">ils en <em>parlent.</em></span>
       </div>
       <div class="reviews-score">
@@ -943,7 +963,7 @@
     </div>
     <div class="booking-inner">
       <div class="section-header">
-        <span class="section-num">05</span>
+        <span class="section-num tc" aria-hidden="true">00:00:48:00</span>
         <span class="section-title">On travaille ensemble&nbsp;?</span>
       </div>
       <p class="booking-sub">Réserve un appel gratuit de 15 minutes, ou écris-nous directement sur WhatsApp. Sans engagement.</p>
@@ -993,7 +1013,7 @@
     </div>
     <div class="contact-inner">
       <div class="section-header">
-        <span class="section-num">06</span>
+        <span class="section-num tc" aria-hidden="true">00:01:00:00</span>
         <span class="section-title">Contact</span>
       </div>
       <div class="contact-cards">
@@ -1426,6 +1446,19 @@
       requestAnimationFrame(loop);
     };
     requestAnimationFrame(loop);
+    /* Timeline : la règle et la piste audio suivent la rangée, la tête de lecture affiche le timecode (25 i/s, 100 px = 1 s) */
+    const ruler = document.querySelector('.hpf-ruler'), wave = document.querySelector('.hpf-wave'), tcEl = document.querySelector('.hpf-tc');
+    const p2 = n => String(n).padStart(2, '0');
+    let lastX = -1;
+    const syncTl = () => {
+      const x = Math.round(track.scrollLeft);
+      if (x !== lastX) { lastX = x;
+        ruler.style.backgroundPositionX = -x + 'px, ' + -x + 'px'; wave.style.backgroundPositionX = -x + 'px';
+        const f = Math.floor(x / 4), s = Math.floor(f / 25);
+        tcEl.textContent = '00:' + p2(Math.floor(s / 60) % 60) + ':' + p2(s % 60) + ':' + p2(f % 25); }
+      requestAnimationFrame(syncTl);
+    };
+    if (ruler && tcEl) requestAnimationFrame(syncTl);
     document.querySelectorAll('[data-hpf]').forEach(b => b.addEventListener('click', () => show(b.dataset.hpf)));
     show('tournage');
   })();
