@@ -6,7 +6,7 @@
     .map(section => {
       const tag = section.querySelector('.section-label, .section-num');
       if (!tag) return null;
-      let label = tag.textContent.replace(/^\s*\d+\s*[·.\-]?\s*/, '').trim();
+      let label = tag.classList.contains('tc') ? '' : tag.textContent.replace(/^\s*\d+\s*[·.\-]?\s*/, '').trim();
       if (!label) {
         const title = section.querySelector('.section-title, h2');
         label = title ? title.textContent.trim() : '';
