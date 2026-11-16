@@ -60,3 +60,41 @@ html[data-theme="light"] .sommaire { background: #F3EDE4 !important; }
   .contact-label { font-size: 17px !important; }
   .contact-value { font-size: 10.5px !important; letter-spacing: 0 !important; overflow-wrap: normal; text-align: center; }
 }
+
+/* ── Passe unslop : même DA, mêmes polices ─────────────────────────
+   Libellés en casse normale, plus de halos orange, cartes sombres à plat,
+   survols discrets. Les familles de polices ne changent pas. */
+
+/* Libellés : casse normale, espacement neutre */
+.nav-links a, .dropdown-menu a, .hero-tag, .stat-label, .tab-btn, .portfolio-type, .hpf-where,
+footer a { text-transform: none !important; letter-spacing: 0.01em !important; }
+.nav-links a { font-size: 13px !important; }
+.stat-label { font-size: 13px !important; }
+
+/* Bandeau du hero : simple ligne de texte, sans pastille */
+.hero-tag { border: 0 !important; background: none !important; padding: 0 !important; font-size: 13px !important; color: var(--muted) !important; }
+
+/* Plus de halos orange */
+.tab-btn.active { box-shadow: inset 0 1px 0 rgba(255,255,255,0.08) !important; }
+.lightbox-nav:hover { box-shadow: none !important; }
+.portfolio-track { scrollbar-color: rgba(255,255,255,0.15) transparent; }
+.portfolio-track::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15) !important; }
+
+/* Thème sombre : cartes à plat, bord fin, sans dégradé ni verre */
+html:not([data-theme="light"]) .type-card, html:not([data-theme="light"]) .mm-card,
+html:not([data-theme="light"]) .glass-card, html:not([data-theme="light"]) .avantage-item,
+html:not([data-theme="light"]) .service-item, html:not([data-theme="light"]) .zone-item,
+html:not([data-theme="light"]) .faq-item, html:not([data-theme="light"]) .client-card,
+html:not([data-theme="light"]) .review-card, html:not([data-theme="light"]) .tool-card {
+  background: #1a1918 !important; border: 1px solid rgba(255,255,255,0.08) !important;
+  box-shadow: none !important;
+}
+html:not([data-theme="light"]) .type-card:hover, html:not([data-theme="light"]) .mm-card:hover,
+html:not([data-theme="light"]) .avantage-item:hover, html:not([data-theme="light"]) .service-item:hover,
+html:not([data-theme="light"]) .zone-item:hover { box-shadow: none !important; }
+html:not([data-theme="light"]) .stat + .stat { border-left-color: rgba(255,255,255,0.08) !important; }
+
+/* Survols : changement de couleur, pas de saut */
+.portfolio-item:hover { transform: none !important; box-shadow: none !important; }
+.tab-btn { transition: color .15s, background-color .15s !important; }
+.btn-primary:active, .btn-booking:active, .btn-outline:active { transform: scale(0.98) !important; }
