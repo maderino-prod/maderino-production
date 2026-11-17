@@ -857,33 +857,6 @@
     </div>
   </section>
 
-  <!-- CHIFFRES : séparés montage / tournage -->
-  <style>
-    .stats-split { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px 60px; padding: 60px 24px; }
-    .stats-split .stats { padding: 0 !important; }
-    .stats-split .stat-num b { font-weight: inherit; }
-    .stats-label { text-align: center; font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
-    @media (max-width: 768px) { .stats-split { padding: 40px 16px; gap: 36px; } .stats-split .stat { min-width: 0 !important; padding: 8px 14px !important; } .stats-split .stat-num { font-size: 36px !important; } }
-  </style>
-  <div class="stats-split">
-    <div class="stats-group">
-      <div class="stats-label">Montage</div>
-      <div class="stats">
-        <div class="stat"><div class="stat-num"><span>+</span><b data-count="100">100</b></div><div class="stat-label">Vidéos réalisées</div></div>
-        <div class="stat"><div class="stat-num"><span>+</span><b data-count="10">10</b></div><div class="stat-label">Clients</div></div>
-        <div class="stat"><div class="stat-num"><b data-count="4">4</b></div><div class="stat-label">Ans d'expérience</div></div>
-      </div>
-    </div>
-    <div class="stats-group">
-      <div class="stats-label">Tournage</div>
-      <div class="stats">
-        <div class="stat"><div class="stat-num"><span>+</span><b data-count="20">20</b></div><div class="stat-label">Vidéos réalisées</div></div>
-        <div class="stat"><div class="stat-num"><span>+</span><b data-count="5">5</b></div><div class="stat-label">Clients</div></div>
-        <div class="stat"><div class="stat-num"><b data-count="1">1</b></div><div class="stat-label">An d'expérience</div></div>
-      </div>
-    </div>
-  </div>
-
   <!-- PORTFOLIO -->
   <section class="portfolio home-pf" id="portfolio">
     <div class="portfolio-header">
@@ -1098,7 +1071,7 @@
         statsObserver.disconnect();
       }
     }, { threshold: 0.3 });
-    statsObserver.observe(document.querySelector('.stats-split'));
+    if (document.querySelector('.stats-split')) statsObserver.observe(document.querySelector('.stats-split'));
     let lastScrollY = 0;
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
