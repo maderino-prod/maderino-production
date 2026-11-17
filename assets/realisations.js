@@ -214,6 +214,7 @@
       cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s; }
     .rl-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
     .cf-dots { display: flex; gap: 8px; }
+    .cf-count { min-width: 64px; text-align: center; font-size: 14px; font-weight: 600; color: rgba(28,24,20,.6); font-variant-numeric: tabular-nums; }
     .cf-dots i { width: 8px; height: 8px; border-radius: 8px; background: rgba(28,24,20,.18); transition: width .3s, background .3s; cursor: pointer; }
     .cf-dots i.on { width: 26px; background: var(--orange); }
     @media (max-width: 768px) { .cf { height: 440px; } .cf .pf-card { width: 66vw; max-width: 300px; } }
@@ -229,26 +230,27 @@
   function build(tab) {
     const list = PROJECTS.filter(p => p.tab === tab);
     // Une carte = une vidéo (pas de fiche client) : on mélange les clients à tour de rôle pour varier la roulette.
-    const per = list.map(p => p.items.map((it, i) => ({ p, it, i })).filter(x => x.it.k !== 'photo'));
+    const per = list.map(p => p.items.map((it, i) => ({ p, it, i })));
     const vids = [];
     for (let r = 0; per.some(l => l[r]); r++) per.forEach(l => l[r] && vids.push(l[r]));
     box.innerHTML = '<div class="cf">' + vids.map(({ p, it, i }, n) => {
-      const img = it.k === 'video' ? it.poster : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
-      const r = (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16;
+      const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
+      const r = it.k === 'photo' ? '' : (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16; // photo : format lu sur l'image une fois chargée
       return `<article class="pf-card cf-vid" data-pid="${p.id}" data-i="${i}" data-n="${n}" data-r="${r}">
-        <img src="${img}" alt="${p.client}" loading="lazy" draggable="false">
+        <img src="${img}" alt="${p.client}" loading="lazy" draggable="false"${it.k === 'photo' ? ' data-photo' : ''}>
         ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
         <div class="pf-card-txt"><div class="pf-card-where">${it.title}</div><div class="pf-card-name">${p.client}</div></div>
       </article>`;
     }).join('') + `<a class="pf-card cf-end" data-n="${vids.length}" data-r="0.8" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><img class="cf-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" draggable="false"><b>Voir tout<br>le portfolio <span>→</span></b></a></div>
-      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(vids.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
+      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button>${vids.length + 1 > 12 ? '<div class="cf-count"></div>' : `<div class="cf-dots">${[...Array(vids.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div>`}<button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
     const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
     let cur = 0;
+    stage.querySelectorAll('img[data-photo]').forEach(im => im.addEventListener('load', () => layout()));
     function layout() {
       const mob = innerWidth < 769;
       // Chaque carte garde le format de sa vidéo ; les voisines ne dépassent pas la hauteur de celle du centre.
       const H = parseFloat(getComputedStyle(stage).height), Wmax = stage.clientWidth * (mob ? .86 : .5);
-      const size = cards.map(c => { const r = +c.dataset.r || .8, h = Math.min(H, Wmax / r); c.style.width = h * r + 'px'; c.style.height = h + 'px'; c.style.aspectRatio = 'auto'; c.style.top = (20 + (H - h) / 2) + 'px'; return [h * r, h]; });
+      const size = cards.map(c => { const im = c.querySelector('img[data-photo]'); const r = +c.dataset.r || (im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : .8), h = Math.min(H, Wmax / r); c.style.width = h * r + 'px'; c.style.height = h + 'px'; c.style.aspectRatio = 'auto'; c.style.top = (20 + (H - h) / 2) + 'px'; return [h * r, h]; });
       const rel = i => { let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N; return d; };
       const byD = {}; cards.forEach((c, i) => byD[rel(i)] = i);
       const hC = size[byD[0]][1];
@@ -270,6 +272,7 @@
         if (v) { if (!d && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
       });
       box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
+      const cnt = box.querySelector('.cf-count'); if (cnt) cnt.textContent = (((cur % N) + N) % N + 1) + ' / ' + N; // trop de cartes pour des points : compteur
     }
     const go = i => { cur = i; layout(); };
     box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () => go(cur + +b.dataset.rl)));
