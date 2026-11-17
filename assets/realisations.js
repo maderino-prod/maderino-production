@@ -129,14 +129,57 @@
   });
   document.addEventListener('contextmenu', e => { if (e.target.closest('.pf-viewer, .pf-sheet, .pf-card')) e.preventDefault(); });
   
+  /* Carrousel horizontal : cartes portrait de même taille, défilement au doigt / à la souris, flèches. */
+  const st2 = document.createElement('style');
+  st2.textContent = `
+    .rl-wrap { position: relative; margin-right: calc(50% - 50vw); }
+    .rl-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      padding: 40px 40px 60px 40px; margin: -30px 0 -30px -40px; cursor: grab; scroll-padding-left: 40px; }
+    .rl-track::-webkit-scrollbar { display: none; }
+    .rl-track.drag { cursor: grabbing; scroll-snap-type: none; }
+    .rl-track .pf-card { flex: 0 0 clamp(260px, 26vw, 340px); aspect-ratio: 4 / 5; scroll-snap-align: start; }
+    .rl-track .pf-card:hover { transform: translateY(-6px) rotate(-.4deg); }
+    .rl-num { position: absolute; top: 16px; right: 18px; z-index: 2; color: #fff; font-size: 13px; font-weight: 600; opacity: .85; letter-spacing: .05em; }
+    .rl-end { flex: 0 0 clamp(220px, 20vw, 280px); aspect-ratio: 4 / 5; scroll-snap-align: start; border-radius: 24px;
+      border: 1.5px dashed rgba(255,107,0,.45); display: flex; flex-direction: column; justify-content: center; align-items: center;
+      gap: 14px; text-align: center; padding: 24px; text-decoration: none; color: inherit; transition: background .3s, transform .3s; }
+    .rl-end:hover { background: rgba(255,107,0,.08); transform: translateY(-6px); }
+    .rl-end b { font-size: 26px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
+    .rl-end span { width: 54px; height: 54px; border-radius: 50%; background: var(--orange); color: #fff; display: grid; place-items: center; font-size: 22px; }
+    .rl-bar { display: flex; align-items: center; gap: 16px; margin-top: 6px; }
+    .rl-prog { flex: 1; max-width: 260px; height: 3px; border-radius: 3px; background: rgba(28,24,20,.12); overflow: hidden; }
+    .rl-prog i { display: block; height: 100%; width: 0; background: var(--orange); border-radius: 3px; transition: width .15s; }
+    .rl-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.6);
+      cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s, opacity .2s; }
+    .rl-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .rl-btn:disabled { opacity: .3; pointer-events: none; }
+    @media (max-width: 768px) { .rl-track { gap: 14px; padding-right: 20px; padding-left: 20px; margin-left: -20px; scroll-padding-left: 20px; } .rl-track .pf-card { flex-basis: 74vw; } .rl-end { flex-basis: 60vw; } }
+  `;
+  document.head.appendChild(st2);
   const list = PROJECTS.filter(p => p.tab === tab);
-  box.innerHTML = '<div class="pf-grid">' + list.map((p, i) => {
+  box.innerHTML = '<div class="rl-wrap"><div class="rl-track">' + list.map((p, i) => {
     const prev = p.items.find(x => x.k === 'video');
-    return `<article class="pf-card${i === 0 ? ' big' : ''}" data-id="${p.id}">
-      <img src="${cover(p)}" alt="${p.client}" loading="lazy">
+    return `<article class="pf-card" data-id="${p.id}">
+      <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
       ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
+      <span class="rl-num">${String(i + 1).padStart(2, '0')}</span>
       <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
     </article>`;
-  }).join('') + '</div><p class="pf-more"><a href="/portfolio/' + (tab === 'montage' ? '?onglet=montage' : '') + '">Voir tout le portfolio →</a></p>';
+  }).join('') + `<a class="rl-end" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div></div>
+    <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button><div class="rl-prog"><i></i></div></div>`;
+  const track = box.querySelector('.rl-track'), bar = box.querySelector('.rl-prog i');
+  const upd = () => { const m = track.scrollWidth - track.clientWidth;
+    bar.style.width = (m > 0 ? 15 + 85 * track.scrollLeft / m : 100) + '%';
+    box.querySelector('[data-rl="-1"]').disabled = track.scrollLeft < 5;
+    box.querySelector('[data-rl="1"]').disabled = track.scrollLeft > m - 5; };
+  track.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+  box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () =>
+    track.scrollBy({ left: +b.dataset.rl * track.querySelector('.pf-card').offsetWidth * 1.05, behavior: 'smooth' })));
+  // Glisser à la souris (sur ordinateur). Un glissé ne compte pas comme un clic.
+  let x0 = 0, s0 = 0, down = false, moved = false;
+  track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = false; x0 = e.clientX; s0 = track.scrollLeft; });
+  addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - x0; if (Math.abs(dx) > 5) { moved = true; track.classList.add('drag'); } track.scrollLeft = s0 - dx; });
+  addEventListener('pointerup', () => { if (!down) return; down = false; track.classList.remove('drag'); });
+  track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
   observe();
 })();
