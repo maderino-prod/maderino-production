@@ -70,7 +70,7 @@
     const byD = {}; cards.forEach((c, i) => byD[rel(i)] = i);
     const hs = cards.map(c => parseFloat(c.style.height)), hC = hs[byD[0]];
     // Les cartes de côté ne dépassent jamais la hauteur de celle du centre (sinon une vidéo verticale écrase une horizontale)
-    const scOf = d => { const i = byD[d]; if (i === undefined) return 1; const a = Math.abs(d); return a ? Math.min(1 - Math.min(a, 3) * .06, hC * .92 / hs[i]) : 1; };
+    const scOf = d => { const i = byD[d]; if (i === undefined) return 1; const a = Math.abs(d); const wC = parseFloat(cards[byD[0]].style.width), wi = parseFloat(cards[i].style.width); return a ? Math.min(1 - Math.min(a, 3) * .06, hC * .92 / hs[i], Math.max(wC, hC * .7) * (a > 1 ? .8 : .95) / wi) : 1; };
     const xOf = d => { let x = 0; const s = Math.sign(d); for (let k = 0; k !== d; k += s) x += s * (() => { const w1 = size[byD[k]] * scOf(k), w2 = size[byD[k + s]] * scOf(k + s); return (w1 + w2) / 2 - Math.min(w1, w2) * (mob ? .45 : .3); })(); return x; }; // les voisines dépassent toujours un peu, même derrière une vidéo horizontale
     cards.forEach((c, i) => {
       const d = rel(i);
@@ -197,7 +197,7 @@
     /* pleine largeur d'écran + overflow caché : sinon les cartes de côté élargissent la page sur iPhone */
     .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; padding-top: 20px; padding-bottom: 80px; margin-bottom: -80px; box-sizing: content-box; touch-action: pan-y; user-select: none; }
     .cf .pf-card { position: absolute; top: 20px; left: 50%; width: clamp(260px, 28vw, 360px); aspect-ratio: 4 / 5;
-      transform-style: preserve-3d; transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; }
+      transform-style: preserve-3d; transition: transform .7s cubic-bezier(.22,1,.36,1), width .7s cubic-bezier(.22,1,.36,1), height .7s cubic-bezier(.22,1,.36,1), top .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; }
     .cf .pf-card:hover { transform: var(--t); }
     .cf .pf-card.side { cursor: pointer; }
     .cf .pf-card.side .pf-card-txt { opacity: .6; }
@@ -248,13 +248,23 @@
     stage.querySelectorAll('img[data-photo]').forEach(im => im.addEventListener('load', () => layout()));
     function layout() {
       const mob = innerWidth < 769;
-      // Chaque carte garde le format de sa vidéo ; les voisines ne dépassent pas la hauteur de celle du centre.
       const H = parseFloat(getComputedStyle(stage).height), Wmax = stage.clientWidth * (mob ? .86 : .5);
-      const size = cards.map(c => { const im = c.querySelector('img[data-photo]'); const r = +c.dataset.r || (im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : .8), h = Math.min(H, Wmax / r); c.style.width = h * r + 'px'; c.style.height = h + 'px'; c.style.aspectRatio = 'auto'; c.style.top = (20 + (H - h) / 2) + 'px'; return [h * r, h]; });
       const rel = i => { let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N; return d; };
       const byD = {}; cards.forEach((c, i) => byD[rel(i)] = i);
-      const hC = size[byD[0]][1];
-      const scOf = d => { const i = byD[d]; if (i === undefined) return 1; const a = Math.abs(d); return a ? Math.min(1 - Math.min(a, 3) * .05, hC * .92 / size[i][1]) : 1; };
+      // Carte du centre : son vrai format (vidéo horizontale, verticale, photo). Cartes de côté : toutes le même cadre
+      // portrait, pour une roulette régulière ; elles prennent leur vrai format en arrivant au centre.
+      const sideH = H * .86;
+      const c0 = cards[byD[0]], r0 = +c0.dataset.r || ((im => im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : .8)(c0.querySelector('img[data-photo]')));
+      const hC = Math.min(H, Wmax / r0);
+      const size = cards.map((c, i) => {
+        const im = c.querySelector('img[data-photo]');
+        const r = +c.dataset.r || (im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : .8);
+        let h = Math.min(H, Wmax / r), w = h * r;
+        if (rel(i) !== 0) { h = Math.min(sideH, hC * 1.05); w = h * .62; } // jamais plus hautes que la carte du centre
+        c.style.width = w + 'px'; c.style.height = h + 'px'; c.style.aspectRatio = 'auto'; c.style.top = (20 + (H - h) / 2) + 'px';
+        return [w, h];
+      });
+      const scOf = d => byD[d] === undefined || !d ? 1 : 1 - Math.min(Math.abs(d), 3) * .05;
       const xOf = d => { let x = 0; const sg = Math.sign(d); for (let k = 0; k !== d; k += sg) { const w1 = size[byD[k]][0] * scOf(k), w2 = size[byD[k + sg]][0] * scOf(k + sg); x += sg * ((w1 + w2) / 2 - Math.min(w1, w2) * (mob ? .45 : .35)); } return x; };
       cards.forEach((c, i) => {
         // Boucle infinie : on prend le chemin le plus court autour de la roulette.
