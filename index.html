@@ -868,16 +868,10 @@
       </div>
     </div>
     <div class="pf-tabs" role="tablist">
-      <button class="pf-tab on" data-hpf="tournage" role="tab">Tournage</button>
-      <button class="pf-tab" data-hpf="montage" role="tab">Montage</button>
+      <button class="pf-tab on" data-rl-tab="tournage" role="tab">Tournage</button>
+      <button class="pf-tab" data-rl-tab="montage" role="tab">Montage</button>
     </div>
-    <div class="hpf-tl">
-      <div class="hpf-ruler" aria-hidden="true"></div>
-      <div class="hpf-track" id="hpf-track"></div>
-      <div class="hpf-wave" aria-hidden="true"><span>A1</span></div>
-      <div class="hpf-head" aria-hidden="true"><span class="hpf-tc">00:00:00:00</span></div>
-    </div>
-    <div class="hpf-more"><a class="btn-outline" id="hpf-more" href="/portfolio/">Voir tout le portfolio →</a></div>
+    <div class="section-inner"><div id="realisations" data-tab="tournage"></div></div>
   </section>
 
   <div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
@@ -1383,85 +1377,6 @@
   <script src="/assets/theme.js?v=11"></script>
   <script src="/assets/sommaire.js?v=8"></script>
   <script src="/assets/projets.js?v=5"></script>
-  <script>
-  /* Accueil : « nos réalisations » affiche les projets du portfolio (mêmes données), un clic ouvre la fiche */
-  (() => {
-    const track = document.getElementById('hpf-track'); if (!track || !window.PROJECTS) return;
-    const touch = matchMedia('(hover: none)').matches;
-    const cover = p => { if (p.cover) return p.cover; const f = p.items.find(i => i.k === 'video') || p.items[0];
-      return f.k === 'video' ? f.poster : f.k === 'photo' ? f.src : 'https://img.youtube.com/vi/' + f.id + '/maxresdefault.jpg'; };
-    /* Les visuels horizontaux sont affichés en entier sur un fond flouté, au lieu d'être recadrés et agrandis (pixelisés) */
-    const horiz = p => { if (p.cover) return false; const f = p.items.find(i => i.k === 'video') || p.items[0]; return f.k === 'yt' || f.fmt === 'h'; };
-    let pos = 0;
-    const show = tab => {
-      document.querySelectorAll('[data-hpf]').forEach(b => b.classList.toggle('on', b.dataset.hpf === tab));
-      document.getElementById('hpf-more').href = '/portfolio/' + (tab === 'montage' ? '?onglet=montage' : '');
-      track.innerHTML = PROJECTS.filter(p => p.tab === tab).map(p => {
-        const n = p.items.length;
-        return `<a class="hpf-card${horiz(p) ? ' hz' : ''}" href="/portfolio/?onglet=${tab}&projet=${p.id}" data-id="${p.id}">
-          <img class="hpf-bg" src="${cover(p)}" alt="" aria-hidden="true" loading="lazy" draggable="false">
-          <img class="hpf-cover" src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
-          ${!touch ? '<img class="hpf-alt" alt="" draggable="false"><video muted playsinline preload="none"></video>' : ''}
-          ${p.sector === 'beaute' ? '<span class="hpf-badge">Beauté</span>' : ''}
-          ${n > 1 && !touch ? '<div class="hpf-dots">' + p.items.map(() => '<i></i>').join('') + '</div>' : ''}
-          <div class="hpf-txt"><div class="hpf-where">${p.where}</div><div class="hpf-name">${p.client}</div></div></a>`;
-      }).join('');
-      if (!touch) { track.innerHTML += track.innerHTML; track.dataset.loop = '1'; }
-      track.scrollLeft = 0; pos = 0;
-      /* Survol : fait défiler les aperçus de toutes les réalisations du client (une nouvelle toutes les secondes) */
-      if (!touch) track.querySelectorAll('.hpf-card').forEach(c => {
-        const p = PROJECTS.find(x => x.id === c.dataset.id), vid = c.querySelector('video'), alt = c.querySelector('.hpf-alt');
-        const dots = c.querySelectorAll('.hpf-dots i'); let i = 0, timer = null, on = false;
-        const step = () => {
-          if (!on) return; const it = p.items[i % p.items.length]; dots.forEach((d, k) => d.classList.toggle('on', k === i % p.items.length));
-          clearTimeout(timer); const next = ms => { timer = setTimeout(() => { i++; step(); }, ms); };
-          c.classList.toggle('hv', it.fmt === 'h' || it.k === 'yt');
-          if (it.k === 'video') {
-            vid.src = it.src; vid.currentTime = 0;
-            vid.play().then(() => { c.classList.add('playing'); c.classList.remove('alt'); }).catch(() => {});
-            next(p.items.length > 1 ? 1000 : 60000);
-          } else {
-            alt.src = it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
-            vid.pause(); c.classList.remove('playing'); c.classList.add('alt'); next(1000);
-          }
-        };
-        c.addEventListener('mouseenter', () => { on = true; step(); });
-        c.addEventListener('mouseleave', () => { on = false; clearTimeout(timer); vid.pause(); c.classList.remove('playing', 'alt', 'hv'); i = 0; dots.forEach(d => d.classList.remove('on')); });
-      });
-    };
-    /* Défilement automatique fluide et sans fin (ordinateur), en pause au survol ; la molette fait défiler la rangée */
-    let paused = false, last = 0;
-    track.addEventListener('mouseenter', () => paused = true);
-    track.addEventListener('mouseleave', () => { paused = false; pos = track.scrollLeft; });
-    track.addEventListener('wheel', e => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { e.preventDefault(); track.scrollLeft += e.deltaY; pos = track.scrollLeft; } }, { passive: false });
-    const loop = t => {
-      const dt = last ? Math.min(t - last, 50) : 0; last = t;
-      const cs = track.children, n = cs.length / 2;
-      const half = n >= 1 ? cs[n].offsetLeft - cs[0].offsetLeft : 1e9;
-      if (!touch && !paused && track.dataset.loop) {
-        pos += dt * 0.035;                      /* ≈ 35 px par seconde */
-        if (pos >= half) pos -= half;
-        track.scrollLeft = pos;
-      } else if (track.dataset.loop && track.scrollLeft >= half) { track.scrollLeft -= half; pos = track.scrollLeft; }
-      requestAnimationFrame(loop);
-    };
-    requestAnimationFrame(loop);
-    /* Timeline : la règle et la piste audio suivent la rangée, la tête de lecture affiche le timecode (25 i/s, 100 px = 1 s) */
-    const ruler = document.querySelector('.hpf-ruler'), wave = document.querySelector('.hpf-wave'), tcEl = document.querySelector('.hpf-tc');
-    const p2 = n => String(n).padStart(2, '0');
-    let lastX = -1;
-    const syncTl = () => {
-      const x = Math.round(track.scrollLeft);
-      if (x !== lastX) { lastX = x;
-        ruler.style.backgroundPositionX = -x + 'px, ' + -x + 'px'; wave.style.backgroundPositionX = -x + 'px';
-        const f = Math.floor(x / 4), s = Math.floor(f / 25);
-        tcEl.textContent = '00:' + p2(Math.floor(s / 60) % 60) + ':' + p2(s % 60) + ':' + p2(f % 25); }
-      requestAnimationFrame(syncTl);
-    };
-    if (ruler && tcEl) requestAnimationFrame(syncTl);
-    document.querySelectorAll('[data-hpf]').forEach(b => b.addEventListener('click', () => show(b.dataset.hpf)));
-    show('tournage');
-  })();
-  </script>
+  <script src="/assets/realisations.js?v=7"></script>
 </body>
 </html>

@@ -157,49 +157,60 @@
     @media (max-width: 768px) { .cf { height: 440px; } .cf .pf-card { width: 66vw; max-width: 300px; } }
   `;
   document.head.appendChild(st2);
-  const list = PROJECTS.filter(p => p.tab === tab);
-  box.innerHTML = '<div class="cf">' + list.map((p, i) => {
-    const prev = p.items.find(x => x.k === 'video');
-    return `<article class="pf-card" data-id="${p.id}" data-n="${i}">
-      <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
-      ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
-      <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
-    </article>`;
-  }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div>
-    <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(list.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
-  const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
-  let cur = 0;
-  function layout() {
-    const mob = innerWidth < 769, gap = mob ? 0.42 : 0.62;
-    cards.forEach((c, i) => {
-      // Boucle infinie : on prend le chemin le plus court autour de la roulette.
-      let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N;
-      const a = Math.abs(d), w = c.offsetWidth;
-      // Une carte qui passe d'un bout à l'autre saute sans animation (sinon elle traverse l'écran).
-      const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
-      if (jump) c.style.transition = 'none';
-      const t = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 38}deg) scale(${1 - Math.min(a, 3) * 0.04})`;
-      c.style.setProperty('--t', t); c.style.transform = t;
-      c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
-      c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.2})` : '';
-      c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
-      if (jump) { c.offsetWidth; c.style.transition = ''; }
-      const v = c.querySelector('video');
-      if (v) { if (!d && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
-    });
-    box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
-  }
-  const go = i => { cur = i; layout(); };
-  box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () => go(cur + +b.dataset.rl)));
-  box.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { let d = ((+b.dataset.go - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); }));
-  // Une carte de côté : on l'amène au centre au lieu d'ouvrir la fiche.
-  stage.addEventListener('click', e => { const c = e.target.closest('.pf-card'); if (!c) return;
-    if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) { let d = ((+c.dataset.n - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); } } }, true);
-  // Swipe / glissé
-  let x0 = null, dragged = false;
-  stage.addEventListener('pointerdown', e => { x0 = e.clientX; dragged = false; });
+  /* Swipe / glissé, clavier et redimensionnement : branchés une seule fois, ils pilotent la roulette affichée. */
+  let api = null, x0 = null, dragged = false;
   addEventListener('pointerup', e => { if (x0 === null) return; const dx = e.clientX - x0; x0 = null;
-    if (Math.abs(dx) > 40) { dragged = true; go(cur + (dx < 0 ? 1 : -1)); setTimeout(() => dragged = false, 50); } });
-  box.tabIndex = 0; box.addEventListener('keydown', e => { if (e.key === 'ArrowRight') go(cur + 1); if (e.key === 'ArrowLeft') go(cur - 1); });
-  addEventListener('resize', layout); layout();
+    if (Math.abs(dx) > 40 && api) { dragged = true; api.go(dx < 0 ? 1 : -1); setTimeout(() => dragged = false, 50); } });
+  box.tabIndex = 0; box.addEventListener('keydown', e => { if (!api) return; if (e.key === 'ArrowRight') api.go(1); if (e.key === 'ArrowLeft') api.go(-1); });
+  addEventListener('resize', () => api && api.layout());
+
+  function build(tab) {
+    const list = PROJECTS.filter(p => p.tab === tab);
+    box.innerHTML = '<div class="cf">' + list.map((p, i) => {
+      const prev = p.items.find(x => x.k === 'video');
+      return `<article class="pf-card" data-id="${p.id}" data-n="${i}">
+        <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
+        ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
+        <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
+      </article>`;
+    }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div>
+      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(list.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
+    const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
+    let cur = 0;
+    function layout() {
+      const mob = innerWidth < 769, gap = mob ? 0.42 : 0.62;
+      cards.forEach((c, i) => {
+        // Boucle infinie : on prend le chemin le plus court autour de la roulette.
+        let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N;
+        const a = Math.abs(d), w = c.offsetWidth;
+        // Une carte qui passe d'un bout à l'autre saute sans animation (sinon elle traverse l'écran).
+        const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
+        if (jump) c.style.transition = 'none';
+        const t = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 38}deg) scale(${1 - Math.min(a, 3) * 0.04})`;
+        c.style.setProperty('--t', t); c.style.transform = t;
+        c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
+        c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.2})` : '';
+        c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
+        if (jump) { c.offsetWidth; c.style.transition = ''; }
+        const v = c.querySelector('video');
+        if (v) { if (!d && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
+      });
+      box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
+    }
+    const go = i => { cur = i; layout(); };
+    box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () => go(cur + +b.dataset.rl)));
+    box.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { let d = ((+b.dataset.go - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); }));
+    // Une carte de côté : on l'amène au centre au lieu d'ouvrir la fiche.
+    stage.addEventListener('click', e => { const c = e.target.closest('.pf-card'); if (!c) return;
+      if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) { let d = ((+c.dataset.n - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); } } }, true);
+    stage.addEventListener('pointerdown', e => { x0 = e.clientX; dragged = false; });
+    api = { go: d => go(cur + d), layout };
+    layout();
+  }
+  build(tab);
+  /* Onglets Tournage / Montage (page d'accueil) : boutons avec data-rl-tab="tournage" ou "montage". */
+  document.querySelectorAll('[data-rl-tab]').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('[data-rl-tab]').forEach(x => x.classList.toggle('on', x === b));
+    build(b.dataset.rlTab);
+  }));
 })();
