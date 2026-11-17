@@ -44,9 +44,9 @@
   const shStyle = document.createElement('style');
   shStyle.textContent = `
     .sh-cf { position: relative; height: clamp(360px, 48vh, 520px); perspective: 1400px; overflow: hidden; margin: 0 -40px; touch-action: pan-y; user-select: none; }
-    .sh-card { position: absolute !important; top: 10px; left: 50%; height: calc(100% - 30px); width: auto; aspect-ratio: 4 / 5 !important;
+    .sh-card { position: absolute !important; top: 50%; left: 50%; aspect-ratio: auto !important;
       transition: transform .6s cubic-bezier(.22,1,.36,1), opacity .4s, filter .4s; }
-    .sh-card img, .sh-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .sh-card img, .sh-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: #000; }
     .sh-card video { opacity: 0; transition: opacity .4s; } .sh-card.playing video { opacity: 1; }
     .sh-card:hover img { transform: none; }
     .sh-card.side { cursor: pointer; } .sh-card.side .pf-item-play { opacity: 0; }
@@ -57,12 +57,27 @@
   function shLayout() {
     const cards = [...document.querySelectorAll('#pf-sheet .sh-card')], N = cards.length; if (!N) return;
     const mob = innerWidth < 769;
+    // Chaque carte garde le format de sa vidéo (16:9, 9:16) ou de sa photo, au lieu d'être recadrée en 4:5
+    const stage = document.querySelector('#pf-sheet .sh-cf'), H = stage.clientHeight - 30, Wmax = stage.clientWidth * (mob ? .86 : .62);
+    const size = cards.map(c => {
+      const img = c.querySelector('img');
+      const r = +c.dataset.r || (img && img.naturalWidth ? img.naturalWidth / img.naturalHeight : .8);
+      const h = Math.min(H, Wmax / r), w = h * r;
+      c.style.width = w + 'px'; c.style.height = h + 'px';
+      return w;
+    });
+    const rel = i => { let d = ((i - shCur) % N + N) % N; if (d > N / 2) d -= N; return d; };
+    const byD = {}; cards.forEach((c, i) => byD[rel(i)] = i);
+    const hs = cards.map(c => parseFloat(c.style.height)), hC = hs[byD[0]];
+    // Les cartes de côté ne dépassent jamais la hauteur de celle du centre (sinon une vidéo verticale écrase une horizontale)
+    const scOf = d => { const i = byD[d]; if (i === undefined) return 1; const a = Math.abs(d); return a ? Math.min(1 - Math.min(a, 3) * .06, hC * .92 / hs[i]) : 1; };
+    const xOf = d => { let x = 0; const s = Math.sign(d); for (let k = 0; k !== d; k += s) x += s * (() => { const w1 = size[byD[k]] * scOf(k), w2 = size[byD[k + s]] * scOf(k + s); return (w1 + w2) / 2 - Math.min(w1, w2) * (mob ? .45 : .3); })(); return x; }; // les voisines dépassent toujours un peu, même derrière une vidéo horizontale
     cards.forEach((c, i) => {
-      let d = ((i - shCur) % N + N) % N; if (d > N / 2) d -= N;
+      const d = rel(i);
       const a = Math.abs(d), w = c.offsetWidth;
       const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
       if (jump) c.style.transition = 'none';
-      c.style.transform = `translateX(calc(-50% + ${d * w * (mob ? .42 : .6)}px)) translateZ(${-a * 160}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 35}deg) scale(${1 - Math.min(a, 3) * .05})`;
+      c.style.transform = `translate(calc(-50% + ${xOf(d)}px), -50%) translateZ(${-a * 160}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 35}deg) scale(${scOf(d)})`;
       c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
       c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * .2})` : '';
       c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
@@ -72,6 +87,7 @@
     });
     document.querySelectorAll('#pf-sheet [data-shgo]').forEach((x, i) => x.classList.toggle('on', i === ((shCur % N) + N) % N));
   }
+  window.__shLayout = shLayout;
   const shGoTo = n => { const N = document.querySelectorAll('#pf-sheet .sh-card').length; let d = ((n - shCur) % N + N) % N; if (d > N / 2) d -= N; shCur += d; shLayout(); };
   document.addEventListener('click', e => {
     const t = e.target, sheet = $('pf-sheet'); if (!sheet || !sheet.contains(t)) return;
@@ -95,7 +111,8 @@
     const order = current.items.map((it, i) => [it, i]).sort((x, y) => (x[0].k === 'photo') - (y[0].k === 'photo'));
     $('pf-sheet-grid').innerHTML = '<div class="sh-cf">' + order.map(([it, i], n) => {
       const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
-      return `<div class="pf-item sh-card${it.k === 'photo' ? ' photo' : ''}" data-i="${i}" data-n="${n}"><img src="${img}" alt="${current.client}" draggable="false">
+      const r = it.k === 'photo' ? '' : (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16;
+      return `<div class="pf-item sh-card${it.k === 'photo' ? ' photo' : ''}" data-i="${i}" data-n="${n}" data-r="${r}"><img src="${img}" alt="${current.client}" draggable="false" onload="this.closest('.sh-card') && window.__shLayout && window.__shLayout()">
         ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
         ${it.k !== 'photo' ? '<div class="pf-item-play"><span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></span></div><div class="pf-item-title">' + it.title + '</div>' : ''}</div>`;
     }).join('') + '</div>' + (order.length > 1 ? `<div class="sh-bar"><button class="rl-btn" data-sh="-1" aria-label="Précédent">←</button><div class="cf-dots">${order.map((_, n) => `<i data-shgo="${n}"></i>`).join('')}</div><button class="rl-btn" data-sh="1" aria-label="Suivant">→</button></div>` : '');
