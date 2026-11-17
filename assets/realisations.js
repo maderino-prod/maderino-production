@@ -279,7 +279,9 @@
         c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
         if (jump) { c.offsetWidth; c.style.transition = ''; }
         const v = c.querySelector('video');
-        if (v) { if (!d && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
+        // Aperçu en boucle sur toutes les cartes visibles (centre et côtés), pas seulement celle du centre
+        const visible = a <= (innerWidth < 769 ? 1 : 2);
+        if (v) { if (visible && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
       });
       box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
       const cnt = box.querySelector('.cf-count'); if (cnt) cnt.textContent = (((cur % N) + N) % N + 1) + ' / ' + N; // trop de cartes pour des points : compteur
