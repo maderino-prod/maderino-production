@@ -228,27 +228,39 @@
 
   function build(tab) {
     const list = PROJECTS.filter(p => p.tab === tab);
-    box.innerHTML = '<div class="cf">' + list.map((p, i) => {
-      const prev = p.items.find(x => x.k === 'video');
-      return `<article class="pf-card" data-id="${p.id}" data-n="${i}">
-        <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
-        ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
-        <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
+    // Une carte = une vidéo (pas de fiche client) : on mélange les clients à tour de rôle pour varier la roulette.
+    const per = list.map(p => p.items.map((it, i) => ({ p, it, i })).filter(x => x.it.k !== 'photo'));
+    const vids = [];
+    for (let r = 0; per.some(l => l[r]); r++) per.forEach(l => l[r] && vids.push(l[r]));
+    box.innerHTML = '<div class="cf">' + vids.map(({ p, it, i }, n) => {
+      const img = it.k === 'video' ? it.poster : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
+      const r = (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16;
+      return `<article class="pf-card cf-vid" data-pid="${p.id}" data-i="${i}" data-n="${n}" data-r="${r}">
+        <img src="${img}" alt="${p.client}" loading="lazy" draggable="false">
+        ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
+        <div class="pf-card-txt"><div class="pf-card-where">${it.title}</div><div class="pf-card-name">${p.client}</div></div>
       </article>`;
-    }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><img class="cf-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" draggable="false"><b>Voir tout<br>le portfolio <span>→</span></b></a></div>
-      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(list.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
+    }).join('') + `<a class="pf-card cf-end" data-n="${vids.length}" data-r="0.8" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><img class="cf-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" draggable="false"><b>Voir tout<br>le portfolio <span>→</span></b></a></div>
+      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(vids.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
     const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
     let cur = 0;
     function layout() {
-      const mob = innerWidth < 769, gap = mob ? 0.42 : 0.62;
+      const mob = innerWidth < 769;
+      // Chaque carte garde le format de sa vidéo ; les voisines ne dépassent pas la hauteur de celle du centre.
+      const H = parseFloat(getComputedStyle(stage).height), Wmax = stage.clientWidth * (mob ? .86 : .5);
+      const size = cards.map(c => { const r = +c.dataset.r || .8, h = Math.min(H, Wmax / r); c.style.width = h * r + 'px'; c.style.height = h + 'px'; c.style.aspectRatio = 'auto'; c.style.top = (20 + (H - h) / 2) + 'px'; return [h * r, h]; });
+      const rel = i => { let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N; return d; };
+      const byD = {}; cards.forEach((c, i) => byD[rel(i)] = i);
+      const hC = size[byD[0]][1];
+      const scOf = d => { const i = byD[d]; if (i === undefined) return 1; const a = Math.abs(d); return a ? Math.min(1 - Math.min(a, 3) * .05, hC * .92 / size[i][1]) : 1; };
+      const xOf = d => { let x = 0; const sg = Math.sign(d); for (let k = 0; k !== d; k += sg) { const w1 = size[byD[k]][0] * scOf(k), w2 = size[byD[k + sg]][0] * scOf(k + sg); x += sg * ((w1 + w2) / 2 - Math.min(w1, w2) * (mob ? .45 : .35)); } return x; };
       cards.forEach((c, i) => {
         // Boucle infinie : on prend le chemin le plus court autour de la roulette.
-        let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N;
-        const a = Math.abs(d), w = c.offsetWidth;
+        const d = rel(i), a = Math.abs(d);
         // Une carte qui passe d'un bout à l'autre saute sans animation (sinon elle traverse l'écran).
         const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
         if (jump) c.style.transition = 'none';
-        const t = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 38}deg) scale(${1 - Math.min(a, 3) * 0.04})`;
+        const t = `translateX(calc(-50% + ${xOf(d)}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 38}deg) scale(${scOf(d)})`;
         c.style.setProperty('--t', t); c.style.transform = t;
         c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
         c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.2})` : '';
@@ -264,7 +276,8 @@
     box.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { let d = ((+b.dataset.go - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); }));
     // Une carte de côté : on l'amène au centre au lieu d'ouvrir la fiche.
     stage.addEventListener('click', e => { const c = e.target.closest('.pf-card'); if (!c) return;
-      if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) { let d = ((+c.dataset.n - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); } } }, true);
+      if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) { let d = ((+c.dataset.n - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); } }
+      else if (c.dataset.pid) { e.stopPropagation(); const pv = c.querySelector('video'); if (pv) pv.pause(); current = PROJECTS.find(p => p.id === c.dataset.pid); openViewer(+c.dataset.i); } }, true);
     stage.addEventListener('pointerdown', e => { x0 = e.clientX; dragged = false; });
     api = { go: d => go(cur + d), layout };
     layout();
