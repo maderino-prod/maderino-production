@@ -195,7 +195,7 @@
   const st2 = document.createElement('style');
   st2.textContent = `
     /* pleine largeur d'écran + overflow caché : sinon les cartes de côté élargissent la page sur iPhone */
-    .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; padding-top: 20px; padding-bottom: 80px; margin-bottom: -80px; box-sizing: content-box; touch-action: pan-y; user-select: none; }
+    .cf { position: relative; height: clamp(440px, min(48vw, 78vh), 820px); /* plus grande sur grand écran, sans dépasser la hauteur de l'écran */ perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; padding-top: 20px; padding-bottom: 80px; margin-bottom: -80px; box-sizing: content-box; touch-action: pan-y; user-select: none; }
     .cf .pf-card { position: absolute; top: 20px; left: 50%; width: clamp(260px, 28vw, 360px); aspect-ratio: 4 / 5;
       transform-style: preserve-3d; transition: transform .7s cubic-bezier(.22,1,.36,1), width .7s cubic-bezier(.22,1,.36,1), height .7s cubic-bezier(.22,1,.36,1), top .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; }
     .cf .pf-card:hover { transform: var(--t); }
@@ -248,7 +248,7 @@
     stage.querySelectorAll('img[data-photo]').forEach(im => im.addEventListener('load', () => layout()));
     function layout() {
       const mob = innerWidth < 769;
-      const H = parseFloat(getComputedStyle(stage).height), Wmax = stage.clientWidth * (mob ? .86 : .5);
+      const H = parseFloat(getComputedStyle(stage).height), Wmax = stage.clientWidth * (mob ? .86 : .6);
       const rel = i => { let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N; return d; };
       const byD = {}; cards.forEach((c, i) => byD[rel(i)] = i);
       // Carte du centre : son vrai format (vidéo horizontale, verticale, photo). Cartes de côté : toutes le même cadre
