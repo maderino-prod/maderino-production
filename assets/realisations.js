@@ -53,6 +53,17 @@
     .sh-bar { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 4px; }
     @media (max-width: 768px) { .sh-cf { height: 420px; margin: 0 -18px; } }
   `;
+  shStyle.textContent += `
+    .pf-note { position: fixed; left: 24px; bottom: 24px; z-index: 20; width: min(360px, calc(100vw - 48px)); background: #FAF6F0; color: #1C1814;
+      border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 20px 50px rgba(0,0,0,.35); display: none; animation: noteIn .45s cubic-bezier(.22,1,.36,1); }
+    .pf-note.on { display: block; }
+    @keyframes noteIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+    .pf-note-x { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; border: 0; background: rgba(28,24,20,.07); cursor: pointer; font-size: 12px; color: #1C1814; }
+    .pf-note-k { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #FF6B00; margin-bottom: 4px; }
+    .pf-note-t { font-size: 18px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; padding-right: 26px; }
+    .pf-note-p { font-size: 14px; line-height: 1.55; color: rgba(28,24,20,.75); margin: 0; }
+    @media (max-width: 768px) { .pf-note { left: 12px; right: 12px; bottom: 84px; width: auto; padding: 14px 16px 16px; } .pf-note-t { font-size: 16px; } .pf-note-p { font-size: 13px; } }
+`;
   document.head.appendChild(shStyle);
   function shLayout() {
     const cards = [...document.querySelectorAll('#pf-sheet .sh-card')], N = cards.length; if (!N) return;
@@ -128,6 +139,12 @@
   function show(i) {
     const items = current.items; vi = (i + items.length) % items.length; const it = items[vi];
     const st = $('pf-stage');
+    // Petit encart « l'histoire du projet » si la vidéo a un texte (champ "story" dans projets.js)
+    let note = $('pf-note');
+    if (!note) { $('pf-viewer').insertAdjacentHTML('beforeend', '<div class="pf-note" id="pf-note"><button class="pf-note-x" aria-label="Fermer">✕</button><div class="pf-note-k"></div><div class="pf-note-t"></div><p class="pf-note-p"></p></div>'); note = $('pf-note');
+      note.querySelector('.pf-note-x').addEventListener('click', e => { e.stopPropagation(); note.classList.remove('on'); }); note.addEventListener('click', e => e.stopPropagation()); }
+    note.classList.toggle('on', !!it.story);
+    if (it.story) { note.querySelector('.pf-note-k').textContent = current.client; note.querySelector('.pf-note-t').textContent = it.title; note.querySelector('.pf-note-p').textContent = it.story; }
     if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
     else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
     else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
