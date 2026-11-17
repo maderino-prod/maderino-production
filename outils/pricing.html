@@ -446,7 +446,7 @@
     { nom: 'Offre 3', sous: '10 vidéos', prix: 1390, videos: 10, tournage: 8, nbTournages: 2,
       inclus: ['10 vidéos RS courtes', '2 × ½ journée de tournage', 'Call brief 30 min'] },
   ];
-  const H_CALL = 0.5, H_MONTAGE = 2, H_DEPLACEMENT = 2;
+  const H_CALL = 0.5, H_MONTAGE = 2, H_DEPLACEMENT = 1; // 1 h de route aller-retour dans Lyon (hors zone : voir « Déplacement hors zone »)
   const eur = v => Math.round(v).toLocaleString('fr-FR') + ' €';
 
   function renderOffres(t) {
