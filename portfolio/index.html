@@ -374,7 +374,13 @@
 
   <nav>
     <a href="/" class="nav-logo"><img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777468778/Logo-_-Texte-fond-noir_voyuah.png" alt="Maderino Production"></a>
-    <ul class="nav-links"><li><a href="/">Accueil</a></li><li><a href="/montage-video-lyon/">Montage</a></li><li><a href="/tournage-video-lyon/">Tournage</a></li><li><a href="/portfolio/">Portfolio</a></li><li><a href="/#booking">Contact</a></li></ul>
+    <a href="/" class="nav-back" id="nav-back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Retour</a>
+    <script>
+    /* « Retour » : revient à la page d'où l'on vient (accueil, Montage, Tournage…) si elle est sur le site, sinon à l'accueil. */
+    document.getElementById('nav-back').addEventListener('click', e => {
+      try { if (document.referrer && new URL(document.referrer).origin === location.origin && history.length > 1) { e.preventDefault(); history.back(); } } catch (_) {}
+    });
+    </script>
   </nav>
 
   <div class="page-header">

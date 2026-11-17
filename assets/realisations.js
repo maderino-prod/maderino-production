@@ -116,7 +116,7 @@
 
   document.addEventListener('click', e => {
     const t = e.target;
-    if (t.closest('.pf-card')) { openSheet(t.closest('.pf-card').dataset.id); return; }
+    if (t.closest('.pf-card[data-id]')) { openSheet(t.closest('.pf-card').dataset.id); return; }
     if (t.closest('.pf-item')) { openViewer(+t.closest('.pf-item').dataset.i); return; }
     if (t.closest('[data-vclose]') || t === $('pf-viewer')) { closeViewer(); return; }
     if (t.closest('.pf-nav')) { show(vi + +t.closest('.pf-nav').dataset.dir); return; }
