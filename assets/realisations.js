@@ -163,13 +163,11 @@
     return `<article class="pf-card" data-id="${p.id}" data-n="${i}">
       <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
       ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
-      <span class="rl-num">${String(i + 1).padStart(2, '0')}</span>
       <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
     </article>`;
   }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div>
     <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(list.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
   const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
-  const st3 = document.createElement('style'); st3.textContent = `.rl-num { position: absolute; top: 16px; right: 18px; z-index: 2; color: #fff; font-size: 13px; font-weight: 600; opacity: .85; }`; document.head.appendChild(st3);
   let cur = 0;
   function layout() {
     const mob = innerWidth < 769, gap = mob ? 0.42 : 0.62;
