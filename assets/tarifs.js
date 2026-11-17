@@ -21,9 +21,9 @@
         const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
         if (jump) c.style.transition = 'none';
         const sc = mob ? 1 - Math.min(a, 2) * 0.14 : 1 - Math.min(a, 3) * 0.08;
-        c.style.transform = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 220}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 42}deg) scale(${sc})`;
+        c.style.transform = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 260}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 18}deg) scale(${sc})`;
         c.style.zIndex = 100 - a; c.style.opacity = a > 1 ? 0 : a ? (mob ? .6 : .9) : 1; // une carte de chaque côté : symétrique avec 4 formules c.style.pointerEvents = a > 2 ? 'none' : '';
-        c.style.filter = a ? 'brightness(.9)' : '';
+        c.style.filter = a ? 'brightness(.72) saturate(.8)' : ''; // côtés assombris, peu inclinés : le texte n'est plus écrasé
         c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
         if (jump) { c.offsetWidth; c.style.transition = ''; }
       });
