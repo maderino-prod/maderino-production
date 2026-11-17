@@ -281,7 +281,7 @@
         const v = c.querySelector('video');
         // Aperçu en boucle sur toutes les cartes visibles (centre et côtés), pas seulement celle du centre
         const visible = a <= (innerWidth < 769 ? 1 : 2);
-        if (v) { if (visible && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
+        if (v) { if (visible) { v.muted = true; if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
       });
       box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
       const cnt = box.querySelector('.cf-count'); if (cnt) cnt.textContent = (((cur % N) + N) % N + 1) + ' / ' + N; // trop de cartes pour des points : compteur
@@ -298,6 +298,11 @@
     layout();
   }
   build(tab);
+  // Si le navigateur a bloqué la lecture automatique (économie d'énergie…), on relance les aperçus au premier geste.
+  const relance = () => api && api.layout();
+  ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach(ev => addEventListener(ev, relance, { once: true, passive: true }));
+  // Les aperçus démarrent quand la roulette arrive à l'écran
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => e.isIntersecting && relance())).observe(box);
   /* Onglets Tournage / Montage (page d'accueil) : boutons avec data-rl-tab="tournage" ou "montage". */
   document.querySelectorAll('[data-rl-tab]').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('[data-rl-tab]').forEach(x => x.classList.toggle('on', x === b));
