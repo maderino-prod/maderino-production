@@ -300,7 +300,11 @@
   build(tab);
   // Si le navigateur a bloqué la lecture automatique (économie d'énergie…), on relance les aperçus au premier geste.
   const relance = () => api && api.layout();
-  ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach(ev => addEventListener(ev, relance, { once: true, passive: true }));
+  // (pas seulement une fois : sur iPhone en mode économie d'énergie, chaque geste peut débloquer la lecture)
+  let lastTry = 0;
+  const relanceSiBloque = () => { const now = Date.now(); if (now - lastTry < 700) return; lastTry = now;
+    if ([...box.querySelectorAll('.pf-card:not(.playing) video')].some(v => v.closest('.pf-card').style.opacity !== '0')) relance(); };
+  ['touchstart', 'pointerdown', 'scroll', 'keydown'].forEach(ev => addEventListener(ev, relanceSiBloque, { passive: true }));
   // Les aperçus démarrent quand la roulette arrive à l'écran
   if ('IntersectionObserver' in window) new IntersectionObserver(es => es.forEach(e => e.isIntersecting && relance())).observe(box);
   /* Onglets Tournage / Montage (page d'accueil) : boutons avec data-rl-tab="tournage" ou "montage". */
