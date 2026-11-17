@@ -129,57 +129,72 @@
   });
   document.addEventListener('contextmenu', e => { if (e.target.closest('.pf-viewer, .pf-sheet, .pf-card')) e.preventDefault(); });
   
-  /* Carrousel horizontal : cartes portrait de même taille, défilement au doigt / à la souris, flèches. */
+  /* Carrousel 3D « roulette » : la carte du centre devant, les autres tournées sur les côtés.
+     Flèches, swipe au doigt, glissé à la souris, clic sur une carte de côté pour l'amener au centre. */
   const st2 = document.createElement('style');
   st2.textContent = `
-    .rl-wrap { position: relative; margin-right: calc(50% - 50vw); }
-    .rl-track { display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
-      padding: 40px 40px 60px 40px; margin: -30px 0 -30px -40px; cursor: grab; scroll-padding-left: 40px; }
-    .rl-track::-webkit-scrollbar { display: none; }
-    .rl-track.drag { cursor: grabbing; scroll-snap-type: none; }
-    .rl-track .pf-card { flex: 0 0 clamp(260px, 26vw, 340px); aspect-ratio: 4 / 5; scroll-snap-align: start; }
-    .rl-track .pf-card:hover { transform: translateY(-6px) rotate(-.4deg); }
-    .rl-num { position: absolute; top: 16px; right: 18px; z-index: 2; color: #fff; font-size: 13px; font-weight: 600; opacity: .85; letter-spacing: .05em; }
-    .rl-end { flex: 0 0 clamp(220px, 20vw, 280px); aspect-ratio: 4 / 5; scroll-snap-align: start; border-radius: 24px;
-      border: 1.5px dashed rgba(255,107,0,.45); display: flex; flex-direction: column; justify-content: center; align-items: center;
-      gap: 14px; text-align: center; padding: 24px; text-decoration: none; color: inherit; transition: background .3s, transform .3s; }
-    .rl-end:hover { background: rgba(255,107,0,.08); transform: translateY(-6px); }
-    .rl-end b { font-size: 26px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
-    .rl-end span { width: 54px; height: 54px; border-radius: 50%; background: var(--orange); color: #fff; display: grid; place-items: center; font-size: 22px; }
-    .rl-bar { display: flex; align-items: center; gap: 16px; margin-top: 6px; }
-    .rl-prog { flex: 1; max-width: 260px; height: 3px; border-radius: 3px; background: rgba(28,24,20,.12); overflow: hidden; }
-    .rl-prog i { display: block; height: 100%; width: 0; background: var(--orange); border-radius: 3px; transition: width .15s; }
-    .rl-btn { width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.6);
-      cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s, opacity .2s; }
+    .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; margin: 0 auto; touch-action: pan-y; user-select: none; }
+    .cf .pf-card { position: absolute; top: 0; left: 50%; width: clamp(260px, 28vw, 360px); aspect-ratio: 4 / 5;
+      transform-style: preserve-3d; transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; }
+    .cf .pf-card:hover { transform: var(--t); }
+    .cf .pf-card.side { cursor: pointer; }
+    .cf .pf-card.side .pf-card-txt { opacity: .6; }
+    .cf .pf-card.center { box-shadow: 0 40px 80px rgba(60,40,20,.35); }
+    .cf .pf-card.center::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 2px solid rgba(255,107,0,.0); z-index: 3; pointer-events: none; }
+    .cf-end { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; text-align: center; padding: 24px;
+      background: #1C1814 !important; color: #fff; text-decoration: none; }
+    .cf-end::after { display: none; }
+    .cf-end b { font-size: 28px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
+    .cf-end span { width: 60px; height: 60px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font-size: 24px; }
+    .rl-bar { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 26px; }
+    .rl-btn { width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.6);
+      cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s; }
     .rl-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
-    .rl-btn:disabled { opacity: .3; pointer-events: none; }
-    @media (max-width: 768px) { .rl-track { gap: 14px; padding-right: 20px; padding-left: 20px; margin-left: -20px; scroll-padding-left: 20px; } .rl-track .pf-card { flex-basis: 74vw; } .rl-end { flex-basis: 60vw; } }
+    .cf-dots { display: flex; gap: 8px; }
+    .cf-dots i { width: 8px; height: 8px; border-radius: 8px; background: rgba(28,24,20,.18); transition: width .3s, background .3s; cursor: pointer; }
+    .cf-dots i.on { width: 26px; background: var(--orange); }
+    @media (max-width: 768px) { .cf { height: 440px; } .cf .pf-card { width: 66vw; max-width: 300px; } }
   `;
   document.head.appendChild(st2);
   const list = PROJECTS.filter(p => p.tab === tab);
-  box.innerHTML = '<div class="rl-wrap"><div class="rl-track">' + list.map((p, i) => {
+  box.innerHTML = '<div class="cf">' + list.map((p, i) => {
     const prev = p.items.find(x => x.k === 'video');
-    return `<article class="pf-card" data-id="${p.id}">
+    return `<article class="pf-card" data-id="${p.id}" data-n="${i}">
       <img src="${cover(p)}" alt="${p.client}" loading="lazy" draggable="false">
       ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
       <span class="rl-num">${String(i + 1).padStart(2, '0')}</span>
       <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
     </article>`;
-  }).join('') + `<a class="rl-end" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div></div>
-    <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button><div class="rl-prog"><i></i></div></div>`;
-  const track = box.querySelector('.rl-track'), bar = box.querySelector('.rl-prog i');
-  const upd = () => { const m = track.scrollWidth - track.clientWidth;
-    bar.style.width = (m > 0 ? 15 + 85 * track.scrollLeft / m : 100) + '%';
-    box.querySelector('[data-rl="-1"]').disabled = track.scrollLeft < 5;
-    box.querySelector('[data-rl="1"]').disabled = track.scrollLeft > m - 5; };
-  track.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
-  box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () =>
-    track.scrollBy({ left: +b.dataset.rl * track.querySelector('.pf-card').offsetWidth * 1.05, behavior: 'smooth' })));
-  // Glisser à la souris (sur ordinateur). Un glissé ne compte pas comme un clic.
-  let x0 = 0, s0 = 0, down = false, moved = false;
-  track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = false; x0 = e.clientX; s0 = track.scrollLeft; });
-  addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - x0; if (Math.abs(dx) > 5) { moved = true; track.classList.add('drag'); } track.scrollLeft = s0 - dx; });
-  addEventListener('pointerup', () => { if (!down) return; down = false; track.classList.remove('drag'); });
-  track.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
-  observe();
+  }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div>
+    <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(list.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
+  const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
+  const st3 = document.createElement('style'); st3.textContent = `.rl-num { position: absolute; top: 16px; right: 18px; z-index: 2; color: #fff; font-size: 13px; font-weight: 600; opacity: .85; }`; document.head.appendChild(st3);
+  let cur = 0;
+  function layout() {
+    const mob = innerWidth < 769, gap = mob ? 0.42 : 0.62;
+    cards.forEach((c, i) => {
+      const d = i - cur, a = Math.abs(d), w = c.offsetWidth;
+      const t = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 38}deg) scale(${1 - Math.min(a, 3) * 0.04})`;
+      c.style.setProperty('--t', t); c.style.transform = t;
+      c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
+      c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.2})` : '';
+      c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
+      const v = c.querySelector('video');
+      if (v) { if (!d && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
+    });
+    box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === cur));
+  }
+  const go = i => { cur = Math.max(0, Math.min(N - 1, i)); layout(); };
+  box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () => go(cur + +b.dataset.rl)));
+  box.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+  // Une carte de côté : on l'amène au centre au lieu d'ouvrir la fiche.
+  stage.addEventListener('click', e => { const c = e.target.closest('.pf-card'); if (!c) return;
+    if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) go(+c.dataset.n); } }, true);
+  // Swipe / glissé
+  let x0 = null, dragged = false;
+  stage.addEventListener('pointerdown', e => { x0 = e.clientX; dragged = false; });
+  addEventListener('pointerup', e => { if (x0 === null) return; const dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 40) { dragged = true; go(cur + (dx < 0 ? 1 : -1)); setTimeout(() => dragged = false, 50); } });
+  box.tabIndex = 0; box.addEventListener('keydown', e => { if (e.key === 'ArrowRight') go(cur + 1); if (e.key === 'ArrowLeft') go(cur - 1); });
+  addEventListener('resize', layout); layout();
 })();
