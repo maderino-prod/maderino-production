@@ -1,6 +1,8 @@
 /* Réalisations sur les pages d'offre (Montage / Tournage).
    Mettre <div id="realisations" data-tab="montage"></div> dans la page, puis charger projets.js et ce fichier.
    Les projets viennent de /assets/projets.js : ajouter un projet là-bas le fait apparaître ici automatiquement. */
+/* Aperçus de la roulette : version légère de chaque vidéo (même nom + .p.mp4 : 6 s, 480 p, sans son, ~300 Ko).
+   La vidéo complète (1080 p) ne se charge que quand on l'ouvre en grand. Toute nouvelle vidéo doit avoir son .p.mp4. */
 (function () {
   const box = document.getElementById('realisations'); if (!box) return;
   const tab = box.dataset.tab;
@@ -124,7 +126,7 @@
       const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
       const r = it.k === 'photo' ? '' : (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16;
       return `<div class="pf-item sh-card${it.k === 'photo' ? ' photo' : ''}" data-i="${i}" data-n="${n}" data-r="${r}"><img src="${img}" alt="${current.client}" draggable="false" onload="this.closest('.sh-card') && window.__shLayout && window.__shLayout()">
-        ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
+        ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src.replace(/\.mp4$/, '.p.mp4')}"></video>` : ''}
         ${it.k !== 'photo' ? '<div class="pf-item-play"><span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></span></div><div class="pf-item-title">' + it.title + '</div>' : ''}</div>`;
     }).join('') + '</div>' + (order.length > 1 ? `<div class="sh-bar"><button class="rl-btn" data-sh="-1" aria-label="Précédent">←</button><div class="cf-dots">${order.map((_, n) => `<i data-shgo="${n}"></i>`).join('')}</div><button class="rl-btn" data-sh="1" aria-label="Suivant">→</button></div>` : '');
     shCur = 0;
@@ -271,7 +273,7 @@
       const r = it.k === 'photo' ? '' : (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16; // photo : format lu sur l'image une fois chargée
       return `<article class="pf-card cf-vid" data-pid="${p.id}" data-i="${i}" data-n="${n}" data-r="${r}">
         <img src="${img}" alt="${p.client}" loading="lazy" draggable="false"${it.k === 'photo' ? ' data-photo' : ''}>
-        ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
+        ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src.replace(/\.mp4$/, '.p.mp4')}"></video>` : ''}
         <div class="pf-card-txt"><div class="pf-card-where">${it.title}</div><div class="pf-card-name">${p.client}</div></div>
       </article>`;
     }).join('') + `</div>
