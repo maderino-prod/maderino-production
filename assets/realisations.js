@@ -265,8 +265,8 @@
         ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
         <div class="pf-card-txt"><div class="pf-card-where">${it.title}</div><div class="pf-card-name">${p.client}</div></div>
       </article>`;
-    }).join('') + `<a class="pf-card cf-end" data-n="${vids.length}" data-r="0.8" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><img class="cf-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" draggable="false"><b>Voir tout<br>le portfolio <span>→</span></b></a></div>
-      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button>${vids.length + 1 > 12 ? '<div class="cf-gap"></div>' : `<div class="cf-dots">${[...Array(vids.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div>`}<button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
+    }).join('') + `</div>
+      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button>${vids.length > 12 ? '<div class="cf-gap"></div>' : `<div class="cf-dots">${[...Array(vids.length)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div>`}<button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
     const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
     let cur = 0;
     stage.querySelectorAll('img[data-photo]').forEach(im => im.addEventListener('load', () => layout()));
