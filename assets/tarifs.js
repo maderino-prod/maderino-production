@@ -11,16 +11,19 @@
     let cur = 0;
     const short = i => { let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N; return d; };
     function layout() {
-      const mob = innerWidth < 769, gap = mob ? 0.62 : 0.68;
-      grid.style.height = Math.max(...cards.map(c => c.offsetHeight)) + 'px';
+      const mob = innerWidth < 769, gap = mob ? 0.62 : 0.58;
+      cards.forEach(c => c.style.minHeight = '');
+      const H = Math.max(...cards.map(c => c.offsetHeight));
+      cards.forEach(c => c.style.minHeight = H + 'px'); // toutes les cartes à la même hauteur : vrai effet de cartes superposées
+      grid.style.height = H + 'px';
       cards.forEach((c, i) => {
         const d = short(i), a = Math.abs(d), w = c.offsetWidth;
         const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
         if (jump) c.style.transition = 'none';
-        const sc = mob ? 1 - Math.min(a, 2) * 0.14 : 1 - Math.min(a, 3) * 0.04;
-        c.style.transform = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 35}deg) scale(${sc})`;
-        c.style.zIndex = 100 - a; c.style.opacity = a > 2 || (mob && a > 1) ? 0 : a ? (mob ? .55 : .85) : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
-        c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.08})` : '';
+        const sc = mob ? 1 - Math.min(a, 2) * 0.14 : 1 - Math.min(a, 3) * 0.08;
+        c.style.transform = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 220}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 42}deg) scale(${sc})`;
+        c.style.zIndex = 100 - a; c.style.opacity = a > 1 ? 0 : a ? (mob ? .6 : .9) : 1; // une carte de chaque côté : symétrique avec 4 formules c.style.pointerEvents = a > 2 ? 'none' : '';
+        c.style.filter = a ? 'brightness(.9)' : '';
         c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
         if (jump) { c.offsetWidth; c.style.transition = ''; }
       });

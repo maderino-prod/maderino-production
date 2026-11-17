@@ -488,3 +488,9 @@ html[data-theme="light"] body::before {
 
 /* Téléphone : pas de zoom au double-tap (le pincement à deux doigts reste possible) */
 html { touch-action: manipulation; }
+
+/* Grand écran : le contenu s'étale davantage (au lieu de rester bloqué à 1100 px au centre) */
+@media (min-width: 1300px) {
+  .section-inner, .services-inner, .portfolio-header, .booking-inner, .contact-inner, .story-inner,
+  .types-track, .portfolio-inner, .pf-inner { max-width: min(1440px, 88vw) !important; }
+}

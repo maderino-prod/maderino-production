@@ -24,7 +24,7 @@
 .tf { position: relative; perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden;
   padding: 24px 0 30px; touch-action: pan-y; user-select: none; }
 .tf .tarifs { display: block; position: relative; }
-.tf .tarif { position: absolute; top: 0; left: 50%; width: clamp(260px, 26vw, 320px); box-sizing: border-box;
+.tf .tarif { position: absolute; top: 0; left: 50%; width: clamp(280px, 24vw, 380px); box-sizing: border-box;
   transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; background: #FBF8F3; }
 .tf .tarif.mis-en-avant { background: #FBEBDD; }
 .tf .tarif.side { cursor: pointer; }
