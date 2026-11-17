@@ -173,7 +173,7 @@
     box.addEventListener('mousemove', wake); box.addEventListener('touchstart', wake, { passive: true }); wake();
   }
   function openViewer(i) { $('pf-viewer').classList.add('open'); show(i); }
-  function closeViewer() { $('pf-stage').innerHTML = ''; $('pf-viewer').classList.remove('open'); }
+  function closeViewer() { $('pf-stage').innerHTML = ''; $('pf-viewer').classList.remove('open'); window.__rlRelance && window.__rlRelance(); /* les aperçus de la roulette repartent */ }
 
   document.addEventListener('click', e => {
     const t = e.target;
@@ -300,6 +300,7 @@
   build(tab);
   // Si le navigateur a bloqué la lecture automatique (économie d'énergie…), on relance les aperçus au premier geste.
   const relance = () => api && api.layout();
+  window.__rlRelance = () => { box.querySelectorAll('.pf-card video').forEach(v => v.pause()); relance(); };
   // (pas seulement une fois : sur iPhone en mode économie d'énergie, chaque geste peut débloquer la lecture)
   let lastTry = 0;
   const relanceSiBloque = () => { const now = Date.now(); if (now - lastTry < 700) return; lastTry = now;
