@@ -39,28 +39,72 @@
 
   /* Fiche projet */
   let current = null;
+  /* Roulette de la fiche client */
+  let shCur = 0, shX = null, shDrag = false;
+  const shStyle = document.createElement('style');
+  shStyle.textContent = `
+    .sh-cf { position: relative; height: clamp(360px, 48vh, 520px); perspective: 1400px; overflow: hidden; margin: 0 -40px; touch-action: pan-y; user-select: none; }
+    .sh-card { position: absolute !important; top: 10px; left: 50%; height: calc(100% - 30px); width: auto; aspect-ratio: 4 / 5 !important;
+      transition: transform .6s cubic-bezier(.22,1,.36,1), opacity .4s, filter .4s; }
+    .sh-card img, .sh-card video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .sh-card video { opacity: 0; transition: opacity .4s; } .sh-card.playing video { opacity: 1; }
+    .sh-card:hover img { transform: none; }
+    .sh-card.side { cursor: pointer; } .sh-card.side .pf-item-play { opacity: 0; }
+    .sh-bar { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 4px; }
+    @media (max-width: 768px) { .sh-cf { height: 420px; margin: 0 -18px; } }
+  `;
+  document.head.appendChild(shStyle);
+  function shLayout() {
+    const cards = [...document.querySelectorAll('#pf-sheet .sh-card')], N = cards.length; if (!N) return;
+    const mob = innerWidth < 769;
+    cards.forEach((c, i) => {
+      let d = ((i - shCur) % N + N) % N; if (d > N / 2) d -= N;
+      const a = Math.abs(d), w = c.offsetWidth;
+      const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
+      if (jump) c.style.transition = 'none';
+      c.style.transform = `translateX(calc(-50% + ${d * w * (mob ? .42 : .6)}px)) translateZ(${-a * 160}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 35}deg) scale(${1 - Math.min(a, 3) * .05})`;
+      c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
+      c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * .2})` : '';
+      c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
+      if (jump) { c.offsetWidth; c.style.transition = ''; }
+      const v = c.querySelector('video');
+      if (v) { if (!d) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
+    });
+    document.querySelectorAll('#pf-sheet [data-shgo]').forEach((x, i) => x.classList.toggle('on', i === ((shCur % N) + N) % N));
+  }
+  const shGoTo = n => { const N = document.querySelectorAll('#pf-sheet .sh-card').length; let d = ((n - shCur) % N + N) % N; if (d > N / 2) d -= N; shCur += d; shLayout(); };
+  document.addEventListener('click', e => {
+    const t = e.target, sheet = $('pf-sheet'); if (!sheet || !sheet.contains(t)) return;
+    const b = t.closest('[data-sh]'), g = t.closest('[data-shgo]'), c = t.closest('.sh-card');
+    if (b) { shCur += +b.dataset.sh; shLayout(); e.stopPropagation(); }
+    else if (g) { shGoTo(+g.dataset.shgo); e.stopPropagation(); }
+    else if (c && (shDrag || c.classList.contains('side'))) { if (!shDrag) shGoTo(+c.dataset.n); e.stopPropagation(); }
+  }, true);
+  document.addEventListener('pointerdown', e => { if (e.target.closest('#pf-sheet .sh-cf')) { shX = e.clientX; shDrag = false; } });
+  addEventListener('pointerup', e => { if (shX === null) return; const dx = e.clientX - shX; shX = null;
+    if (Math.abs(dx) > 40) { shDrag = true; shCur += dx < 0 ? 1 : -1; shLayout(); setTimeout(() => shDrag = false, 50); } });
+  addEventListener('resize', shLayout);
+
   function openSheet(id) {
     current = PROJECTS.find(p => p.id === id);
     $('pf-sheet-where').textContent = current.where;
     $('pf-sheet-name').textContent = current.client;
     $('pf-sheet-desc').textContent = current.desc;
-    // Rangement propre : vidéos horizontales ensemble, puis verticales, puis photos (chaque groupe a sa grille)
-    const card = (it, i) => {
+    // Les éléments du client en roulette 3D (même principe que la roulette des réalisations) :
+    // vidéos d'abord, puis photos. La carte du centre lit sa vidéo en silencieux ; un clic dessus l'ouvre en grand.
+    const order = current.items.map((it, i) => [it, i]).sort((x, y) => (x[0].k === 'photo') - (y[0].k === 'photo'));
+    $('pf-sheet-grid').innerHTML = '<div class="sh-cf">' + order.map(([it, i], n) => {
       const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
-      return `<div class="pf-item${it.k === 'photo' ? ' photo' : ''}" data-i="${i}"><img src="${img}" alt="${current.client}" loading="lazy" draggable="false">
+      return `<div class="pf-item sh-card${it.k === 'photo' ? ' photo' : ''}" data-i="${i}" data-n="${n}"><img src="${img}" alt="${current.client}" draggable="false">
+        ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src}"></video>` : ''}
         ${it.k !== 'photo' ? '<div class="pf-item-play"><span><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg></span></div><div class="pf-item-title">' + it.title + '</div>' : ''}</div>`;
-    };
-    const groups = [
-      ['h', current.items.map((it, i) => [it, i]).filter(([it]) => it.k !== 'photo' && it.fmt === 'h')],
-      ['v', current.items.map((it, i) => [it, i]).filter(([it]) => it.k !== 'photo' && it.fmt !== 'h')],
-      ['p', current.items.map((it, i) => [it, i]).filter(([it]) => it.k === 'photo')],
-    ].filter(([, list]) => list.length);
-    $('pf-sheet-grid').innerHTML = groups.map(([g, list]) =>
-      `<div class="pf-group pf-group-${g}">${list.map(([it, i]) => card(it, i)).join('')}</div>`).join('');
+    }).join('') + '</div>' + (order.length > 1 ? `<div class="sh-bar"><button class="rl-btn" data-sh="-1" aria-label="Précédent">←</button><div class="cf-dots">${order.map((_, n) => `<i data-shgo="${n}"></i>`).join('')}</div><button class="rl-btn" data-sh="1" aria-label="Suivant">→</button></div>` : '');
+    shCur = 0;
     $('pf-sheet').classList.add('open'); $('pf-sheet').setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
+    shLayout();
   }
-  function closeSheet() { $('pf-sheet').classList.remove('open'); $('pf-sheet').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+  function closeSheet() { document.querySelectorAll('#pf-sheet video').forEach(v => v.pause()); $('pf-sheet').classList.remove('open'); $('pf-sheet').setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
 
   /* Visionneuse (vidéo 1080p, photo, YouTube protégé) */
   let vi = 0;
