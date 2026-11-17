@@ -493,4 +493,5 @@ html { touch-action: manipulation; }
 @media (min-width: 1300px) {
   .section-inner, .services-inner, .portfolio-header, .booking-inner, .contact-inner, .story-inner,
   .types-track, .portfolio-inner, .pf-inner { max-width: min(1440px, 88vw) !important; }
+  .section-inner { margin-left: auto !important; margin-right: auto !important; } /* sinon le bloc reste collé à gauche (accueil) */
 }

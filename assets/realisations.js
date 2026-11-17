@@ -146,7 +146,8 @@
       background: #1C1814 !important; color: #fff; text-decoration: none; }
     .cf-end::after { display: none; }
     .cf-end b { font-size: 28px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
-    .cf-end span { width: 60px; height: 60px; border-radius: 50%; background: var(--orange); display: grid; place-items: center; font-size: 24px; }
+    .cf-end img.cf-logo { position: static; width: 78%; height: auto; object-fit: contain; margin-bottom: 8px; }
+    .cf-end b span { color: var(--orange); }
     .rl-bar { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 26px; }
     .rl-btn { width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.6);
       cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s; }
@@ -173,7 +174,7 @@
         ${prev ? `<video muted loop playsinline preload="none" data-src="${prev.src}"></video>` : ''}
         <div class="pf-card-txt"><div class="pf-card-where">${p.where}</div><div class="pf-card-name">${p.client}</div><div class="pf-card-count">${count(p)}</div></div>
       </article>`;
-    }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><span>→</span><b>Voir tout<br>le portfolio</b></a></div>
+    }).join('') + `<a class="pf-card cf-end" data-n="${list.length}" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><img class="cf-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" draggable="false"><b>Voir tout<br>le portfolio <span>→</span></b></a></div>
       <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button><div class="cf-dots">${[...Array(list.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div><button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
     const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
     let cur = 0;
