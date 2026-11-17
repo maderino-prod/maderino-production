@@ -857,14 +857,29 @@
     </div>
   </section>
 
-  <div class="stats">
-    <div class="stat"><div class="stat-num"><span>+</span>120</div><div class="stat-label">Vidéos réalisées</div></div>
-    <div class="stat"><div class="stat-num"><span>+</span>15</div><div class="stat-label">Clients satisfaits</div></div>
-    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Ans d'expérience</div></div>
-    <div class="stat" style="display:flex; align-items:center; justify-content:center;">
-      <div class="stat-num" style="font-size:18px; display:flex; align-items:center; justify-content:center; gap:10px;">
-        <img src="https://res.cloudinary.com/dpvw9gv0y/image/upload/v1777568599/logo-contour-france-blanc_diujdc.png" alt="France" style="height:28px; width:auto; flex-shrink:0;">
-        Lyon
+  <!-- CHIFFRES : séparés montage / tournage -->
+  <style>
+    .stats-split { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px 60px; padding: 60px 24px; }
+    .stats-split .stats { padding: 0 !important; }
+    .stats-split .stat-num b { font-weight: inherit; }
+    .stats-label { text-align: center; font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--orange); margin-bottom: 14px; }
+    @media (max-width: 768px) { .stats-split { padding: 40px 16px; gap: 36px; } .stats-split .stat { min-width: 0 !important; padding: 8px 14px !important; } .stats-split .stat-num { font-size: 36px !important; } }
+  </style>
+  <div class="stats-split">
+    <div class="stats-group">
+      <div class="stats-label">Montage</div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num"><span>+</span><b data-count="100">100</b></div><div class="stat-label">Vidéos réalisées</div></div>
+        <div class="stat"><div class="stat-num"><span>+</span><b data-count="10">10</b></div><div class="stat-label">Clients</div></div>
+        <div class="stat"><div class="stat-num"><b data-count="4">4</b></div><div class="stat-label">Ans d'expérience</div></div>
+      </div>
+    </div>
+    <div class="stats-group">
+      <div class="stats-label">Tournage</div>
+      <div class="stats">
+        <div class="stat"><div class="stat-num"><span>+</span><b data-count="20">20</b></div><div class="stat-label">Vidéos réalisées</div></div>
+        <div class="stat"><div class="stat-num"><span>+</span><b data-count="5">5</b></div><div class="stat-label">Clients</div></div>
+        <div class="stat"><div class="stat-num"><b data-count="1">1</b></div><div class="stat-label">An d'expérience</div></div>
       </div>
     </div>
   </div>
@@ -1079,16 +1094,11 @@
 
     const statsObserver = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        document.querySelector('.stat:nth-child(1) .stat-num').innerHTML = '<span>+</span><span class="count-50">0</span>';
-        document.querySelector('.stat:nth-child(2) .stat-num').innerHTML = '<span>+</span><span class="count-10">0</span>';
-        document.querySelector('.stat:nth-child(3) .stat-num').innerHTML = '<span class="count-5">0</span>';
-        animateCounter(document.querySelector('.count-50'), 50, 1500);
-        animateCounter(document.querySelector('.count-10'), 10, 1000);
-        animateCounter(document.querySelector('.count-5'), 2, 800);
+        document.querySelectorAll('.stats-split [data-count]').forEach(el => animateCounter(el, +el.dataset.count, 1200));
         statsObserver.disconnect();
       }
     }, { threshold: 0.3 });
-    statsObserver.observe(document.querySelector('.stats'));
+    statsObserver.observe(document.querySelector('.stats-split'));
     let lastScrollY = 0;
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
