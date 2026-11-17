@@ -249,7 +249,14 @@
     // Une carte = une vidéo (pas de fiche client) : on mélange les clients à tour de rôle pour varier la roulette.
     const per = list.map(p => p.items.map((it, i) => ({ p, it, i })));
     const vids = [];
-    for (let r = 0; per.some(l => l[r]); r++) per.forEach(l => l[r] && vids.push(l[r]));
+    // Ordre aléatoire à chaque ouverture de page, en évitant deux cartes du même client à la suite quand c'est possible
+    const pool = per.flat();
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+    while (pool.length) {
+      const last = vids.length ? vids[vids.length - 1].p.id : null;
+      const k = pool.findIndex(x => x.p.id !== last);
+      vids.push(pool.splice(k < 0 ? 0 : k, 1)[0]);
+    }
     box.innerHTML = '<div class="cf">' + vids.map(({ p, it, i }, n) => {
       const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
       const r = it.k === 'photo' ? '' : (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16; // photo : format lu sur l'image une fois chargée
