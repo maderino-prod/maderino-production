@@ -330,6 +330,8 @@
     layout();
   }
   build(tab);
+  // Pas de clic droit / appui long « Enregistrer » sur les photos et vidéos
+  document.addEventListener('contextmenu', e => { if (e.target.closest('.cf, #pf-viewer, #pf-sheet')) e.preventDefault(); });
   // Si le navigateur a bloqué la lecture automatique (économie d'énergie…), on relance les aperçus au premier geste.
   const relance = () => api && api.layout();
   window.__rlRelance = () => { box.querySelectorAll('.pf-card video').forEach(v => v.pause()); relance(); };

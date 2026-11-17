@@ -495,3 +495,8 @@ html { touch-action: manipulation; }
   .types-track, .portfolio-inner, .pf-inner { max-width: min(1440px, 88vw) !important; }
   .section-inner { margin-left: auto !important; margin-right: auto !important; } /* sinon le bloc reste collé à gauche (accueil) */
 }
+
+/* Protection des médias : pas de menu « Enregistrer l'image » au clic long (iPhone) ni au clic droit */
+.cf img, .cf video, .pf-viewer img, .pf-viewer video, .pf-sheet img, .pf-sheet video, .pf-card img, .pf-item img, .hpf-card img {
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none;
+}
