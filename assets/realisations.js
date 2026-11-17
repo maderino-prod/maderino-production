@@ -62,7 +62,7 @@
     .pf-note-k { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #FF6B00; margin-bottom: 4px; }
     .pf-note-t { font-size: 18px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; padding-right: 26px; }
     .pf-note-p { font-size: 14px; line-height: 1.55; color: rgba(28,24,20,.75); margin: 0; }
-    @media (max-width: 768px) { .pf-note { left: 12px; right: 12px; bottom: 84px; width: auto; padding: 14px 16px 16px; } .pf-note-t { font-size: 16px; } .pf-note-p { font-size: 13px; } }
+    @media (max-width: 768px) { .pf-viewer.has-note { padding-bottom: 210px; } /* la vidéo remonte : l'encart ne cache plus ses commandes */ .pf-note { left: 12px; right: 12px; bottom: 84px; width: auto; padding: 14px 16px 16px; } .pf-note-t { font-size: 16px; } .pf-note-p { font-size: 13px; } }
 `;
   document.head.appendChild(shStyle);
   function shLayout() {
@@ -142,10 +142,11 @@
     // Petit encart « l'histoire du projet » si la vidéo a un texte (champ "story" dans projets.js)
     let note = $('pf-note');
     if (!note) { $('pf-viewer').insertAdjacentHTML('beforeend', '<div class="pf-note" id="pf-note"><button class="pf-note-x" aria-label="Fermer">✕</button><div class="pf-note-k"></div><div class="pf-note-t"></div><p class="pf-note-p"></p></div>'); note = $('pf-note');
-      note.querySelector('.pf-note-x').addEventListener('click', e => { e.stopPropagation(); note.classList.remove('on'); }); note.addEventListener('click', e => e.stopPropagation()); }
+      note.querySelector('.pf-note-x').addEventListener('click', e => { e.stopPropagation(); note.classList.remove('on'); $('pf-viewer').classList.remove('has-note'); }); note.addEventListener('click', e => e.stopPropagation()); }
     // Texte propre à la vidéo (champ "story") s'il existe, sinon la description du projet du client
     const txt = it.story || current.desc;
     note.classList.toggle('on', !!txt);
+    $('pf-viewer').classList.toggle('has-note', !!txt);
     if (txt) { note.querySelector('.pf-note-k').textContent = current.client + (current.where ? ' · ' + current.where : ''); note.querySelector('.pf-note-t').textContent = it.k === 'photo' ? 'Photo' : it.title; note.querySelector('.pf-note-p').textContent = txt; }
     if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
     else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
