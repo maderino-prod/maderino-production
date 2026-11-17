@@ -134,7 +134,7 @@
   const st2 = document.createElement('style');
   st2.textContent = `
     /* pleine largeur d'écran + overflow caché : sinon les cartes de côté élargissent la page sur iPhone */
-    .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; padding-top: 20px; box-sizing: content-box; touch-action: pan-y; user-select: none; }
+    .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; padding-top: 20px; padding-bottom: 80px; margin-bottom: -80px; box-sizing: content-box; touch-action: pan-y; user-select: none; }
     .cf .pf-card { position: absolute; top: 20px; left: 50%; width: clamp(260px, 28vw, 360px); aspect-ratio: 4 / 5;
       transform-style: preserve-3d; transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; }
     .cf .pf-card:hover { transform: var(--t); }
@@ -148,7 +148,7 @@
     .cf-end b { font-size: 28px; font-weight: 700; letter-spacing: -0.04em; line-height: 1.1; }
     .cf-end img.cf-logo { position: static; width: 78%; height: auto; object-fit: contain; margin-bottom: 8px; }
     .cf-end b span { color: var(--orange); }
-    .rl-bar { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 26px; }
+    .rl-bar { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 26px; }
     .rl-btn { width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.6);
       cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s; }
     .rl-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }

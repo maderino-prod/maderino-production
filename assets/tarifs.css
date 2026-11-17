@@ -22,14 +22,14 @@
 
 /* Tarifs en roulette 3D (même principe que les réalisations) */
 .tf { position: relative; perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden;
-  padding: 24px 0 30px; touch-action: pan-y; user-select: none; }
+  padding: 50px 0 100px; margin-top: -26px; margin-bottom: -70px; touch-action: pan-y; user-select: none; } /* marge large : l'ombre des cartes n'est plus coupée net */
 .tf .tarifs { display: block; position: relative; }
 .tf .tarif { position: absolute; top: 0; left: 50%; width: clamp(280px, 24vw, 380px); box-sizing: border-box;
   transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; background: #FBF8F3; }
 .tf .tarif.mis-en-avant { background: #FBEBDD; }
 .tf .tarif.side { cursor: pointer; }
 .tf .tarif.center { box-shadow: 0 30px 60px rgba(60,40,20,.18); }
-.tf-bar { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 6px; }
+.tf-bar { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 6px; }
 .tf-btn { width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.6);
   cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s; }
 .tf-btn:hover { background: var(--orange, #FF6B00); color: #fff; border-color: var(--orange, #FF6B00); }
