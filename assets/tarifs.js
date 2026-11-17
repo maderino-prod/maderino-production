@@ -11,14 +11,15 @@
     let cur = 0;
     const short = i => { let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N; return d; };
     function layout() {
-      const mob = innerWidth < 769, gap = mob ? 0.45 : 0.68;
+      const mob = innerWidth < 769, gap = mob ? 0.62 : 0.68;
       grid.style.height = Math.max(...cards.map(c => c.offsetHeight)) + 'px';
       cards.forEach((c, i) => {
         const d = short(i), a = Math.abs(d), w = c.offsetWidth;
         const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
         if (jump) c.style.transition = 'none';
-        c.style.transform = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 35}deg) scale(${1 - Math.min(a, 3) * 0.04})`;
-        c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
+        const sc = mob ? 1 - Math.min(a, 2) * 0.14 : 1 - Math.min(a, 3) * 0.04;
+        c.style.transform = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 35}deg) scale(${sc})`;
+        c.style.zIndex = 100 - a; c.style.opacity = a > 2 || (mob && a > 1) ? 0 : a ? (mob ? .55 : .85) : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
         c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.08})` : '';
         c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
         if (jump) { c.offsetWidth; c.style.transition = ''; }
