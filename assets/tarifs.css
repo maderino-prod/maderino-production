@@ -1,0 +1,21 @@
+/* Section « Tarifs » des pages Montage et Tournage */
+.tarifs { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+.tarif { position: relative; background: rgba(255,255,255,.62); border: 1px solid rgba(28,24,20,.08); border-radius: 24px;
+  padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 30px rgba(60,40,20,.06); }
+.tarif.mis-en-avant { border: 1.5px solid var(--orange, #FF6B00); background: rgba(255,107,0,.06); }
+.tarif-badge { position: absolute; top: -12px; left: 22px; background: var(--orange, #FF6B00); color: #fff; font-size: 11px;
+  font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; }
+.tarif-nom { font-size: 20px; font-weight: 700; letter-spacing: -0.03em; color: #1C1814; }
+.tarif-prix { font-size: 34px; font-weight: 700; letter-spacing: -0.04em; color: var(--orange, #FF6B00); line-height: 1; }
+.tarif-prix small { font-size: 14px; font-weight: 500; letter-spacing: 0; color: rgba(28,24,20,.55); margin-right: 4px; }
+.tarif ul { list-style: none; padding: 0; margin: 4px 0 0; display: flex; flex-direction: column; gap: 7px; }
+.tarif li { font-size: 14.5px; line-height: 1.45; color: rgba(28,24,20,.72); padding-left: 20px; position: relative; }
+.tarif li::before { content: '✓'; position: absolute; left: 0; color: var(--orange, #FF6B00); font-weight: 700; }
+.tarif-niveaux li { padding-left: 0; display: flex; justify-content: space-between; gap: 12px; }
+.tarif-niveaux li::before { display: none; }
+.tarif-niveaux li b { color: #1C1814; white-space: nowrap; }
+.tarif-niveaux li span { display: block; font-size: 12.5px; color: rgba(28,24,20,.55); }
+.tarif-note { font-size: 13px; color: rgba(28,24,20,.6); margin-top: auto; padding-top: 6px; }
+.tarifs-info { margin-top: 26px; font-size: 15px; line-height: 1.6; color: rgba(28,24,20,.7); max-width: 760px; }
+.tarifs-info b { color: #1C1814; }
+@media (max-width: 768px) { .tarifs { grid-template-columns: 1fr; } .tarif-prix { font-size: 30px; } }
