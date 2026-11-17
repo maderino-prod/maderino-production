@@ -363,7 +363,7 @@
     <div class="card">
       <h2>Panier</h2>
       <div id="cartItems"></div>
-      <label class="opt-ded"><input type="checkbox" id="dedTest"> Le client a déjà fait la vidéo découverte (−290 €)</label>
+      <label class="opt-ded"><input type="checkbox" id="dedTest"> Le client a déjà fait la vidéo découverte (−199 €)</label>
       <div class="cart-tot" id="cartTot"></div>
       <button class="devis-btn" id="openDevis">Créer le devis →</button>
       <button class="clear" id="clearCart">Vider le panier</button>
@@ -436,9 +436,9 @@
 
   // Grille validée le 05/10/2026 — temps en heures
   const OFFRES = [
-    { nom: 'Vidéo découverte', sous: 'Porte d\'entrée pour les nouveaux clients', prix: 290, videos: 1, tournage: 1.5, nbTournages: 1,
-      inclus: ['1 vidéo RS courte', 'Tournage court (~1 h 30)', 'Call brief 30 min'],
-      tag: '290 € déduits si le client prend l\'offre 2 ou 3 sous 30 jours' },
+    { nom: 'Vidéo découverte', sous: 'Porte d\'entrée pour les nouveaux clients', prix: 199, videos: 1, tournage: 1, nbTournages: 1,
+      inclus: ['1 vidéo RS courte (≤ 30 s)', 'Tournage 1 h', 'Lyon + proche périphérie (15 km) uniquement'],
+      tag: '199 € déduits si le client prend l\'offre 2 ou 3 sous 30 jours · hors zone 15 km : pas de vidéo découverte' },
     { nom: 'Offre 1', sous: '2 vidéos', prix: 379, videos: 2, tournage: 2.5, nbTournages: 1,
       inclus: ['2 vidéos RS courtes', 'Tournage 2 h 30', 'Call brief 30 min'] },
     { nom: 'Offre 2', sous: '5 vidéos', prix: 699, videos: 5, tournage: 4, nbTournages: 1,
@@ -482,7 +482,7 @@
     const canDeduct = items.some(c => c.i >= 2);
     $('dedTest').disabled = !canDeduct;
     if (!canDeduct) $('dedTest').checked = false;
-    const ded = $('dedTest').checked ? 290 : 0;
+    const ded = $('dedTest').checked ? 199 : 0;
 
     $('cartItems').innerHTML = items.length ? items.map((c, k) => `
       <div class="item">
@@ -751,7 +751,7 @@
       const inc = !c.custom && c.o.inclus ? ` (${c.o.inclus.join(', ')})` : '';
       return { desc: `${c.o.nom}${c.o.sous ? ' : ' + c.o.sous : ''}${inc}`, q: c.q, pu: c.o.prix };
     });
-    if ($('dedTest').checked) out.push({ desc: 'Déduction vidéo découverte déjà réalisée', q: 1, pu: -290 });
+    if ($('dedTest').checked) out.push({ desc: 'Déduction vidéo découverte déjà réalisée', q: 1, pu: -199 });
     return out;
   }
 
