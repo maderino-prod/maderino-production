@@ -143,8 +143,10 @@
     let note = $('pf-note');
     if (!note) { $('pf-viewer').insertAdjacentHTML('beforeend', '<div class="pf-note" id="pf-note"><button class="pf-note-x" aria-label="Fermer">✕</button><div class="pf-note-k"></div><div class="pf-note-t"></div><p class="pf-note-p"></p></div>'); note = $('pf-note');
       note.querySelector('.pf-note-x').addEventListener('click', e => { e.stopPropagation(); note.classList.remove('on'); }); note.addEventListener('click', e => e.stopPropagation()); }
-    note.classList.toggle('on', !!it.story);
-    if (it.story) { note.querySelector('.pf-note-k').textContent = current.client; note.querySelector('.pf-note-t').textContent = it.title; note.querySelector('.pf-note-p').textContent = it.story; }
+    // Texte propre à la vidéo (champ "story") s'il existe, sinon la description du projet du client
+    const txt = it.story || current.desc;
+    note.classList.toggle('on', !!txt);
+    if (txt) { note.querySelector('.pf-note-k').textContent = current.client + (current.where ? ' · ' + current.where : ''); note.querySelector('.pf-note-t').textContent = it.k === 'photo' ? 'Photo' : it.title; note.querySelector('.pf-note-p').textContent = txt; }
     if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
     else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
     else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
@@ -245,7 +247,7 @@
   addEventListener('resize', () => api && api.layout());
 
   function build(tab) {
-    const list = PROJECTS.filter(p => p.tab === tab);
+    const list = PROJECTS.filter(p => tab === 'tout' || p.tab === tab); // 'tout' : montage et tournage mélangés (accueil)
     // Une carte = une vidéo (pas de fiche client) : on mélange les clients à tour de rôle pour varier la roulette.
     const per = list.map(p => p.items.map((it, i) => ({ p, it, i })));
     const vids = [];
@@ -254,7 +256,13 @@
     for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
     while (pool.length) {
       const last = vids.length ? vids[vids.length - 1].p.id : null;
-      const k = pool.findIndex(x => x.p.id !== last);
+      // on pioche en priorité chez le client qui a le plus de cartes restantes (sinon il finit en paquet à la fin)
+      const left = {}; pool.forEach(x => left[x.p.id] = (left[x.p.id] || 0) + 1);
+      const ids = Object.keys(left).filter(id => id !== last);
+      const top = ids.length ? Math.max(...ids.map(id => left[id])) : 0;
+      const pick = ids.filter(id => left[id] >= top * .6 || left[id] === top);
+      const want = pick[Math.floor(Math.random() * pick.length)];
+      const k = pool.findIndex(x => x.p.id === want);
       vids.push(pool.splice(k < 0 ? 0 : k, 1)[0]);
     }
     box.innerHTML = '<div class="cf">' + vids.map(({ p, it, i }, n) => {
