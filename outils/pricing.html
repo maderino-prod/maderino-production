@@ -436,7 +436,7 @@
 
   // Grille validée le 05/10/2026 — temps en heures
   const OFFRES = [
-    { nom: 'Vidéo découverte', sous: 'Porte d\'entrée pour les nouveaux clients', prix: 199, videos: 1, tournage: 1, nbTournages: 1,
+    { nom: 'Vidéo découverte', sous: 'Porte d\'entrée pour les nouveaux clients', prix: 199, videos: 1, tournage: 1, nbTournages: 1, call: 0, // pas d'appel brief sur l'offre d'entrée
       inclus: ['1 vidéo RS courte (≤ 30 s)', 'Tournage 1 h', 'Lyon + proche périphérie (15 km) uniquement'],
       tag: '199 € déduits si le client prend l\'offre 2 ou 3 sous 30 jours · hors zone 15 km : pas de vidéo découverte' },
     { nom: 'Offre 1', sous: '2 vidéos', prix: 379, videos: 2, tournage: 2.5, nbTournages: 1,
@@ -451,7 +451,7 @@
 
   function renderOffres(t) {
     $('offres').innerHTML = OFFRES.map((o, i) => {
-      const h = H_CALL + o.tournage + o.nbTournages * H_DEPLACEMENT + o.videos * H_MONTAGE;
+      const h = (o.call ?? H_CALL) + o.tournage + o.nbTournages * H_DEPLACEMENT + o.videos * H_MONTAGE;
       const reel = o.prix / h, cout = h * t;
       return `<div class="card offre">
         <div class="offre-head">
@@ -472,7 +472,7 @@
   }
 
   // ── Panier ──
-  const hours = o => H_CALL + o.tournage + o.nbTournages * H_DEPLACEMENT + o.videos * H_MONTAGE;
+  const hours = o => (o.call ?? H_CALL) + o.tournage + o.nbTournages * H_DEPLACEMENT + o.videos * H_MONTAGE;
   let cart = [];
   try { cart = JSON.parse(localStorage.getItem('mp-panier') || '[]'); } catch (e) {}
 
