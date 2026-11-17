@@ -231,7 +231,7 @@
       cursor: pointer; font-size: 18px; color: #1C1814; transition: background .2s, color .2s; }
     .rl-btn:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
     .cf-dots { display: flex; gap: 8px; }
-    .cf-count { min-width: 64px; text-align: center; font-size: 14px; font-weight: 600; color: rgba(28,24,20,.6); font-variant-numeric: tabular-nums; }
+    .cf-gap { width: 24px; } .cf-count { min-width: 64px; text-align: center; font-size: 14px; font-weight: 600; color: rgba(28,24,20,.6); font-variant-numeric: tabular-nums; }
     .cf-dots i { width: 8px; height: 8px; border-radius: 8px; background: rgba(28,24,20,.18); transition: width .3s, background .3s; cursor: pointer; }
     .cf-dots i.on { width: 26px; background: var(--orange); }
     @media (max-width: 768px) { .cf { height: 440px; } .cf .pf-card { width: 66vw; max-width: 300px; } }
@@ -266,7 +266,7 @@
         <div class="pf-card-txt"><div class="pf-card-where">${it.title}</div><div class="pf-card-name">${p.client}</div></div>
       </article>`;
     }).join('') + `<a class="pf-card cf-end" data-n="${vids.length}" data-r="0.8" href="/portfolio/${tab === 'montage' ? '?onglet=montage' : ''}"><img class="cf-logo" src="/assets/logo-maderino-production.svg" alt="Maderino Production" draggable="false"><b>Voir tout<br>le portfolio <span>→</span></b></a></div>
-      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button>${vids.length + 1 > 12 ? '<div class="cf-count"></div>' : `<div class="cf-dots">${[...Array(vids.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div>`}<button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
+      <div class="rl-bar"><button class="rl-btn" data-rl="-1" aria-label="Précédent">←</button>${vids.length + 1 > 12 ? '<div class="cf-gap"></div>' : `<div class="cf-dots">${[...Array(vids.length + 1)].map((_, i) => `<i data-go="${i}"></i>`).join('')}</div>`}<button class="rl-btn" data-rl="1" aria-label="Suivant">→</button></div>`;
     const stage = box.querySelector('.cf'), cards = [...stage.querySelectorAll('.pf-card')], N = cards.length;
     let cur = 0;
     stage.querySelectorAll('img[data-photo]').forEach(im => im.addEventListener('load', () => layout()));
