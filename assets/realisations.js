@@ -174,23 +174,29 @@
   function layout() {
     const mob = innerWidth < 769, gap = mob ? 0.42 : 0.62;
     cards.forEach((c, i) => {
-      const d = i - cur, a = Math.abs(d), w = c.offsetWidth;
+      // Boucle infinie : on prend le chemin le plus court autour de la roulette.
+      let d = ((i - cur) % N + N) % N; if (d > N / 2) d -= N;
+      const a = Math.abs(d), w = c.offsetWidth;
+      // Une carte qui passe d'un bout à l'autre saute sans animation (sinon elle traverse l'écran).
+      const jump = c._d !== undefined && Math.abs(d - c._d) > 1; c._d = d;
+      if (jump) c.style.transition = 'none';
       const t = `translateX(calc(-50% + ${d * w * gap}px)) translateZ(${-a * 140}px) rotateY(${-Math.sign(d) * Math.min(a, 1) * 38}deg) scale(${1 - Math.min(a, 3) * 0.04})`;
       c.style.setProperty('--t', t); c.style.transform = t;
       c.style.zIndex = 100 - a; c.style.opacity = a > 2 ? 0 : 1; c.style.pointerEvents = a > 2 ? 'none' : '';
       c.style.filter = a ? `brightness(${1 - Math.min(a, 2) * 0.2})` : '';
       c.classList.toggle('center', !d); c.classList.toggle('side', !!d);
+      if (jump) { c.offsetWidth; c.style.transition = ''; }
       const v = c.querySelector('video');
       if (v) { if (!d && !matchMedia('(prefers-reduced-motion: reduce)').matches) { if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
     });
-    box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === cur));
+    box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
   }
-  const go = i => { cur = Math.max(0, Math.min(N - 1, i)); layout(); };
+  const go = i => { cur = i; layout(); };
   box.querySelectorAll('[data-rl]').forEach(b => b.addEventListener('click', () => go(cur + +b.dataset.rl)));
-  box.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => go(+b.dataset.go)));
+  box.querySelectorAll('[data-go]').forEach(b => b.addEventListener('click', () => { let d = ((+b.dataset.go - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); }));
   // Une carte de côté : on l'amène au centre au lieu d'ouvrir la fiche.
   stage.addEventListener('click', e => { const c = e.target.closest('.pf-card'); if (!c) return;
-    if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) go(+c.dataset.n); } }, true);
+    if (dragged || c.classList.contains('side')) { e.preventDefault(); e.stopPropagation(); if (!dragged) { let d = ((+c.dataset.n - cur) % N + N) % N; if (d > N / 2) d -= N; go(cur + d); } } }, true);
   // Swipe / glissé
   let x0 = null, dragged = false;
   stage.addEventListener('pointerdown', e => { x0 = e.clientX; dragged = false; });
