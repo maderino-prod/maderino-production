@@ -133,8 +133,9 @@
      Flèches, swipe au doigt, glissé à la souris, clic sur une carte de côté pour l'amener au centre. */
   const st2 = document.createElement('style');
   st2.textContent = `
-    .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; margin: 0 auto; touch-action: pan-y; user-select: none; }
-    .cf .pf-card { position: absolute; top: 0; left: 50%; width: clamp(260px, 28vw, 360px); aspect-ratio: 4 / 5;
+    /* pleine largeur d'écran + overflow caché : sinon les cartes de côté élargissent la page sur iPhone */
+    .cf { position: relative; height: clamp(440px, 46vw, 560px); perspective: 1400px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; padding-top: 20px; box-sizing: content-box; touch-action: pan-y; user-select: none; }
+    .cf .pf-card { position: absolute; top: 20px; left: 50%; width: clamp(260px, 28vw, 360px); aspect-ratio: 4 / 5;
       transform-style: preserve-3d; transition: transform .7s cubic-bezier(.22,1,.36,1), opacity .5s, filter .5s, box-shadow .5s; }
     .cf .pf-card:hover { transform: var(--t); }
     .cf .pf-card.side { cursor: pointer; }
