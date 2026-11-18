@@ -150,7 +150,9 @@
     note.classList.toggle('on', !!txt);
     $('pf-viewer').classList.toggle('has-note', !!txt);
     if (txt) { note.querySelector('.pf-note-k').textContent = current.client + (current.where ? ' · ' + current.where : ''); note.querySelector('.pf-note-t').textContent = it.k === 'photo' ? 'Photo' : it.title; note.querySelector('.pf-note-p').textContent = txt; }
-    if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
+    // Téléphone (ou mode économie de données) : version 720p (.m.mp4), ~4 fois plus légère que le 1080p
+    const light = matchMedia('(max-width: 768px)').matches || (navigator.connection && navigator.connection.saveData);
+    if (it.k === 'video') st.innerHTML = `<video src="${light ? it.src.replace(/\.mp4$/, '.m.mp4') : it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
     else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
     else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
     document.querySelectorAll('.pf-nav').forEach(b => b.style.display = items.length > 1 ? '' : 'none');
