@@ -56,7 +56,7 @@
     @media (max-width: 768px) { .sh-cf { height: 420px; margin: 0 -18px; } }
   `;
   shStyle.textContent += `
-    .pf-note { position: fixed; left: 24px; bottom: 24px; z-index: 20; width: min(360px, calc(100vw - 48px)); background: #FAF6F0; color: #1C1814;
+    .pf-note { position: fixed; right: 24px; bottom: 24px; /* sur ordinateur : à droite */ z-index: 20; width: min(360px, calc(100vw - 48px)); background: #FAF6F0; color: #1C1814;
       border-radius: 20px; padding: 18px 20px 20px; box-shadow: 0 20px 50px rgba(0,0,0,.35); display: none; animation: noteIn .45s cubic-bezier(.22,1,.36,1); }
     .pf-note.on { display: block; }
     @keyframes noteIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
