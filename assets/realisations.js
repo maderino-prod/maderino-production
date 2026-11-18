@@ -296,7 +296,8 @@
         const im = c.querySelector('img[data-photo]');
         const r = +c.dataset.r || (im && im.naturalWidth ? im.naturalWidth / im.naturalHeight : .8);
         let h = Math.min(H, Wmax / r), w = h * r;
-        if (rel(i) !== 0) { h = Math.min(sideH, hC * 1.05); w = h * .62; } // jamais plus hautes que la carte du centre
+        if (mob) { h = rel(i) === 0 ? H * .96 : H * .84; w = h * .62; } // téléphone : même cadre vertical pour toutes, pas de redimensionnement saccadé
+        else if (rel(i) !== 0) { h = Math.min(sideH, hC * 1.05); w = h * .62; } // jamais plus hautes que la carte du centre
         c.style.width = w + 'px'; c.style.height = h + 'px'; c.style.aspectRatio = 'auto'; c.style.top = (20 + (H - h) / 2) + 'px';
         return [w, h];
       });
