@@ -750,6 +750,18 @@
     .avis-band.vu .hero-avis-stars i:nth-child(5) { transition-delay: .75s; }
     .avis-band .hero-avis { background: #fff; border-color: rgba(28,24,20,.1); color: #1C1814; box-shadow: 0 6px 20px rgba(60,40,20,.08); }
   </style>
+  <style>
+    /* Avis en carrousel : défile tout seul (pause au survol / au toucher), et à la main (glisser, flèches) */
+    .reviews-grid.rv-on { display: flex; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; gap: 20px; padding: 6px 4px 20px; scroll-behavior: smooth; }
+    .reviews-grid.rv-on::-webkit-scrollbar { display: none; }
+    .reviews-grid.rv-on .review-card { flex: 0 0 min(420px, 84vw); max-width: none; scroll-snap-align: center; }
+    .rv-bar { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 4px; }
+    .rv-bar button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(28,24,20,.18); background: rgba(255,255,255,.7); cursor: pointer; font-size: 17px; color: #1C1814; }
+    .rv-bar button:hover { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .rv-dots { display: flex; gap: 7px; } .rv-dots i { width: 7px; height: 7px; border-radius: 7px; background: rgba(28,24,20,.2); transition: width .3s, background .3s; }
+    .rv-dots i.on { width: 22px; background: var(--orange); }
+  </style>
 </head>
 <body>
   <script src="/assets/loader.js?v=1"></script>
@@ -1429,6 +1441,24 @@
     if (!('IntersectionObserver' in window)) { band.classList.add('vu'); return; }
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { band.classList.add('vu'); io.disconnect(); } }), { threshold: .6 });
     io.observe(band); })();
+  </script>
+  <script>
+  (() => { const g = document.querySelector('.reviews-grid'); if (!g) return;
+    const cards = [...g.children]; if (cards.length < 2) return;
+    g.classList.add('rv-on');
+    g.insertAdjacentHTML('afterend', `<div class="rv-bar"><button data-rv="-1" aria-label="Avis précédent">←</button><div class="rv-dots">${cards.map(() => '<i></i>').join('')}</div><button data-rv="1" aria-label="Avis suivant">→</button></div>`);
+    const bar = g.nextElementSibling, dots = [...bar.querySelectorAll('i')];
+    const idx = () => { const c = g.scrollLeft + g.clientWidth / 2; let k = 0, best = 1e9; cards.forEach((el, i) => { const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - c); if (d < best) { best = d; k = i; } }); return k; };
+    const go = i => { const n = (i + cards.length) % cards.length, el = cards[n]; g.scrollTo({ left: el.offsetLeft - (g.clientWidth - el.offsetWidth) / 2, behavior: 'smooth' }); };
+    const paint = () => { const k = idx(); dots.forEach((d, i) => d.classList.toggle('on', i === k)); };
+    g.addEventListener('scroll', () => requestAnimationFrame(paint), { passive: true }); paint();
+    bar.addEventListener('click', e => { const b = e.target.closest('[data-rv]'); if (b) { go(idx() + +b.dataset.rv); pause(6000); } });
+    // Défilement automatique toutes les 5 s, en boucle ; pause quand on touche, survole ou fait défiler à la main
+    let until = 0; const pause = ms => until = Date.now() + ms;
+    ['pointerdown', 'touchstart', 'wheel'].forEach(ev => g.addEventListener(ev, () => pause(8000), { passive: true }));
+    g.addEventListener('mouseenter', () => pause(1e9)); g.addEventListener('mouseleave', () => pause(2000));
+    setInterval(() => { if (Date.now() > until && !document.hidden && g.getBoundingClientRect().top < innerHeight && g.getBoundingClientRect().bottom > 0) go(idx() + 1); }, 5000);
+  })();
   </script>
 </body>
 </html>
