@@ -740,6 +740,14 @@
       background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.2); color: #fff; font-size: 14px; text-decoration: none; backdrop-filter: blur(8px); }
     .hero-avis-stars { color: #FFB400; letter-spacing: 1px; }
     .avis-band { text-align: center; padding: 10px 20px 30px; }
+    /* Apparition animée quand on arrive dessus : la pastille monte, puis les étoiles s'allument une par une */
+    .avis-band .hero-avis { opacity: 0; transform: translateY(24px) scale(.94); transition: opacity .7s ease, transform .8s cubic-bezier(.22,1.4,.36,1); }
+    .avis-band.vu .hero-avis { opacity: 1; transform: none; }
+    .avis-band .hero-avis-stars i { font-style: normal; display: inline-block; opacity: .15; transform: scale(.4); transition: opacity .3s, transform .45s cubic-bezier(.34,1.8,.64,1); }
+    .avis-band.vu .hero-avis-stars i { opacity: 1; transform: none; }
+    .avis-band.vu .hero-avis-stars i:nth-child(1) { transition-delay: .35s; } .avis-band.vu .hero-avis-stars i:nth-child(2) { transition-delay: .45s; }
+    .avis-band.vu .hero-avis-stars i:nth-child(3) { transition-delay: .55s; } .avis-band.vu .hero-avis-stars i:nth-child(4) { transition-delay: .65s; }
+    .avis-band.vu .hero-avis-stars i:nth-child(5) { transition-delay: .75s; }
     .avis-band .hero-avis { background: #fff; border-color: rgba(28,24,20,.1); color: #1C1814; box-shadow: 0 6px 20px rgba(60,40,20,.08); }
   </style>
 </head>
@@ -797,7 +805,7 @@
       </div>
     </div>
   </section>
-  <div class="avis-band"><a href="#avis" class="hero-avis"><span class="hero-avis-stars">★★★★★</span> <b>5,0</b> · nos clients en parlent sur Google</a></div>
+  <div class="avis-band"><a href="#avis" class="hero-avis"><span class="hero-avis-stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span> <b>5,0</b> · nos clients en parlent sur Google</a></div>
 
 
   <!-- SERVICES -->
@@ -1406,5 +1414,11 @@
   <script src="/assets/yt-thumb.js?v=2"></script>
   <script src="/assets/projets.js?v=13"></script>
   <script src="/assets/realisations.js?v=40"></script>
+  <script>
+  (() => { const band = document.querySelector('.avis-band'); if (!band) return;
+    if (!('IntersectionObserver' in window)) { band.classList.add('vu'); return; }
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { band.classList.add('vu'); io.disconnect(); } }), { threshold: .6 });
+    io.observe(band); })();
+  </script>
 </body>
 </html>
