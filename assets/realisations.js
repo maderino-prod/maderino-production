@@ -226,6 +226,8 @@
     .cf .pf-card.side .pf-card-txt { opacity: .6; }
     .cf .pf-card.center { box-shadow: 0 40px 80px rgba(60,40,20,.35); }
     .cf .pf-card.center::before { content: ''; position: absolute; inset: 0; border-radius: inherit; border: 2px solid rgba(255,107,0,.0); z-index: 3; pointer-events: none; }
+    .cf-vid.hz .cf-bg { filter: blur(22px) brightness(.6); transform: scale(1.25); }
+    .cf-vid.hz .cf-main, .cf-vid.hz video { object-fit: contain !important; }
     .cf-end { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; text-align: center; padding: 24px;
       background: #1C1814 !important; color: #fff; text-decoration: none; }
     .cf-end::after { display: none; }
@@ -272,8 +274,10 @@
     box.innerHTML = '<div class="cf">' + vids.map(({ p, it, i }, n) => {
       const img = it.k === 'video' ? it.poster : it.k === 'photo' ? it.src : 'https://img.youtube.com/vi/' + it.id + '/maxresdefault.jpg';
       const r = it.k === 'photo' ? '' : (it.fmt === 'h' || it.k === 'yt') ? 16 / 9 : 9 / 16; // photo : format lu sur l'image une fois chargée
-      return `<article class="pf-card cf-vid" data-pid="${p.id}" data-i="${i}" data-n="${n}" data-r="${r}">
-        <img src="${img}" alt="${p.client}" loading="lazy" draggable="false"${it.k === 'photo' ? ' data-photo' : ''}>
+      const hz = r > 1; // vidéo horizontale : affichée en entier sur un fond flouté quand la carte est verticale
+      return `<article class="pf-card cf-vid${hz ? ' hz' : ''}" data-pid="${p.id}" data-i="${i}" data-n="${n}" data-r="${r}">
+        ${hz ? `<img class="cf-bg" src="${img}" alt="" aria-hidden="true" loading="lazy" draggable="false">` : ''}
+        <img class="cf-main" src="${img}" alt="${p.client}" loading="lazy" draggable="false"${it.k === 'photo' ? ' data-photo' : ''}>
         ${it.k === 'video' ? `<video muted loop playsinline preload="none" data-src="${it.src.replace(/\.mp4$/, '.p.mp4')}"></video>` : ''}
         <div class="pf-card-txt"><div class="pf-card-where">${it.title}</div><div class="pf-card-name">${p.client}</div></div>
       </article>`;
