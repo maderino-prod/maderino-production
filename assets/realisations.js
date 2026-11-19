@@ -265,6 +265,7 @@
       // tirage au hasard pondéré par le nombre de cartes restantes : vraiment aléatoire, sans paquet à la fin
       let r = Math.random() * ids.reduce((t, id) => t + left[id], 0), want = ids[0];
       for (const id of ids) { r -= left[id]; if (r <= 0) { want = id; break; } }
+      if (!vids.length) want = ids[Math.floor(Math.random() * ids.length)]; // 1re carte : chaque client a la même chance
       const k = pool.findIndex(x => x.p.id === want);
       vids.push(pool.splice(k < 0 ? 0 : k, 1)[0]);
     }
