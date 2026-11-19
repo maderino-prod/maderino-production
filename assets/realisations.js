@@ -240,7 +240,7 @@
     .cf-gap { width: 24px; } .cf-count { min-width: 64px; text-align: center; font-size: 14px; font-weight: 600; color: rgba(28,24,20,.6); font-variant-numeric: tabular-nums; }
     .cf-dots i { width: 8px; height: 8px; border-radius: 8px; background: rgba(28,24,20,.18); transition: width .3s, background .3s; cursor: pointer; }
     .cf-dots i.on { width: 26px; background: var(--orange); }
-    @media (max-width: 768px) { .cf { height: 440px; } .cf .pf-card { width: 66vw; max-width: 300px; } }
+    @media (max-width: 768px) { .cf .pf-card { transition: transform .55s cubic-bezier(.22,1,.36,1), opacity .4s, filter .4s !important; will-change: transform; } /* téléphone : on n'anime que le déplacement (animer la taille faisait ramer) */ .cf { height: 440px; } .cf .pf-card { width: 66vw; max-width: 300px; } }
   `;
   document.head.appendChild(st2);
   /* Swipe / glissé, clavier et redimensionnement : branchés une seule fois, ils pilotent la roulette affichée. */
@@ -318,7 +318,7 @@
         if (jump) { c.offsetWidth; c.style.transition = ''; }
         const v = c.querySelector('video');
         // Aperçu en boucle sur toutes les cartes visibles (centre et côtés), pas seulement celle du centre
-        const visible = a <= (innerWidth < 769 ? 1 : 2);
+        const visible = a <= (innerWidth < 769 ? 0 : 2); // téléphone : seule la carte du centre joue (plus fluide)
         if (v) { if (visible) { v.muted = true; if (!v.src) v.src = v.dataset.src; v.play().then(() => c.classList.add('playing')).catch(() => {}); } else { v.pause(); c.classList.remove('playing'); } }
       });
       box.querySelectorAll('.cf-dots i').forEach((d, i) => d.classList.toggle('on', i === ((cur % N) + N) % N));
