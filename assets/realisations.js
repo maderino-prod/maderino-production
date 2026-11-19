@@ -260,12 +260,11 @@
     for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
     while (pool.length) {
       const last = vids.length ? vids[vids.length - 1].p.id : null;
-      // on pioche en priorité chez le client qui a le plus de cartes restantes (sinon il finit en paquet à la fin)
-      const left = {}; pool.forEach(x => left[x.p.id] = (left[x.p.id] || 0) + 1);
+            const left = {}; pool.forEach(x => left[x.p.id] = (left[x.p.id] || 0) + 1);
       const ids = Object.keys(left).filter(id => id !== last);
-      const top = ids.length ? Math.max(...ids.map(id => left[id])) : 0;
-      const pick = ids.filter(id => left[id] >= top * .6 || left[id] === top);
-      const want = pick[Math.floor(Math.random() * pick.length)];
+      // tirage au hasard pondéré par le nombre de cartes restantes : vraiment aléatoire, sans paquet à la fin
+      let r = Math.random() * ids.reduce((t, id) => t + left[id], 0), want = ids[0];
+      for (const id of ids) { r -= left[id]; if (r <= 0) { want = id; break; } }
       const k = pool.findIndex(x => x.p.id === want);
       vids.push(pool.splice(k < 0 ? 0 : k, 1)[0]);
     }
