@@ -153,7 +153,7 @@
     // Vidéo ouverte en grand : toujours le fichier HD d'origine (PC et téléphone)
     if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
     else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
-    else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
+    else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&cc_load_policy=0&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
     document.querySelectorAll('.pf-nav').forEach(b => b.style.display = items.length > 1 ? '' : 'none');
   }
 
@@ -169,7 +169,9 @@
       bar.querySelector('.yt-seek i').style.width = (st.d ? st.t / st.d * 100 : 0) + '%';
       bar.querySelector('.yt-time').textContent = fmt(st.t) + ' / ' + fmt(st.d);
     };
-    ifr.addEventListener('load', () => ifr.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*'));
+    ifr.addEventListener('load', () => { ifr.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*');
+      // coupe les sous-titres automatiques (même si YouTube les active par défaut)
+      [600, 1500, 3000].forEach(ms => setTimeout(() => { cmd('unloadModule', ['captions']); cmd('unloadModule', ['cc']); }, ms)); });
     const onMsg = e => {
       if (e.source !== ifr.contentWindow) return;
       let m; try { m = JSON.parse(e.data); } catch { return; }
