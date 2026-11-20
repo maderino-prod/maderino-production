@@ -153,7 +153,7 @@
     // Vidéo ouverte en grand : toujours le fichier HD d'origine (PC et téléphone)
     if (it.k === 'video') st.innerHTML = `<video src="${it.src}" poster="${it.poster}" controls autoplay playsinline controlslist="nodownload" disablepictureinpicture></video>`;
     else if (it.k === 'photo') st.innerHTML = `<img src="${it.src}" alt="${current.client}">`;
-    else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&cc_load_policy=0&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
+    else { st.innerHTML = `<div class="pf-yt"><iframe src="https://www.youtube-nocookie.com/embed/${it.id}?autoplay=1&cc_load_policy=0&cc_lang_pref=fr&hl=fr&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&disablekb=1&fs=0&enablejsapi=1&origin=${encodeURIComponent(location.origin)}" allow="autoplay; encrypted-media" tabindex="-1"></iframe><div class="yt-shield"></div><div class="yt-bar"><button class="yt-btn" data-yt="play" aria-label="Lecture">❚❚</button><div class="yt-seek" data-yt="seek"><i></i></div><span class="yt-time">0:00</span><button class="yt-btn" data-yt="mute" aria-label="Son">🔊</button><button class="yt-btn" data-yt="full" aria-label="Plein écran">⛶</button></div></div>`; ytInit(st.querySelector('.pf-yt')); }
     document.querySelectorAll('.pf-nav').forEach(b => b.style.display = items.length > 1 ? '' : 'none');
   }
 
@@ -171,7 +171,7 @@
     };
     ifr.addEventListener('load', () => { ifr.contentWindow.postMessage(JSON.stringify({ event: 'listening', id: 1 }), '*');
       // coupe les sous-titres automatiques (même si YouTube les active par défaut)
-      [600, 1500, 3000].forEach(ms => setTimeout(() => { cmd('unloadModule', ['captions']); cmd('unloadModule', ['cc']); }, ms)); });
+      [400, 1000, 2000, 3500, 6000].forEach(ms => setTimeout(() => { cmd('setOption', ['captions', 'track', {}]); cmd('unloadModule', ['captions']); cmd('unloadModule', ['cc']); }, ms)); });
     const onMsg = e => {
       if (e.source !== ifr.contentWindow) return;
       let m; try { m = JSON.parse(e.data); } catch { return; }
@@ -179,6 +179,7 @@
       if (typeof i.currentTime === 'number') st.t = i.currentTime;
       if (typeof i.duration === 'number') st.d = i.duration;
       if (typeof i.playerState === 'number') st.playing = i.playerState === 1 || i.playerState === 3;
+      if (i.playerState === 1 && !st.ccOff) { st.ccOff = true; cmd('setOption', ['captions', 'track', {}]); cmd('unloadModule', ['captions']); }
       if (typeof i.muted === 'boolean') st.muted = i.muted;
       paint();
     };
