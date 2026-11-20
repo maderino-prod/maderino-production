@@ -1,7 +1,7 @@
 /* Réalisations sur les pages d'offre (Montage / Tournage).
    Mettre <div id="realisations" data-tab="montage"></div> dans la page, puis charger projets.js et ce fichier.
    Les projets viennent de /assets/projets.js : ajouter un projet là-bas le fait apparaître ici automatiquement. */
-/* Aperçus de la roulette : version légère de chaque vidéo (même nom + .p.mp4 : 6 s, 480 p, sans son, ~300 Ko).
+/* Aperçus de la roulette : version légère de chaque vidéo (même nom + .p.mp4 : 6 s, pleine définition, sans son).
    La vidéo complète (1080 p) ne se charge que quand on l'ouvre en grand. Toute nouvelle vidéo doit avoir son .p.mp4. */
 (function () {
   const box = document.getElementById('realisations'); if (!box) return;
